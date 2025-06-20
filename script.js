@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { date: "September 29, 2022", platforms: "(PS4, PS5)" }
             ],
             releasesEN: [
-                { date: "TBA 2025", platforms: "(PC, PS4, PS5, Switch)" }
+                { date: "February 14, 2025", platforms: "(PC, PS4, PS5, Switch)" }
             ]
         },
         {
@@ -330,4 +330,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         timelineContainer.appendChild(entry);
     });
+
+    // Back to Top Button Functionality
+    const backToTopButton = document.getElementById("backToTopBtn");
+
+    if (backToTopButton) {
+        window.onscroll = function() {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        }
+
+        backToTopButton.addEventListener("click", function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+    }
 });

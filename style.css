@@ -6,6 +6,20 @@
     --text-primary: #ffffff;
     --text-secondary: #9999b9;
     --shadow-color: rgba(0, 0, 0, 0.5);
+
+    --font-size-xs: 0.75rem; /* 12px */
+    --font-size-sm: 0.875rem; /* 14px */
+    --font-size-base: 1rem; /* 16px */
+    --font-size-md: 1.125rem; /* 18px */
+    --font-size-lg: 1.25rem; /* 20px */
+    --font-size-xl: 1.5rem; /* 24px */
+    --font-size-xxl: 2rem; /* 32px */
+    --font-size-xxxl: 2.5rem; /* 40px */
+    --font-size-xxxxl: 3rem; /* 48px */
+
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.4;
+    --line-height-relaxed: 1.6;
 }
 
 body {
@@ -14,15 +28,15 @@ body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
-    line-height: 1.6;
+    line-height: var(--line-height-relaxed);
 }
 
 /* --- Header & Footer --- */
 header, footer { text-align: center; padding: 2rem 1rem; }
 header { border-bottom: 2px solid var(--accent-gold); }
-header h1 { margin: 0; font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--accent-gold); }
-header h2 { margin: 0; font-size: 1.2rem; color: var(--text-secondary); font-weight: 400; }
-footer { margin-top: 2rem; color: var(--text-secondary); font-size: 0.9rem; }
+header h1 { margin: 0; font-family: 'Playfair Display', serif; font-size: var(--font-size-xxxxl); font-weight: 700; color: var(--accent-gold); }
+header h2 { margin: 0; font-size: var(--font-size-lg); color: var(--text-secondary); font-weight: 400; }
+footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-size-sm); }
 
 /* --- Arc Headers --- */
 .arc-header {
@@ -30,7 +44,7 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: 0.9rem; }
     margin-bottom: 2rem;
     padding: 0.5rem 0;
     font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
+    font-size: var(--font-size-xxxl);
     font-weight: 700;
     color: var(--accent-gold);
     border-top: 1px solid var(--accent-gold);
@@ -76,21 +90,22 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
     display: flex;
     flex-direction: column;
+    line-height: var(--line-height-normal);
 }
 
 .main-info { flex-grow: 1; }
 .game-logo { max-width: 80%; max-height: 140px; height: auto; margin-bottom: 0.25rem; /* Reduced margin */ filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.7)); }
-.japanese-title { color: var(--accent-gold); margin: 0.25rem 0 1rem 0; /* Reduced margins */ line-height: 1.2; }
+.japanese-title { color: var(--accent-gold); margin: 0.25rem 0 1rem 0; /* Reduced margins */ line-height: var(--line-height-tight); }
 .kanji-title, .romaji-title { display: block; }
-.kanji-title { font-weight: 700; font-size: 1.3rem; }
-.romaji-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: 1.1rem; opacity: 0.9; }
+.kanji-title { font-weight: 700; font-size: var(--font-size-lg); }
+.romaji-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: var(--font-size-md); opacity: 0.9; }
 
 /* --- New Release Date Styling --- */
-.release-details { display: flex; flex-direction: column; gap: 0.5rem; /* Reduced gap */ }
-.release-header { font-size: 1.1rem; color: var(--accent-gold); margin: 0 0 0.25rem 0; }
-.release-list { line-height: 1.4; }
-.release-primary { font-size: 1rem; color: var(--text-primary); }
-.release-secondary { font-size: 0.8rem; color: var(--text-secondary); }
+.release-details { display: flex; flex-direction: column; gap: 0.5rem; /* Reduced gap */ line-height: var(--line-height-normal); }
+.release-header { font-size: var(--font-size-md); color: var(--accent-gold); margin: 0 0 0.1rem 0; }
+.release-list { line-height: var(--line-height-normal); }
+.release-primary { font-size: var(--font-size-base); color: var(--text-primary); font-weight: 700; }
+.release-secondary { font-size: var(--font-size-xs); color: var(--text-secondary); }
 
 /* --- New External Links Styling --- */
 .external-links {
@@ -137,22 +152,22 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
         max-height: 100px; /* Adjust max height for logo */
     }
     .japanese-title {
-        font-size: 1.1rem; /* Slightly smaller Japanese title */
+        font-size: var(--font-size-md); /* Slightly smaller Japanese title */
     }
     .kanji-title {
-        font-size: 1.1rem; /* Adjust based on actual font and space */
+        font-size: var(--font-size-md); /* Adjust based on actual font and space */
     }
     .romaji-title {
-        font-size: 0.9rem; /* Adjust based on actual font and space */
+        font-size: var(--font-size-sm); /* Adjust based on actual font and space */
     }
     .release-header {
-        font-size: 1rem;
+        font-size: var(--font-size-base);
     }
     .release-primary {
-        font-size: 0.9rem;
+        font-size: var(--font-size-sm);
     }
     .release-secondary {
-        font-size: 0.75rem;
+        font-size: var(--font-size-xs);
     }
     .external-links {
         gap: 0.75rem; /* Smaller gap for external links */
@@ -167,20 +182,52 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     text-align: center; /* Center the navigation links */
     margin-top: 15px; /* Add some space above the navigation */
     margin-bottom: 10px; /* Add some space below the navigation */
-    padding: 5px 0; /* Add some vertical padding */
+    padding: 0.5rem 0; /* Adjusted padding for sticky state */
     color: #cccccc; /* Light gray color for '•' separators (inherited by text nodes) */
+    position: sticky;
+    top: 0;
+    background-color: var(--primary-bg);
+    z-index: 1000;
 }
 
 .arc-navigation a {
     font-family: 'Inter', sans-serif; /* Match font if needed, or choose a suitable one */
     font-weight: bold;
-    font-size: 0.9em;
+    font-size: var(--font-size-sm);
     color: #cccccc; /* Light gray color for links, adjust as needed */
     text-decoration: none; /* Remove underline from links */
     margin: 0 5px; /* Add small horizontal margin around links for spacing */
+    padding: 0.25rem 0.5rem; /* Add some padding for the hover background */
+    border-radius: 4px; /* Rounded corners for hover background */
 }
 
 .arc-navigation a:hover {
     color: #ffffff; /* White color on hover, adjust as needed */
     text-decoration: underline; /* Underline on hover for better affordance */
+    background-color: rgba(233, 213, 161, 0.1); /* Subtle gold background on hover */
+}
+
+/* --- Back to Top Button --- */
+#backToTopBtn {
+  display: none; /* Hidden by default */
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 1001; /* Ensure it's above other elements like sticky nav */
+  border: none;
+  outline: none;
+  background-color: var(--accent-gold);
+  color: var(--primary-bg); /* Text color that contrasts with accent-gold */
+  cursor: pointer;
+  padding: 12px 15px;
+  border-radius: 4px;
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  opacity: 0.8;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+#backToTopBtn:hover {
+  background-color: #d4af37; /* A slightly darker gold or adjust as needed */
+  opacity: 1;
 }
