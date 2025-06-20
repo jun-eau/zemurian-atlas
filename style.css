@@ -1,33 +1,11 @@
-html {
-    scroll-behavior: smooth;
-}
-
 /* --- Global Styles & Variables --- */
 :root {
     --primary-bg: #222222;
-    --content-overlay-bg: rgba(0, 0, 0, 0.8); /* Increased opacity from 0.7 for better contrast */
+    --content-overlay-bg: rgba(0, 0, 0, 0.7);
     --accent-gold: #e9d5a1;
     --text-primary: #ffffff;
     --text-secondary: #9999b9;
     --shadow-color: rgba(0, 0, 0, 0.5);
-
-    /* Typographic Scale */
-    --font-size-xxs: 0.65rem;
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 1rem;
-    --font-size-md: 1.125rem;
-    --font-size-lg: 1.25rem;
-    --font-size-xl: 1.75rem;
-    --font-size-xxl: 2.25rem;
-    --font-size-h1: 3rem;
-    --font-size-h2: 2.5rem;
-    --font-size-h3: 1.5rem;
-    --font-size-h4: 1.25rem;
-
-    --line-height-tight: 1.2;
-    --line-height-normal: 1.6;
-    --line-height-relaxed: 1.8;
 }
 
 body {
@@ -36,15 +14,15 @@ body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
-    line-height: var(--line-height-normal);
+    line-height: 1.6;
 }
 
 /* --- Header & Footer --- */
 header, footer { text-align: center; padding: 2rem 1rem; }
 header { border-bottom: 2px solid var(--accent-gold); }
-header h1 { margin: 0; font-family: 'Playfair Display', serif; font-size: var(--font-size-h1); font-weight: 700; color: var(--accent-gold); }
-header h2 { margin: 0; font-size: var(--font-size-lg); color: var(--text-secondary); font-weight: 400; } /* Was 1.2rem, closest is 1.25rem (lg) */
-footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-size-sm); } /* Was 0.9rem, closest is 0.875rem (sm) */
+header h1 { margin: 0; font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--accent-gold); }
+header h2 { margin: 0; font-size: 1.2rem; color: var(--text-secondary); font-weight: 400; }
+footer { margin-top: 2rem; color: var(--text-secondary); font-size: 0.9rem; }
 
 /* --- Arc Headers --- */
 .arc-header {
@@ -52,7 +30,7 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     margin-bottom: 2rem;
     padding: 0.5rem 0;
     font-family: 'Playfair Display', serif;
-    font-size: var(--font-size-h2);
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--accent-gold);
     border-top: 1px solid var(--accent-gold);
@@ -67,11 +45,6 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     display: flex;
     gap: 2rem;
     align-items: center;
-    transition: transform 0.3s ease-out;
-}
-
-.game-entry:hover {
-    transform: translateY(-4px);
 }
 
 /* --- Art Section (Left Side) - UNCROPPED --- */
@@ -80,7 +53,6 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 5px 20px var(--shadow-color);
-    transition: box-shadow 0.3s ease-out;
 }
 .game-grid-art {
     width: 100%;
@@ -89,21 +61,9 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 }
 
 /* --- Info Section (Right Side) --- */
-.info-container {
-    flex-grow: 1;
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px var(--shadow-color);
-    transition: box-shadow 0.3s ease-out;
-}
+.info-container { flex-grow: 1; position: relative; border-radius: 8px; overflow: hidden; box-shadow: 0 5px 20px var(--shadow-color); }
 .hero-background { position: absolute; inset: 0; background-size: cover; background-position: center center; filter: blur(4px) brightness(0.95); transform: scale(1.1); transition: transform 0.4s ease-out, filter 0.4s ease-out; z-index: 1; }
 .game-entry:hover .hero-background { transform: scale(1.05); filter: blur(2px) brightness(1.1); }
-
-.game-entry:hover .art-container,
-.game-entry:hover .info-container {
-    box-shadow: 0 8px 25px var(--shadow-color);
-}
 
 /* --- Flexbox layout for content --- */
 .info-content {
@@ -120,47 +80,21 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 
 .main-info { flex-grow: 1; }
 .game-logo { max-width: 80%; max-height: 140px; height: auto; margin-bottom: 0.25rem; /* Reduced margin */ filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.7)); }
-.japanese-title { /* This is now an h3 */
-    color: var(--accent-gold);
-    margin: 0.25rem 0 1rem 0; /* Reduced margins */
-    line-height: var(--line-height-tight);
-    font-size: var(--font-size-lg); /* Ensure it has a base size */
-    font-weight: normal; /* Neutralize h3 bolding, let spans control weight */
-}
+.japanese-title { color: var(--accent-gold); margin: 0.25rem 0 1rem 0; /* Reduced margins */ line-height: 1.2; }
 .kanji-title, .romaji-title { display: block; }
-.kanji-title { font-weight: 700; font-size: var(--font-size-lg); } /* Was 1.3rem, closest is 1.25rem (lg) */
-.romaji-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: var(--font-size-md); opacity: 0.9; } /* Was 1.1rem, closest is 1.125rem (md) */
+.kanji-title { font-weight: 700; font-size: 1.3rem; }
+.romaji-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: 1.1rem; opacity: 0.9; }
 
 /* --- New Release Date Styling --- */
-.release-details { display: flex; flex-direction: column; gap: 0.75rem; /* Increased gap from 0.5rem */ }
-.release-header { font-size: var(--font-size-md); color: var(--accent-gold); margin: 0 0 0.25rem 0; } /* Was 1.1rem, closest is 1.125rem (md) */
-.release-list { line-height: var(--line-height-normal); } /* Was 1.4, using normal 1.6, can be adjusted */
-
-/* --- New Release Date Styling --- */
-.release-original-jp {
-    /* Add styles for original JP release */
-    font-weight: bold; /* Example style */
-    font-size: var(--font-size-base); /* Assuming base size for primary releases */
-}
-.release-first-en {
-    /* Add styles for first EN release */
-    font-weight: bold; /* Example style */
-    font-size: var(--font-size-base); /* Assuming base size for primary releases */
-}
-.release-port-jp {
-    /* Add styles for JP ports */
-    font-size: var(--font-size-sm); /* Was 0.9rem, closest is 0.875rem (sm) */
-    color: var(--text-secondary); /* Example style */
-}
-.release-port-en {
-    /* Add styles for EN ports */
-    font-size: var(--font-size-sm); /* Was 0.9rem, closest is 0.875rem (sm) */
-    color: var(--text-secondary); /* Example style */
-}
+.release-details { display: flex; flex-direction: column; gap: 0.5rem; /* Reduced gap */ }
+.release-header { font-size: 1.1rem; color: var(--accent-gold); margin: 0 0 0.25rem 0; }
+.release-list { line-height: 1.4; }
+.release-primary { font-size: 1rem; color: var(--text-primary); }
+.release-secondary { font-size: 0.8rem; color: var(--text-secondary); }
 
 /* --- New External Links Styling --- */
 .external-links {
-    margin-top: 1.5rem; /* Increased margin from 1rem */
+    margin-top: 1rem; /* Drastically reduced margin */
     padding-top: 0.75rem; /* Reduced padding */
     display: flex;
     gap: 1.25rem;
@@ -193,34 +127,32 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
         max-width: calc(60% - 1rem); /* Adjust based on the gap */
     }
     .info-content {
-        padding: 1.25rem 0; /* Increased vertical padding from 1rem, horizontal set to 0 */
+        padding: 1rem 1.5rem; /* Adjust padding for smaller screens */
+        padding-left: 0;
+        padding-right: 0;
     }
     /* It might also be necessary to adjust text sizes or margins within .info-container for mobile */
     .game-logo {
         max-width: 70%; /* Allow logo to be a bit smaller on mobile */
         max-height: 100px; /* Adjust max height for logo */
     }
-    /* .japanese-title itself will inherit its font-size from the main rule (var(--font-size-lg))
-       or could be specifically overridden here if needed for the 900px breakpoint.
-       The current plan doesn't specify a change for .japanese-title itself at 900px,
-       only its children .kanji-title and .romaji-title, which are already handled below.
-       So, .japanese-title (the h3) will be var(--font-size-lg) at this breakpoint. */
-    .kanji-title { /* This is .info-content .japanese-title .kanji-title effectively */
-        font-size: var(--font-size-md); /* Was 1.1rem, closest is 1.125rem (md) */
+    .japanese-title {
+        font-size: 1.1rem; /* Slightly smaller Japanese title */
     }
-    .romaji-title { /* This is .info-content .japanese-title .romaji-title effectively */
-        font-size: var(--font-size-sm); /* Was 0.9rem, closest is 0.875rem (sm) */
+    .kanji-title {
+        font-size: 1.1rem; /* Adjust based on actual font and space */
+    }
+    .romaji-title {
+        font-size: 0.9rem; /* Adjust based on actual font and space */
     }
     .release-header {
-        font-size: var(--font-size-base); /* Was 1rem */
+        font-size: 1rem;
     }
-    /* .release-primary and .release-secondary were removed, so no need to update them here */
-    /* Adjustments for new release classes within media query if needed */
-    .release-original-jp, .release-first-en {
-        font-size: var(--font-size-sm); /* Adjusting primary releases for smaller screens */
+    .release-primary {
+        font-size: 0.9rem;
     }
-    .release-port-jp, .release-port-en {
-        font-size: var(--font-size-xs); /* Was 0.85rem, closest is 0.75rem (xs) */
+    .release-secondary {
+        font-size: 0.75rem;
     }
     .external-links {
         gap: 0.75rem; /* Smaller gap for external links */
@@ -233,169 +165,22 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 /* Arc Navigation Styling */
 .arc-navigation {
     text-align: center; /* Center the navigation links */
-    /* margin-top: 15px; /* Keep or adjust if needed */
-    /* margin-bottom: 10px; /* Keep or adjust if needed */
+    margin-top: 15px; /* Add some space above the navigation */
+    margin-bottom: 10px; /* Add some space below the navigation */
+    padding: 5px 0; /* Add some vertical padding */
     color: #cccccc; /* Light gray color for '•' separators (inherited by text nodes) */
-
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background-color: var(--primary-bg);
-    padding: 10px 0; /* Updated padding */
-    border-bottom: 1px solid var(--accent-gold); /* Added for separation when sticky */
 }
 
 .arc-navigation a {
     font-family: 'Inter', sans-serif; /* Match font if needed, or choose a suitable one */
     font-weight: bold;
-    font-size: var(--font-size-sm); /* Was 0.9em, closest is 0.875rem (sm) */
+    font-size: 0.9em;
     color: #cccccc; /* Light gray color for links, adjust as needed */
     text-decoration: none; /* Remove underline from links */
     margin: 0 5px; /* Add small horizontal margin around links for spacing */
-    padding: 0.25em 0.5em; /* Added padding */
-    border-radius: 4px; /* Added border-radius */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Added color transition */
 }
 
 .arc-navigation a:hover {
-    color: var(--accent-gold); /* Changed hover color */
-    text-decoration: none; /* Removed underline */
-    background-color: #383838; /* Added background color */
-}
-
-/* --- TBA and Future Release Styling --- */
-.release-tba,
-.release-future {
-    font-style: italic; /* Italicize TBA or Future dates */
-}
-
-/* Make important (original/first-en) future/TBA dates slightly less prominent */
-/* These are normally full color and bold, so adding opacity and keeping italic */
-.release-original-jp.release-tba,
-.release-original-jp.release-future,
-.release-first-en.release-tba,
-.release-first-en.release-future {
-    opacity: 0.85;
-}
-
-/* For port releases that are TBA or Future, they are already --text-secondary.
-   The italic style added by .release-tba or .release-future is the primary change.
-   No additional opacity is applied here to prevent them from becoming too faint,
-   but they will inherit the font-style: italic. */
-.release-port-jp.release-tba,
-.release-port-jp.release-future,
-.release-port-en.release-tba,
-.release-port-en.release-future {
-    /* Intentionally empty for now, only inherits italic. Add opacity if needed after testing. */
-}
-
-/* --- Responsive Adjustments for Very Small Screens --- */
-@media (max-width: 600px) {
-    header h1 {
-        font-size: var(--font-size-xxl); /* Was var(--font-size-h1) = 3rem */
-    }
-    header h2 {
-        font-size: var(--font-size-base); /* Was var(--font-size-lg) = 1.25rem */
-    }
-    .arc-header {
-        font-size: var(--font-size-xl); /* Was var(--font-size-h2) = 2.5rem */
-    }
-
-    .game-entry {
-        flex-direction: column;
-        align-items: stretch; /* Make children take full width available in column */
-        gap: 1rem; /* Reduce gap for stacked layout */
-    }
-
-    .art-container {
-        flex: 0 0 auto; /* Do not grow or shrink based on flex container */
-        width: 80%; /* Percentage of its new parent's width */
-        max-width: 300px; /* Max to prevent it from being too large */
-        margin: 0 auto; /* Center it */
-    }
-
-    .info-container {
-        width: 100%; /* Take full width of the parent column */
-        max-width: none; /* Override max-width from 900px breakpoint */
-    }
-
-    .info-content {
-        padding: 1rem 1rem; /* Add horizontal padding, vertical can be 1rem */
-    }
-
-    .info-content .game-logo {
-        max-width: 60%; /* Further reduce logo size */
-        max-height: 80px;
-    }
-
-    /* At 600px, .japanese-title (the h3) would still be var(--font-size-lg) unless overridden.
-       The plan for 600px implies child elements .kanji-title and .romaji-title get smaller.
-       Let's ensure that .japanese-title itself also scales down at 600px,
-       perhaps to match its largest child or a bit larger.
-       The largest child .kanji-title becomes var(--font-size-base).
-       So, let's set .japanese-title to var(--font-size-base) at 600px too.
-    */
-    .info-content .japanese-title { /* Targeting the h3 */
-        font-size: var(--font-size-base);
-    }
-
-    .info-content .kanji-title { /* This is .info-content .japanese-title .kanji-title */
-        font-size: var(--font-size-base); /* Was var(--font-size-md) at 900px */
-    }
-
-    .info-content .romaji-title { /* This is .info-content .japanese-title .romaji-title */
-        font-size: var(--font-size-xs); /* Was var(--font-size-sm) at 900px */
-    }
-
-    .info-content .release-header {
-        font-size: var(--font-size-sm); /* Was var(--font-size-base) at 900px */
-    }
-
-    .info-content .release-original-jp,
-    .info-content .release-first-en {
-        font-size: var(--font-size-xs); /* Was var(--font-size-sm) at 900px */
-    }
-
-    .info-content .release-port-jp,
-    .info-content .release-port-en {
-        font-size: var(--font-size-xxs); /* Was var(--font-size-xs) at 900px */
-    }
-}
-
-/* --- Back to Top Button Styling --- */
-#backToTopBtn {
-    display: flex; /* Use flex to center content */
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    position: fixed;
-    bottom: 20px;
-    right: 30px;
-    z-index: 101; /* Ensure it's above other sticky elements like arc-nav */
-    border: none;
-    outline: none;
-    background-color: var(--accent-gold);
-    color: var(--primary-bg); /* Arrow color */
-    cursor: pointer;
-    width: 48px; /* Define fixed width */
-    height: 48px; /* Define fixed height */
-    border-radius: 50%; /* Makes it circular */
-    font-size: var(--font-size-xl); /* Adjust arrow size, e.g., 1.75rem */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.4); /* Slightly more pronounced shadow */
-    transition: background-color 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
-}
-
-#backToTopBtn:hover {
-    background-color: #d4c08c; /* Slightly adjusted hover gold */
-}
-
-/* --- External Link Indicator Styling --- */
-.external-links a::after {
-    content: ' \2197'; /* Adds a space then the North East Arrow */
-    font-size: var(--font-size-sm); /* Use small font size for the icon */
-    color: var(--text-secondary); /* Use secondary text color for subtlety */
-    margin-left: 5px; /* Space between the link image and the icon */
-    display: inline-block; /* Allows for better control if needed */
-    vertical-align: middle; /* Attempt to align with the middle of the image */
+    color: #ffffff; /* White color on hover, adjust as needed */
+    text-decoration: underline; /* Underline on hover for better affordance */
 }
