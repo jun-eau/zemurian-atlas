@@ -209,40 +209,32 @@ main {
 /* ====================================== */
 @media (max-width: 600px) {
     main {
-        padding: 1rem;
+        padding: 1rem 0.5rem;
     }
     
     header h1 { font-size: 2.2rem; }
     header h2 { font-size: 1rem; }
     .arc-header { font-size: 1.8rem; }
 
+    /* Revert to side-by-side but make it compact */
     .game-entry {
         flex-direction: row;
-        gap: 1rem;
-        align-items: stretch;
+        gap: 0.75rem;
+        align-items: stretch; /* Make children same height */
     }
 
+    /* Shrink the grid art significantly */
     .art-container {
-        flex: 0 0 100px;
+        flex: 0 0 100px; /* Base width of 100px, no growing or shrinking */
         max-width: 100px;
     }
-    
-    /* --- The Magic for Vertical Alignment --- */
-    .art-container a {
-        height: 100%; /* Make the link fill the stretched container */
-    }
-    .game-grid-art {
-        height: 100%; /* Make the image fill its container */
-        object-fit: cover; /* Fill while maintaining aspect ratio, cropping excess */
-    }
-    /* --- End Magic --- */
 
     .info-content {
         padding: 1rem;
     }
 
     .game-logo {
-        max-height: 60px;
+        max-height: 60px; /* Smaller logo for mobile */
         margin-bottom: 0.25rem;
     }
 
