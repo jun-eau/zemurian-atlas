@@ -21,7 +21,80 @@ document.addEventListener('DOMContentLoaded', () => {
                 { date: "July 29, 2014", platforms: "(PC)" }
             ]
         },
-        // ... all other game data remains the same ...
+        {
+            arc: "Liberl Arc",
+            englishTitle: "Trails in the Sky SC",
+            japaneseTitleKanji: "英雄伝説 空の軌跡SC",
+            japaneseTitleRomaji: "Sora no Kiseki SC",
+            assetName: "trails-in-the-sky-sc",
+            steamUrl: "https://store.steampowered.com/app/251290/",
+            wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_SC",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Sora_no_Kiseki_SC",
+            releasesJP: [
+                { date: "March 9, 2006", platforms: "(PC)" },
+                { date: "December 27, 2007", platforms: "(PSP)" },
+                { date: "April 25, 2013", platforms: "(PS3)" },
+                { date: "December 10, 2015", platforms: "(PS Vita)" }
+            ],
+            releasesEN: [
+                { date: "October 29, 2015", platforms: "(PC, PSP)" }
+            ]
+        },
+        {
+            arc: "Liberl Arc",
+            englishTitle: "Trails in the Sky the 3rd",
+            japaneseTitleKanji: "英雄伝説 空の軌跡 the 3rd",
+            japaneseTitleRomaji: "Sora no Kiseki the 3rd",
+            assetName: "trails-in-the-sky-the-3rd",
+            steamUrl: "https://store.steampowered.com/app/436670/",
+            wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_the_3rd",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Sora_no_Kiseki_the_3rd",
+            releasesJP: [
+                { date: "June 28, 2007", platforms: "(PC)" },
+                { date: "July 24, 2008", platforms: "(PSP)" },
+                { date: "June 26, 2014", platforms: "(PS3)" },
+                { date: "July 14, 2016", platforms: "(PS Vita)" }
+            ],
+            releasesEN: [
+                { date: "May 3, 2017", platforms: "(PC)" }
+            ]
+        },
+        {
+            arc: "Crossbell Arc",
+            englishTitle: "Trails from Zero",
+            japaneseTitleKanji: "英雄伝説 零の軌跡",
+            japaneseTitleRomaji: "Zero no Kiseki",
+            assetName: "trails-from-zero",
+            steamUrl: "https://store.steampowered.com/app/1668510/",
+            wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_from_Zero",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Zero_no_Kiseki",
+            releasesJP: [
+                { date: "September 30, 2010", platforms: "(PSP)" },
+                { date: "October 18, 2012", platforms: "(PS Vita)" },
+                { date: "May 1, 2020", platforms: "(PS4)" }
+            ],
+            releasesEN: [
+                { date: "September 27, 2022", platforms: "(PC, PS4, Switch)" }
+            ]
+        },
+        {
+            arc: "Crossbell Arc",
+            englishTitle: "Trails to Azure",
+            japaneseTitleKanji: "英雄伝説 碧の軌跡",
+            japaneseTitleRomaji: "Ao no Kiseki",
+            assetName: "trails-to-azure",
+            steamUrl: "https://store.steampowered.com/app/1668520/",
+            wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_to_Azure",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Ao_no_Kiseki",
+            releasesJP: [
+                { date: "September 29, 2011", platforms: "(PSP)" },
+                { date: "June 12, 2014", platforms: "(PS Vita)" },
+                { date: "May 28, 2020", platforms: "(PS4)" }
+            ],
+            releasesEN: [
+                { date: "March 14, 2023", platforms: "(PC, PS4, Switch)" }
+            ]
+        },
         {
             arc: "Erebonia Arc",
             englishTitle: "Trails of Cold Steel",
@@ -180,12 +253,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const entry = document.createElement('div');
         entry.className = 'game-entry';
 
+        // Helper function to generate the hierarchical release string
         const createReleaseString = (releases) => {
             if (!releases || releases.length === 0) return '';
+            
             const primary = `<span class="release-primary">${releases[0].date} ${releases[0].platforms}</span>`;
+            
             const secondary = releases.slice(1).map(r => 
                 `<span class="release-secondary">, ${r.date} ${r.platforms}</span>`
             ).join('');
+            
             return primary + secondary;
         };
 
