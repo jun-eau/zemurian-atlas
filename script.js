@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { date: "September 29, 2022", platforms: "(PS4, PS5)" }
             ],
             releasesEN: [
-                { date: "February 14, 2025", platforms: "(PC, PS4, PS5, Switch)" }
+                { date: "TBA 2025", platforms: "(PC, PS4, PS5, Switch)" }
             ]
         },
         {
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { date: "September 26, 2024", platforms: "(PS4, PS5)" }
             ],
             releasesEN: [
-                { date: "TBA – January 2026", platforms: "(PC, PS4, PS5, Switch)" }
+                { date: "January 2026", platforms: "(PC, PS4, PS5, Switch)" }
             ]
         }
     ];
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const entry = document.createElement('div');
         entry.className = 'game-entry';
 
-        // NEW: Helper function to generate the hierarchical release string
+        // Helper function to generate the hierarchical release string
         const createReleaseString = (releases) => {
             if (!releases || releases.length === 0) return '';
             
@@ -268,9 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         entry.innerHTML = `
             <div class="art-container">
-                <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer">
-                    <img src="grid/${game.assetName}.jpg" alt="${game.englishTitle} Grid Art" class="game-grid-art">
-                </a>
+                <img src="grid/${game.assetName}.jpg" alt="${game.englishTitle} Grid Art" class="game-grid-art">
             </div>
             <div class="info-container">
                 <div class="hero-background" style="background-image: url('hero/${game.assetName}.jpg');"></div>
@@ -293,6 +291,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                     <div class="external-links">
+                        <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
+                            <img src="logo/steam.png" alt="Steam Logo">
+                        </a>
                         <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
                             <img src="logo/wikipedia.png" alt="Wikipedia Logo">
                         </a>

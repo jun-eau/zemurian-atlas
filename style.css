@@ -47,13 +47,16 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     align-items: center;
 }
 
-/* --- Art Section (Left Side) --- */
-.art-container { flex: 0 0 300px; }
-.art-container a { display: block; border-radius: 8px; overflow: hidden; box-shadow: 0 5px 20px var(--shadow-color); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-.art-container a:hover { transform: scale(1.03); box-shadow: 0 8px 30px var(--shadow-color); }
+/* --- Art Section (Left Side) - UNCROPPED --- */
+.art-container {
+    flex: 0 0 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px var(--shadow-color);
+}
 .game-grid-art {
     width: 100%;
-    height: auto;
+    height: auto; /* Let the image's aspect ratio determine the height */
     display: block;
 }
 
@@ -76,9 +79,7 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 }
 
 .main-info { flex-grow: 1; }
-
 .game-logo { max-width: 80%; max-height: 140px; height: auto; margin-bottom: 0.25rem; /* Reduced margin */ filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.7)); }
-
 .japanese-title { color: var(--accent-gold); margin: 0.25rem 0 1rem 0; /* Reduced margins */ line-height: 1.2; }
 .kanji-title, .romaji-title { display: block; }
 .kanji-title { font-weight: 700; font-size: 1.3rem; }
@@ -99,7 +100,6 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     gap: 1.25rem;
     align-items: center;
 }
-
 .external-links a { display: block; }
 .external-links img {
     height: 44px;
@@ -108,7 +108,6 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     transition: opacity 0.3s ease;
     filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
 }
-
 .external-links img:hover { opacity: 1; }
 
 /* --- Responsive Adjustments --- */
