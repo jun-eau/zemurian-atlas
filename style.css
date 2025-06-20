@@ -205,6 +205,11 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     background-color: rgba(233, 213, 161, 0.1); /* Subtle gold background on hover */
 }
 
+.arc-navigation a.active {
+    color: var(--accent-gold);
+    font-weight: bold;
+}
+
 /* --- Back to Top Button --- */
 #backToTopBtn {
   display: none; /* Hidden by default */
