@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-in-the-sky",
             steamUrl: "https://store.steampowered.com/app/251150/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Sora_no_Kiseki_FC",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky",
             releasesJP: [
                 { date: "June 24, 2004", platforms: "(PC)" },
                 { date: "June 28, 2006", platforms: "(PSP)" },
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-in-the-sky-sc",
             steamUrl: "https://store.steampowered.com/app/251290/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_SC",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Sora_no_Kiseki_SC",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_SC",
             releasesJP: [
                 { date: "March 9, 2006", platforms: "(PC)" },
                 { date: "December 27, 2007", platforms: "(PSP)" },
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-in-the-sky-the-3rd",
             steamUrl: "https://store.steampowered.com/app/436670/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_the_3rd",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Sora_no_Kiseki_the_3rd",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_the_3rd",
             releasesJP: [
                 { date: "June 28, 2007", platforms: "(PC)" },
                 { date: "July 24, 2008", platforms: "(PSP)" },
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-from-zero",
             steamUrl: "https://store.steampowered.com/app/1668510/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_from_Zero",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Zero_no_Kiseki",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_from_Zero",
             releasesJP: [
                 { date: "September 30, 2010", platforms: "(PSP)" },
                 { date: "October 18, 2012", platforms: "(PS Vita)" },
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-to-azure",
             steamUrl: "https://store.steampowered.com/app/1668520/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_to_Azure",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Ao_no_Kiseki",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_to_Azure",
             releasesJP: [
                 { date: "September 29, 2011", platforms: "(PSP)" },
                 { date: "June 12, 2014", platforms: "(PS Vita)" },
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-of-cold-steel",
             steamUrl: "https://store.steampowered.com/app/538680/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Sen_no_Kiseki",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel",
             releasesJP: [
                 { date: "September 26, 2013", platforms: "(PS3, PS Vita)" },
                 { date: "March 8, 2018", platforms: "(PS4)" }
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-of-cold-steel-ii",
             steamUrl: "https://store.steampowered.com/app/748490/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_II",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Sen_no_Kiseki_II",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_II",
             releasesJP: [
                 { date: "September 25, 2014", platforms: "(PS3, PS Vita)" },
                 { date: "April 26, 2018", platforms: "(PS4)" }
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-of-cold-steel-iii",
             steamUrl: "https://store.steampowered.com/app/991270/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_III",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Sen_no_Kiseki_III",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_III",
             releasesJP: [
                 { date: "September 28, 2017", platforms: "(PS4)" }
             ],
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-of-cold-steel-iv",
             steamUrl: "https://store.steampowered.com/app/1198010/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_IV",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Sen_no_Kiseki_IV",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_IV",
             releasesJP: [
                 { date: "September 27, 2018", platforms: "(PS4)" }
             ],
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-into-reverie",
             steamUrl: "https://store.steampowered.com/app/1668540/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_into_Reverie",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Hajimari_no_Kiseki",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_into_Reverie",
             releasesJP: [
                 { date: "August 27, 2020", platforms: "(PS4)" },
                 { date: "August 26, 2021", platforms: "(PC, Switch)" }
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assetName: "trails-through-daybreak",
             steamUrl: "https://store.steampowered.com/app/1811950/",
             wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_through_Daybreak",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Kuro_no_Kiseki",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_through_Daybreak",
             releasesJP: [
                 { date: "September 30, 2021", platforms: "(PS4)" },
                 { date: "July 28, 2022", platforms: "(PS5)" }
@@ -211,8 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
             japaneseTitleRomaji: "Kuro no Kiseki II -CRIMSON SiN-",
             assetName: "trails-through-daybreak-ii",
             steamUrl: "https://store.steampowered.com/app/2138610/",
-            wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Kuro_no_Kiseki_II_–_Crimson_Sin",
-            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Kuro_no_Kseki_II_-CRIMSON_SiN-",
+            wikiUrl: "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_Through_Daybreak_II",
+            fandomUrl: "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_through_Daybreak_II",
             releasesJP: [
                 { date: "September 29, 2022", platforms: "(PS4, PS5)" }
             ],
