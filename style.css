@@ -142,9 +142,7 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
         max-width: calc(60% - 1rem); /* Adjust based on the gap */
     }
     .info-content {
-        padding: 1rem 1.5rem; /* Adjust padding for smaller screens */
-        padding-left: 0;
-        padding-right: 0;
+        padding: 1rem 0; /* Adjust padding for smaller screens (top/bottom: 1rem, left/right: 0) */
     }
     /* It might also be necessary to adjust text sizes or margins within .info-container for mobile */
     .game-logo {
