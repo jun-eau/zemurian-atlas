@@ -1,0 +1,203 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-bg: #222222;
+    --content-overlay-bg: rgba(0, 0, 0, 0.65);
+    --accent-gold: #e9d5a1;
+    --text-primary: #ffffff;
+    --text-secondary: #9999b9;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* --- Header & Footer --- */
+header, footer {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+header {
+    border-bottom: 2px solid var(--accent-gold);
+}
+
+header h1 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+}
+
+header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+footer {
+    margin-top: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* --- Arc Headers --- */
+.arc-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 0.5rem 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    border-top: 1px solid var(--accent-gold);
+    border-bottom: 1px solid var(--accent-gold);
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Main Timeline Layout --- */
+main {
+    padding: 2rem 1rem;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+#game-timeline-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.game-entry {
+    display: flex;
+    gap: 2rem;
+}
+
+/* --- Art Section (Left Side) --- */
+.art-container {
+    flex: 0 0 300px;
+    align-self: center;
+}
+
+.art-container a {
+    display: block;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.art-container a:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 30px var(--shadow-color);
+}
+
+.game-grid-art {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* --- Info Section (Right Side) --- */
+.info-container {
+    flex-grow: 1;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px var(--shadow-color);
+}
+
+.hero-background {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center center;
+    filter: blur(4px) brightness(0.95);
+    transform: scale(1.1);
+    transition: transform 0.4s ease-out, filter 0.4s ease-out;
+    z-index: 1;
+}
+
+.game-entry:hover .hero-background {
+    transform: scale(1.05);
+    filter: blur(2px) brightness(1.1);
+}
+
+.info-content {
+    position: relative;
+    z-index: 2;
+    background-color: var(--content-overlay-bg);
+    padding: 2rem;
+    height: 100%;
+    box-sizing: border-box;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+.game-logo {
+    max-width: 80%;
+    max-height: 160px;
+    height: auto;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.7));
+}
+
+.japanese-title {
+    color: var(--accent-gold);
+    margin: 0.5rem 0 2rem 0;
+    line-height: 1.2;
+}
+
+.kanji-title, .romaji-title {
+    display: block;
+}
+
+.kanji-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.romaji-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.release-info {
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    line-height: 1.4; /* Added this to tighten the two lines */
+}
+
+.release-info strong {
+    color: var(--text-secondary);
+    font-weight: 700;
+    min-width: 110px;
+    display: inline-block;
+}
+
+.platforms {
+    margin-top: 2rem;
+    font-size: 1rem;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 900px) {
+    .game-entry {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .art-container {
+        flex-basis: auto;
+        max-width: 300px;
+        align-self: center;
+    }
+}
