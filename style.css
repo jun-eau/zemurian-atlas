@@ -114,3 +114,26 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 @media (max-width: 900px) {
     .game-entry { flex-direction: column; align-items: center; }
 }
+
+/* Arc Navigation Styling */
+.arc-navigation {
+    text-align: center; /* Center the navigation links */
+    margin-top: 15px; /* Add some space above the navigation */
+    margin-bottom: 10px; /* Add some space below the navigation */
+    padding: 5px 0; /* Add some vertical padding */
+    color: #cccccc; /* Light gray color for '•' separators (inherited by text nodes) */
+}
+
+.arc-navigation a {
+    font-family: 'Inter', sans-serif; /* Match font if needed, or choose a suitable one */
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #cccccc; /* Light gray color for links, adjust as needed */
+    text-decoration: none; /* Remove underline from links */
+    margin: 0 5px; /* Add small horizontal margin around links for spacing */
+}
+
+.arc-navigation a:hover {
+    color: #ffffff; /* White color on hover, adjust as needed */
+    text-decoration: underline; /* Underline on hover for better affordance */
+}
