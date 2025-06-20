@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { date: "September 29, 2022", platforms: "(PS4, PS5)" }
             ],
             releasesEN: [
-                { date: "TBA 2025", platforms: "(PC, PS4, PS5, Switch)" }
+                { date: "February 14, 2025", platforms: "(PC, PS4, PS5, Switch)" }
             ]
         },
         {
@@ -279,7 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Helper function to generate the hierarchical release string
         const createReleaseString = (releases, releaseType) => {
             if (!releases || releases.length === 0) return '';
-            const currentYear = new Date().getFullYear(); // Get current year
 
             return releases.map((r, index) => {
                 let baseClass = '';
@@ -294,14 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (dateStr.includes('tba')) {
                     additionalClasses += ' release-tba';
-                } else {
-                    const yearMatch = r.date.match(/\b(\d{4})\b/); // Extracts YYYY from string
-                    if (yearMatch) {
-                        const year = parseInt(yearMatch[1], 10);
-                        if (year > currentYear) {
-                            additionalClasses += ' release-future';
-                        }
-                    }
                 }
                 const fullClassNames = `${baseClass}${additionalClasses}`;
                 const prefix = (index > 0) ? " • " : ""; // Add comma and space for subsequent entries
