@@ -304,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 const fullClassNames = `${baseClass}${additionalClasses}`;
-                const prefix = (index > 0) ? ", " : ""; // Add comma and space for subsequent entries
+                const prefix = (index > 0) ? " • " : ""; // Add comma and space for subsequent entries
                 return `${prefix}<span class="${fullClassNames.trim()}">${r.date} ${r.platforms}</span>`;
             }).join('');
         };
