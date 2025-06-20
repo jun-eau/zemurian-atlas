@@ -122,6 +122,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
                 headerElement.appendChild(arcNav);
+
+                // --- Smooth Scroll for Arc Navigation Links ---
+                const arcNavLinks = arcNav.querySelectorAll('a');
+                arcNavLinks.forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const href = this.getAttribute('href');
+                        const targetElement = document.querySelector(href);
+
+                        if (targetElement && headerElement) {
+                            const headerHeight = headerElement.offsetHeight;
+                            const additionalMargin = 10; // Small visual margin
+                            const targetPosition = targetElement.offsetTop - headerHeight - additionalMargin;
+
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
             }
 
             games.forEach((game) => {
@@ -141,6 +162,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 timelineContainer.appendChild(entry);
             });
+
+            // --- Arc Navigation Active State Highlighting ---
+            const navLinks = document.querySelectorAll('.arc-navigation a');
+            const arcHeaders = document.querySelectorAll('.arc-header');
+            const headerHeightThreshold = 150; // Adjust as needed, roughly header height + a bit
+
+            function updateActiveLink() {
+                let currentActiveArcId = null;
+
+                // First pass: find which arc is currently "active"
+                // Iterate backwards to find the *last* header that is above the threshold
+                for (let i = arcHeaders.length - 1; i >= 0; i--) {
+                    const header = arcHeaders[i];
+                    const rect = header.getBoundingClientRect();
+                    if (rect.top <= headerHeightThreshold) {
+                        currentActiveArcId = header.id;
+                        break; // Found the topmost visible arc header
+                    }
+                }
+
+                // If no header is above threshold (e.g. scrolled to very top, before first arc header)
+                // default to the first arc, or handle as preferred.
+                // For now, if nothing is "active" based on threshold, the first link will be made active if scrolled to top.
+                // Or, if scrolled way down past the last header, the last one remains active.
+                if (!currentActiveArcId && arcHeaders.length > 0 && window.scrollY < arcHeaders[0].offsetTop) {
+                     // If scrolled to the very top, before the first section, make the first link active.
+                    currentActiveArcId = arcHeaders[0].id;
+                }
+
+
+                navLinks.forEach(link => {
+                    // The link's href is like "#arc-name-header"
+                    // The header's id is "arc-name-header"
+                    const linkHrefId = link.getAttribute('href').substring(1);
+                    if (linkHrefId === currentActiveArcId) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            if (navLinks.length > 0 && arcHeaders.length > 0) {
+                window.addEventListener('scroll', updateActiveLink);
+                updateActiveLink(); // Initial call to set active link on page load
+            }
         })
         .catch(error => {
             console.error('CRITICAL ERROR fetching or processing game data:', error);
