@@ -277,39 +277,59 @@ document.addEventListener('DOMContentLoaded', () => {
         entry.className = 'game-entry';
 
         // Helper function to generate the hierarchical release string
-        const createReleaseString = (releases) => {
+        const createReleaseString = (releases, releaseType) => {
             if (!releases || releases.length === 0) return '';
-            
-            const primary = `<span class="release-primary">${releases[0].date} ${releases[0].platforms}</span>`;
-            
-            const secondary = releases.slice(1).map(r => 
-                `<span class="release-secondary">, ${r.date} ${r.platforms}</span>`
-            ).join('');
-            
-            return primary + secondary;
+            const currentYear = new Date().getFullYear(); // Get current year
+
+            return releases.map((r, index) => {
+                let baseClass = '';
+                if (releaseType === 'jp') {
+                    baseClass = (index === 0) ? 'release-original-jp' : 'release-port-jp';
+                } else { // en
+                    baseClass = (index === 0) ? 'release-first-en' : 'release-port-en';
+                }
+
+                let additionalClasses = '';
+                const dateStr = r.date.toLowerCase();
+
+                if (dateStr.includes('tba')) {
+                    additionalClasses += ' release-tba';
+                } else {
+                    const yearMatch = r.date.match(/\b(\d{4})\b/); // Extracts YYYY from string
+                    if (yearMatch) {
+                        const year = parseInt(yearMatch[1], 10);
+                        if (year > currentYear) {
+                            additionalClasses += ' release-future';
+                        }
+                    }
+                }
+                const fullClassNames = `${baseClass}${additionalClasses}`;
+                const prefix = (index > 0) ? ", " : ""; // Add comma and space for subsequent entries
+                return `${prefix}<span class="${fullClassNames.trim()}">${r.date} ${r.platforms}</span>`;
+            }).join('');
         };
 
         entry.innerHTML = `
             <div class="art-container">
-                <img src="grid/${game.assetName}.jpg" alt="${game.englishTitle} Grid Art" class="game-grid-art">
+                <img src="grid/${game.assetName}.jpg" alt="${game.englishTitle} Box Art" class="game-grid-art">
             </div>
             <div class="info-container">
                 <div class="hero-background" style="background-image: url('hero/${game.assetName}.jpg');"></div>
                 <div class="info-content">
                     <div class="main-info">
                         <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="game-logo">
-                        <p class="japanese-title">
+                        <h3 class="japanese-title">
                             <span class="kanji-title">${game.japaneseTitleKanji}</span>
                             <span class="romaji-title">${game.japaneseTitleRomaji}</span>
-                        </p>
+                        </h3>
                         <div class="release-details">
                             <div class="release-region">
                                 <h4 class="release-header">Japanese Release</h4>
-                                <div class="release-list">${createReleaseString(game.releasesJP)}</div>
+                                <div class="release-list">${createReleaseString(game.releasesJP, 'jp')}</div>
                             </div>
                             <div class="release-region">
                                 <h4 class="release-header">English Release</h4>
-                                <div class="release-list">${createReleaseString(game.releasesEN)}</div>
+                                <div class="release-list">${createReleaseString(game.releasesEN, 'en')}</div>
                             </div>
                         </div>
                     </div>
@@ -330,4 +350,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         timelineContainer.appendChild(entry);
     });
+
+    // --- Back to Top Button Functionality ---
+    const backToTopButton = document.getElementById('backToTopBtn');
+
+    if (backToTopButton) {
+        window.onscroll = function() {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                backToTopButton.style.opacity = '1';
+                backToTopButton.style.visibility = 'visible';
+            } else {
+                backToTopButton.style.opacity = '0';
+                backToTopButton.style.visibility = 'hidden';
+            }
+        }
+
+        backToTopButton.addEventListener('click', function() {
+            // The html { scroll-behavior: smooth; } in CSS will handle the smooth scroll.
+            window.scrollTo(0, 0);
+        });
+    }
 });
