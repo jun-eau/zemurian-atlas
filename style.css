@@ -32,9 +32,15 @@ body {
 }
 
 /* --- Header & Footer --- */
-header, footer { text-align: center; padding: 2rem 1rem; }
-header { border-bottom: 2px solid var(--accent-gold); }
-header h1 { margin: 0; font-family: 'Playfair Display', serif; font-size: var(--font-size-xxxxl); font-weight: 700; color: var(--accent-gold); }
+header, footer { text-align: center; padding: 0.5rem 1rem; }
+header {
+    border-bottom: 2px solid var(--accent-gold);
+    position: sticky;
+    top: 0;
+    background-color: var(--primary-bg);
+    z-index: 1000;
+}
+header h1 { margin: 0 0 0.25rem 0; font-family: 'Playfair Display', serif; font-size: var(--font-size-xxxxl); font-weight: 700; color: var(--accent-gold); }
 header h2 { margin: 0; font-size: var(--font-size-lg); color: var(--text-secondary); font-weight: 400; }
 footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-size-sm); }
 
@@ -178,8 +184,8 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 /* Arc Navigation Styling */
 .arc-navigation {
     text-align: center; /* Center the navigation links */
-    margin-top: 15px; /* Add some space above the navigation */
-    margin-bottom: 10px; /* Add some space below the navigation */
+    margin-top: 5px; /* Add some space above the navigation */
+    margin-bottom: 5px; /* Add some space below the navigation */
     padding: 0.5rem 0; /* Adjusted padding for sticky state */
     color: #cccccc; /* Light gray color for '•' separators (inherited by text nodes) */
 }
@@ -193,6 +199,7 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     margin: 0 5px; /* Add small horizontal margin around links for spacing */
     padding: 0.25rem 0.5rem; /* Add some padding for the hover background */
     border-radius: 4px; /* Rounded corners for hover background */
+    transition: color 0.3s ease-in-out;
 }
 
 .arc-navigation a:hover {
@@ -202,6 +209,8 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 }
 
 .arc-navigation a.active {
+    color: var(--accent-gold);
+}
 /* --- Back to Top Button --- */
 #backToTopBtn {
   display: none; /* Hidden by default */
