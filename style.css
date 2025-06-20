@@ -58,7 +58,7 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 .game-entry {
     display: flex;
     gap: 2rem;
-    align-items: center;
+    align-items: stretch;
 }
 
 /* --- Art Section (Left Side) - UNCROPPED --- */
@@ -84,7 +84,7 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     position: relative;
     z-index: 2;
     background-color: var(--content-overlay-bg);
-    padding: 1.2rem 2rem; /* Reduced vertical padding */
+    padding: 1.5rem 2rem; /* Reduced vertical padding */
     height: 100%;
     box-sizing: border-box;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
