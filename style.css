@@ -78,14 +78,12 @@ main {
 .game-entry {
     display: flex;
     gap: 2rem;
-    align-items: stretch;
-    flex-wrap: nowrap; /* THE DEFINITIVE FIX: Prevents wrapping on all screen sizes */
 }
 
 /* --- Art Section (Left Side) --- */
 .art-container {
     flex: 0 0 300px;
-    display: flex;
+    align-self: center;
 }
 
 .art-container a {
@@ -94,7 +92,6 @@ main {
     overflow: hidden;
     box-shadow: 0 5px 20px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 100%;
 }
 
 .art-container a:hover {
@@ -104,20 +101,17 @@ main {
 
 .game-grid-art {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     display: block;
 }
 
 /* --- Info Section (Right Side) --- */
 .info-container {
     flex-grow: 1;
-    min-width: 0; /* Allows the info container to shrink properly */
     position: relative;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 5px 20px var(--shadow-color);
-    display: flex;
 }
 
 .hero-background {
@@ -141,7 +135,7 @@ main {
     z-index: 2;
     background-color: var(--content-overlay-bg);
     padding: 2rem;
-    width: 100%;
+    height: 100%;
     box-sizing: border-box;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
 }
@@ -180,7 +174,7 @@ main {
 .release-info {
     margin-bottom: 0.8rem;
     font-size: 1.1rem;
-    line-height: 1.4;
+    line-height: 1.4; /* Added this to tighten the two lines */
 }
 
 .release-info strong {
@@ -195,37 +189,15 @@ main {
     font-size: 1rem;
 }
 
-/* --- Responsive Adjustments for ALL smaller screens --- */
+/* --- Responsive Adjustments --- */
 @media (max-width: 900px) {
-    main {
-        padding: 1rem;
-    }
     .game-entry {
-        gap: 1rem;
+        flex-direction: column;
+        gap: 1.5rem;
     }
     .art-container {
-        flex: 0 0 40%;
-    }
-    .info-content {
-        padding: 1rem;
-    }
-    .game-logo {
-        max-height: 100px;
-    }
-    .japanese-title {
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
-    }
-    .kanji-title {
-        font-size: 1rem;
-    }
-    .romaji-title {
-        font-size: 0.9rem;
-    }
-    .release-info, .platforms {
-        font-size: 0.9rem;
-    }
-    .release-info strong {
-        min-width: 85px;
+        flex-basis: auto;
+        max-width: 300px;
+        align-self: center;
     }
 }
