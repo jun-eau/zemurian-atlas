@@ -141,32 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 timelineContainer.appendChild(entry);
             });
-
-            // IntersectionObserver for highlighting active arc in navigation
-            const arcHeaders = document.querySelectorAll('.arc-header');
-            const navLinks = document.querySelectorAll('.arc-navigation a');
-
-            const observerOptions = {
-                rootMargin: "-50px 0px -50% 0px", // Adjust based on header height and desired trigger point
-                threshold: 0.1 // At least 10% of the header is visible
-            };
-
-            const observerCallback = (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const intersectingHeaderId = entry.target.id;
-                        navLinks.forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href') === `#${intersectingHeaderId}`) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
-                });
-            };
-
-            const observer = new IntersectionObserver(observerCallback, observerOptions);
-            arcHeaders.forEach(header => observer.observe(header));
         })
         .catch(error => {
             console.error('CRITICAL ERROR fetching or processing game data:', error);

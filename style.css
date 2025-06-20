@@ -182,10 +182,6 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     margin-bottom: 10px; /* Add some space below the navigation */
     padding: 0.5rem 0; /* Adjusted padding for sticky state */
     color: #cccccc; /* Light gray color for '•' separators (inherited by text nodes) */
-    position: sticky;
-    top: 0;
-    background-color: var(--primary-bg);
-    z-index: 1000;
 }
 
 .arc-navigation a {
@@ -206,10 +202,6 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 }
 
 .arc-navigation a.active {
-    color: var(--accent-gold);
-    font-weight: bold;
-}
-
 /* --- Back to Top Button --- */
 #backToTopBtn {
   display: none; /* Hidden by default */
