@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         },
         {
-            arc: "Reverie",
+            arc: "Epilogue Arc",
             englishTitle: "Trails into Reverie",
             japaneseTitleKanji: "英雄伝説 創の軌跡",
             japaneseTitleRomaji: "Hajimari no Kiseki",
