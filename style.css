@@ -97,7 +97,7 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     box-shadow: 0 5px 20px var(--shadow-color);
     transition: box-shadow 0.3s ease-out;
 }
-.hero-background { position: absolute; inset: 0; background-size: cover; background-position: center center; filter: blur(4px) brightness(0.95); transform: scale(1.1); transition: transform 0.4s ease-out, filter 0.4s ease-out; z-index: 1; }
+.hero-background { position: absolute; inset: 0; background-size: cover; background-position: center center; filter: blur(4px) brightness(0.95); transform: scale(1.1); transition: transform 0.4s ease-out, filter 0.4s ease-out; z-index: 1; border-radius: 8px; }
 .game-entry:hover .hero-background { transform: scale(1.05); filter: blur(2px) brightness(1.1); }
 
 .game-entry:hover .art-container,
@@ -382,6 +382,7 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
     height: 48px; /* Define fixed height */
     border-radius: 50%; /* Makes it circular */
     font-size: var(--font-size-xl); /* Adjust arrow size, e.g., 1.75rem */
+    line-height: 48px; /* Explicitly set line-height for centering */
     box-shadow: 0 2px 8px rgba(0,0,0,0.4); /* Slightly more pronounced shadow */
     transition: background-color 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }
@@ -392,7 +393,7 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 
 /* --- External Link Indicator Styling --- */
 .external-links a::after {
-    content: ' \2197'; /* Adds a space then the North East Arrow */
+    content: none; /* Adds a space then the North East Arrow */
     font-size: var(--font-size-sm); /* Use small font size for the icon */
     color: var(--text-secondary); /* Use secondary text color for subtlety */
     margin-left: 5px; /* Space between the link image and the icon */
