@@ -238,14 +238,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
+    const uniqueArcs = [...new Set(games.map(game => game.arc))];
+
     const timelineContainer = document.getElementById('game-timeline-container');
     let lastArc = null;
+
+    // Create and add Arc navigation
+    const headerElement = document.querySelector('header');
+    if (headerElement) {
+        const arcNav = document.createElement('nav');
+        arcNav.className = 'arc-navigation';
+
+        uniqueArcs.forEach(arc => {
+            const link = document.createElement('a');
+            link.textContent = arc;
+            link.href = '#' + arc.toLowerCase().replace(/\s+/g, '-') + '-header';
+            arcNav.appendChild(link);
+
+            if (uniqueArcs.indexOf(arc) < uniqueArcs.length - 1) {
+                const separator = document.createTextNode(' • ');
+                arcNav.appendChild(separator);
+            }
+        });
+        headerElement.appendChild(arcNav);
+    }
 
     games.forEach((game) => {
         if (game.arc !== lastArc) {
             const arcHeader = document.createElement('h2');
             arcHeader.className = 'arc-header';
             arcHeader.textContent = game.arc;
+            arcHeader.id = game.arc.toLowerCase().replace(/\s+/g, '-') + '-header';
             timelineContainer.appendChild(arcHeader);
             lastArc = game.arc;
         }
