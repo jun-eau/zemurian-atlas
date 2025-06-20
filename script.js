@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- Arc Navigation Active State Highlighting ---
             const navLinks = document.querySelectorAll('.arc-navigation a');
             const arcHeaders = document.querySelectorAll('.arc-header');
-            const headerHeightThreshold = 150; // Adjust as needed, roughly header height + a bit
+            const headerHeightThreshold = 300; // Adjust as needed, roughly header height + a bit
 
             function updateActiveLink() {
                 let currentActiveArcId = null;
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         break; // Found the topmost visible arc header
                     }
                 }
-
+                
                 // If no header is above threshold (e.g. scrolled to very top, before first arc header)
                 // default to the first arc, or handle as preferred.
                 // For now, if nothing is "active" based on threshold, the first link will be made active if scrolled to top.
