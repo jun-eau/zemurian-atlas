@@ -78,13 +78,14 @@ main {
 .game-entry {
     display: flex;
     gap: 2rem;
-    align-items: stretch; /* This is the key to equal heights */
+    /* The default align-items is 'stretch', which is what we want to equalize heights */
 }
 
 /* --- Art Section (Left Side) --- */
 .art-container {
     flex: 0 0 300px;
-    display: flex;
+    /* REMOVED align-self: center to allow stretching */
+    display: flex; /* Make this a flex container to control its child */
 }
 
 .art-container a {
@@ -93,7 +94,7 @@ main {
     overflow: hidden;
     box-shadow: 0 5px 20px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 100%;
+    width: 100%; /* Ensure link takes full width of container */
 }
 
 .art-container a:hover {
@@ -103,8 +104,9 @@ main {
 
 .game-grid-art {
     width: 100%;
+    /* ADDED height and object-fit to fill the stretched container without distortion */
     height: 100%;
-    object-fit: cover; /* Fills the container without distortion */
+    object-fit: cover;
     display: block;
 }
 
@@ -115,7 +117,7 @@ main {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 5px 20px var(--shadow-color);
-    display: flex;
+    display: flex; /* This ensures its children can fill its height */
 }
 
 .hero-background {
@@ -139,7 +141,7 @@ main {
     z-index: 2;
     background-color: var(--content-overlay-bg);
     padding: 2rem;
-    width: 100%;
+    width: 100%; /* Make sure content fills the container */
     box-sizing: border-box;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
 }
@@ -193,35 +195,35 @@ main {
     font-size: 1rem;
 }
 
-/* --- Responsive Adjustments for ALL smaller screens --- */
+/* --- Responsive Adjustments --- */
+
+/* For tablets and larger phones */
 @media (max-width: 900px) {
-    .game-entry {
-        gap: 1rem; /* Tighter gap */
-    }
     .art-container {
-        /* Adjust flex-basis to change the ratio on smaller screens */
-        flex: 0 0 40%;
+        /* Make the art container flexible instead of fixed width */
+        flex: 1 1 40%;
+    }
+    .info-container {
+        flex: 1 1 60%;
+    }
+    .game-entry {
+        gap: 1.5rem; /* Reduce gap on smaller screens */
     }
     .info-content {
-        padding: 1rem; /* Tighter padding */
+        padding: 1.5rem; /* Reduce padding */
     }
-    .game-logo {
-        max-height: 100px; /* Smaller logo */
+}
+
+/* For narrow phones, we revert to stacking as side-by-side is too cramped */
+@media (max-width: 600px) {
+    .game-entry {
+        flex-direction: column;
+        gap: 1.5rem;
     }
-    .japanese-title {
-        font-size: 1rem; /* Smaller JP title base size */
-        margin-bottom: 1.5rem;
-    }
-    .kanji-title {
-        font-size: 1rem;
-    }
-    .romaji-title {
-        font-size: 0.9rem;
-    }
-    .release-info, .platforms {
-        font-size: 0.9rem; /* Smaller info text */
-    }
-    .release-info strong {
-        min-width: 85px; /* Adjust label width */
+    .art-container {
+        /* Reset flex basis when stacked */
+        flex-basis: auto;
+        max-width: 300px;
+        align-self: center;
     }
 }
