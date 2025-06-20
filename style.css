@@ -78,7 +78,8 @@ main {
 .game-entry {
     display: flex;
     gap: 2rem;
-    align-items: stretch; /* This is the key to equal heights */
+    align-items: stretch;
+    flex-wrap: nowrap; /* THE DEFINITIVE FIX: Prevents wrapping on all screen sizes */
 }
 
 /* --- Art Section (Left Side) --- */
@@ -104,13 +105,14 @@ main {
 .game-grid-art {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Fills the container without distortion */
+    object-fit: cover;
     display: block;
 }
 
 /* --- Info Section (Right Side) --- */
 .info-container {
     flex-grow: 1;
+    min-width: 0; /* Allows the info container to shrink properly */
     position: relative;
     border-radius: 8px;
     overflow: hidden;
@@ -195,21 +197,23 @@ main {
 
 /* --- Responsive Adjustments for ALL smaller screens --- */
 @media (max-width: 900px) {
+    main {
+        padding: 1rem;
+    }
     .game-entry {
-        gap: 1rem; /* Tighter gap */
+        gap: 1rem;
     }
     .art-container {
-        /* Adjust flex-basis to change the ratio on smaller screens */
         flex: 0 0 40%;
     }
     .info-content {
-        padding: 1rem; /* Tighter padding */
+        padding: 1rem;
     }
     .game-logo {
-        max-height: 100px; /* Smaller logo */
+        max-height: 100px;
     }
     .japanese-title {
-        font-size: 1rem; /* Smaller JP title base size */
+        font-size: 1rem;
         margin-bottom: 1.5rem;
     }
     .kanji-title {
@@ -219,9 +223,9 @@ main {
         font-size: 0.9rem;
     }
     .release-info, .platforms {
-        font-size: 0.9rem; /* Smaller info text */
+        font-size: 0.9rem;
     }
     .release-info strong {
-        min-width: 85px; /* Adjust label width */
+        min-width: 85px;
     }
 }
