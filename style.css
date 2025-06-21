@@ -286,6 +286,8 @@ main {
         overflow: hidden;
         margin-bottom: 1.5rem; /* Spacing between cards */
         border: 1px solid rgba(233, 213, 161, 0.2); /* Subtle gold border */
+        width: 100%; /* Ensure card takes full available width */
+        box-sizing: border-box; /* Include padding and border in the element's total width and height */
     }
 
     /* 1. Unified Mobile Header */
