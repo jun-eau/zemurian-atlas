@@ -1,20 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetch('games.json')
         .then(response => {
-            console.log("Fetched games.json, attempting to parse response...");
             if (!response.ok) {
-                console.error("Fetch response was not ok:", response.status, response.statusText);
                 return response.text().then(text => { throw new Error("Server error: " + response.status + " " + response.statusText + " - " + text); });
             }
             return response.json();
         })
         .then(games => {
-            console.log("Successfully parsed game data. Number of games:", games.length);
-            if (games.length > 0) {
-                console.log("First game entry sample:", games[0]);
-            }
             const timelineContainer = document.getElementById('game-timeline-container');
-            console.log("Timeline container element:", timelineContainer);
             if (!timelineContainer) {
                 console.error("CRITICAL: timelineContainer is null or undefined!");
                 return; // Exit if container not found
@@ -279,7 +272,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
                 // Desktop transform:
-                contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
+                // contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
+                // Call the unified update function instead
+                if (sliderDisplayAreaElement.updateSliderUIVisuals) {
+                    sliderDisplayAreaElement.updateSliderUIVisuals();
+                } else {
+                    // Fallback for safety, though updateSliderUIVisuals should always be attached
+                    contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
+                }
 
                 const prevButton = sliderDisplayAreaElement.querySelector('.slider-arrow-prev');
                 const nextButton = sliderDisplayAreaElement.querySelector('.slider-arrow-next');
@@ -303,37 +303,52 @@ document.addEventListener('DOMContentLoaded', () => {
                 const lightbox = document.getElementById('heroLightbox');
                 const lightboxImage = document.getElementById('lightboxImage');
                 const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
+                const mainContentElements = document.querySelectorAll('header, main, footer'); // Elements to hide from screen readers
 
                 if (!lightbox || !lightboxImage || !lightboxCloseBtn) {
-                    console.warn("Lightbox elements not found.");
+                    // No console.warn here, as it's a non-critical issue.
                     return;
                 }
 
+                let focusedElementBeforeLightbox;
+
                 document.querySelectorAll('.mobile-hero-banner').forEach(banner => {
-                    const openLightboxOnClick = () => {
+                    const openLightbox = () => {
+                        focusedElementBeforeLightbox = document.activeElement; // Store focus
+
                         const heroSrc = banner.dataset.heroSrc;
                         const gameTitle = banner.dataset.gameTitle || "Hero Image";
                         if (heroSrc) {
                             lightboxImage.src = heroSrc;
                             lightboxImage.alt = `${gameTitle} Fullscreen Hero Art`;
                             lightbox.classList.add('visible');
+                            lightbox.setAttribute('aria-modal', 'true');
                             document.body.style.overflow = 'hidden';
+
+                            mainContentElements.forEach(el => el.setAttribute('aria-hidden', 'true'));
+                            lightboxCloseBtn.focus(); // Focus the close button
                         }
                     };
-                    banner.addEventListener('click', openLightboxOnClick);
+                    banner.addEventListener('click', openLightbox);
                     banner.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
-                            openLightboxOnClick();
+                            openLightbox();
                         }
                     });
                 });
 
                 const closeLightbox = () => {
                     lightbox.classList.remove('visible');
+                    lightbox.removeAttribute('aria-modal');
                     document.body.style.overflow = '';
                     lightboxImage.src = "";
                     lightboxImage.alt = "Hero Image Fullscreen";
+
+                    mainContentElements.forEach(el => el.removeAttribute('aria-hidden'));
+                    if (focusedElementBeforeLightbox) {
+                        focusedElementBeforeLightbox.focus(); // Restore focus
+                    }
                 };
 
                 lightboxCloseBtn.addEventListener('click', closeLightbox);
@@ -406,10 +421,26 @@ document.addEventListener('DOMContentLoaded', () => {
                             dots[currentIndex].classList.add('active');
                         }
                         sliderDisplayArea.setAttribute('data-current-index', currentIndex.toString());
+
+                        // Accessibility: Set aria-hidden on non-visible slides
+                        items.forEach((item, idx) => {
+                            if (idx === currentIndex) {
+                                item.removeAttribute('aria-hidden');
+                                item.querySelectorAll('a, button, input, [tabindex="0"]').forEach(el => el.removeAttribute('tabindex'));
+                            } else {
+                                item.setAttribute('aria-hidden', 'true');
+                                // Prevent tabbing to interactive elements in hidden slides
+                                item.querySelectorAll('a, button, input, [tabindex="0"]').forEach(el => el.setAttribute('tabindex', '-1'));
+                            }
+                        });
                     }
+                    // Attach the function to the element for access by navigateSlider
+                    sliderDisplayArea.updateSliderUIVisuals = updateSliderUIVisuals;
+
 
                     function goToSlide(index) {
                         currentIndex = Math.max(0, Math.min(index, totalItems - 1));
+                        // updateSliderUIVisuals also updates data-current-index, so no need to set it here explicitly
                         updateSliderUIVisuals();
                     }
 
@@ -463,8 +494,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const linkHrefId = link.getAttribute('href').substring(1);
                     if (linkHrefId === currentActiveArcId) {
                         link.classList.add('active');
+                        link.setAttribute('aria-current', 'location');
                     } else {
                         link.classList.remove('active');
+                        link.removeAttribute('aria-current');
                     }
                 });
             }
