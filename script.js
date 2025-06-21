@@ -679,23 +679,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!prevBtn || !nextBtn) continue;
 
-                if (i === currentIndex) { // This is the active card
-                    if (itemsCount <= 1) { // Should not happen due to earlier check, but for safety
-                        prevBtn.style.display = 'none';
-                        nextBtn.style.display = 'none';
-                    } else if (currentIndex === 0) { // First slide
-                        prevBtn.style.display = 'none';
-                        nextBtn.style.display = 'flex';
-                    } else if (currentIndex === itemsCount - 1) { // Last slide
-                        prevBtn.style.display = 'flex';
-                        nextBtn.style.display = 'none';
-                    } else { // Slides in between
-                        prevBtn.style.display = 'flex';
-                        nextBtn.style.display = 'flex';
-                    }
-                } else { // This is an inactive card
+                // Visibility depends only on the card's position in the sequence (i)
+                // and the total number of items (itemsCount).
+                // Not on whether i === currentIndex.
+
+                if (itemsCount <= 1) { // Should not be strictly necessary here if initial check in setupSliderControls works
                     prevBtn.style.display = 'none';
                     nextBtn.style.display = 'none';
+                } else {
+                    prevBtn.style.display = (i > 0) ? 'flex' : 'none';
+                    nextBtn.style.display = (i < itemsCount - 1) ? 'flex' : 'none';
                 }
             }
         }
