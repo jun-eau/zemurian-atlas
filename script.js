@@ -146,10 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
 
 
-        // --mobile-hero-url will be set inline on this div for dynamic background updates
         return `
             <div class="game-entry-mobile-card mobile-only card-content-visible" ${variantsAttr} ${mainGameAttr} data-asset-name="${game.assetName}">
-                <div class="mobile-unified-header" style="--mobile-hero-url: url('hero/${game.assetName}.jpg');">
+                <div class="mobile-hero-banner" data-hero-src="${heroImageUrl}">
+                    <img src="${heroImageUrl}" alt="${game.englishTitle} Hero Image">
+                </div>
+                <div class="mobile-main-info">
                     <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="mobile-logo">
                     <p class="japanese-title">
                         <span class="kanji-title">${game.japaneseTitleKanji}</span>
@@ -465,26 +467,30 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {Object} gameData - The game data object for the new variant.
      */
     function updateMobileCardContent(cardElement, gameData) {
-        // Update unified header's background image (via CSS variable)
-        const unifiedHeader = cardElement.querySelector('.mobile-unified-header');
-        if (unifiedHeader) {
-            unifiedHeader.style.setProperty('--mobile-hero-url', `url('hero/${gameData.assetName}.jpg')`);
+        // Update hero banner
+        const heroBanner = cardElement.querySelector('.mobile-hero-banner');
+        const heroImg = heroBanner ? heroBanner.querySelector('img') : null;
+        if (heroBanner && heroImg) {
+            const newHeroSrc = `hero/${gameData.assetName}.jpg`;
+            heroBanner.dataset.heroSrc = newHeroSrc;
+            heroImg.src = newHeroSrc;
+            heroImg.alt = `${gameData.englishTitle} Hero Image`;
         }
 
-        // Update logo within the unified header
-        const logoImg = cardElement.querySelector('.mobile-unified-header .mobile-logo');
+        // Update logo
+        const logoImg = cardElement.querySelector('.mobile-main-info .mobile-logo');
         if (logoImg) {
             logoImg.src = `logo/${gameData.assetName}.png`;
             logoImg.alt = `${gameData.englishTitle} Logo`;
         }
 
-        // Update titles within the unified header
-        const kanjiTitleEl = cardElement.querySelector('.mobile-unified-header .kanji-title');
+        // Update titles
+        const kanjiTitleEl = cardElement.querySelector('.mobile-main-info .kanji-title');
         if (kanjiTitleEl) kanjiTitleEl.textContent = gameData.japaneseTitleKanji;
-        const romajiTitleEl = cardElement.querySelector('.mobile-unified-header .romaji-title');
+        const romajiTitleEl = cardElement.querySelector('.mobile-main-info .romaji-title');
         if (romajiTitleEl) romajiTitleEl.textContent = gameData.japaneseTitleRomaji;
 
-        // Update release details (no change in structure, just ensuring selectors are still valid)
+        // Update release details
         const releaseAccordionContent = cardElement.querySelector('.mobile-release-accordion .accordion-content');
         if (releaseAccordionContent) {
             const jpReleaseList = releaseAccordionContent.querySelector('.release-region:nth-child(1) .release-list');
