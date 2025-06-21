@@ -438,6 +438,11 @@ main {
         background-color: rgba(0,0,0,0.1); /* Match main info bg */
         border-top: 1px solid rgba(233, 213, 161, 0.1);
     }
+    .mobile-external-links a { /* Ensure 'a' tags also help center their images */
+        display: inline-flex; /* Changed from block to allow flex alignment */
+        align-items: center;
+        justify-content: center;
+    }
     .mobile-external-links a img {
         width: 32px; /* Icon size */
         height: 32px;
