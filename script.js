@@ -74,10 +74,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Mobile HTML Generation ---
-    function createSingleMobileCardHTML(game) { // Generates HTML for one card, no variant logic here
+    function createMobileCardHTML(game, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
         const heroImageUrl = `hero/${game.assetName}.jpg`;
+        let pagerDotsHTML = '';
+
+        // Pager dots are only added to the main game card that has variants
+        if (!isVariant && game.variants && game.variants.length > 0) {
+            pagerDotsHTML += '<span class="dot active"></span>'; // First dot for the main game
+            game.variants.forEach(() => pagerDotsHTML += '<span class="dot"></span>');
+        }
+
+        // Store all variants data on the main game's mobile card for swipe updates.
+        // Also store the main game's asset name for context if needed.
+        const variantsAttr = (allVariantsData && !isVariant)
+            ? `data-variants='${JSON.stringify(allVariantsData)}' data-current-variant-index="0"`
+            : '';
+        const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
+
+
         return `
-            <div class="game-entry-mobile-card" data-asset-name="${game.assetName}">
+            <div class="game-entry-mobile-card mobile-only" ${variantsAttr} ${mainGameAttr} data-asset-name="${game.assetName}">
                 <div class="mobile-hero-banner" data-hero-src="${heroImageUrl}">
                     <img src="${heroImageUrl}" alt="${game.englishTitle} Hero Image">
                 </div>
@@ -115,46 +131,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="logo/fandom.png" alt="Fandom Logo">
                     </a>
                 </div>
+                ${pagerDotsHTML ? `<div class="mobile-pager-dots">${pagerDotsHTML}</div>` : ''}
             </div>`;
     }
 
-    function createMobileGameHTML(game) {
-        let mobileHTML = '';
-        if (game.variants && game.variants.length > 0) {
-            const allGameVersions = [game, ...game.variants];
-            let cardsHTML = '';
-            allGameVersions.forEach(version => {
-                cardsHTML += createSingleMobileCardHTML(version);
-            });
-
-            let pagerDotsHTML = '<span class="dot active"></span>'; // First dot for the main game
-            game.variants.forEach(() => pagerDotsHTML += '<span class="dot"></span>');
-
-            // Store all variants data on the viewport for swipe logic
-            const variantsData = JSON.stringify(allGameVersions.map(g => ({ assetName: g.assetName /* add other needed fields if updateMobileCardContent is removed */ })));
-
-            mobileHTML = `
-                <div class="mobile-slider-container mobile-only" data-variants='${variantsData}' data-current-variant-index="0">
-                    <div class="mobile-slider-viewport">
-                        <div class="mobile-slider-strip">
-                            ${cardsHTML}
-                        </div>
-                    </div>
-                    <div class="mobile-pager-dots">${pagerDotsHTML}</div>
-                </div>`;
-        } else {
-            // For games without variants, wrap the single card in mobile-only div
-            mobileHTML = `<div class="mobile-only">${createSingleMobileCardHTML(game)}</div>`;
-        }
-        return mobileHTML;
+    // Combined function for a single game object (main or variant)
+    function createFullGameRenderHTML(gameData, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
+        // For variants, allVariantsData would be the full list [mainGame, variant1, variant2...]
+        // and mainGameAssetName would be the assetName of the original game.
+        return `
+            ${createGameEntryDesktopHTML(gameData)}
+            ${createMobileCardHTML(gameData, isVariant, allVariantsData, mainGameAssetName)}
+        `;
     }
-
-
-    // Combined function for a single game object (main or variant) for DESKTOP
-    function createFullGameRenderHTMLDesktop(gameData) {
-        return createGameEntryDesktopHTML(gameData);
-    }
-
 
     // --- Lightbox Setup ---
     function setupLightbox() {
@@ -275,12 +264,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     lastArc = game.arc;
                 }
 
-                const gameEntryElement = document.createElement('div'); // This will be the main container for each game entry
+                let gameWrapperElement;
 
                 if (game.variants && game.variants.length > 0) {
-                    // Desktop Slider Setup
                     const sliderDisplayArea = document.createElement('div');
-                    sliderDisplayArea.className = 'slider-display-area desktop-only'; // Becomes desktop-only
+                    sliderDisplayArea.className = 'slider-display-area';
                     sliderDisplayArea.setAttribute('data-current-index', '0');
 
                     const gameEntrySlider = document.createElement('div');
@@ -289,23 +277,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     const sliderContentStrip = document.createElement('div');
                     sliderContentStrip.className = 'slider-content-strip';
 
-                    // Original game item for desktop
+                    // Original game item
                     const originalGameItem = document.createElement('div');
                     originalGameItem.className = 'slider-item';
-                    const originalGameEntryDesktop = document.createElement('div');
-                    originalGameEntryDesktop.className = 'game-entry'; // game-entry class for desktop structure
-                    originalGameEntryDesktop.innerHTML = createFullGameRenderHTMLDesktop(game);
-                    originalGameItem.appendChild(originalGameEntryDesktop);
+                    const originalGameEntry = document.createElement('div');
+                    originalGameEntry.className = 'game-entry';
+                    // For the main game in a slider, pass its full variant data for the mobile card
+                    const allVariantDataForMobile = [game, ...game.variants];
+                    originalGameEntry.innerHTML = createFullGameRenderHTML(game, false, allVariantDataForMobile);
+                    originalGameItem.appendChild(originalGameEntry);
                     sliderContentStrip.appendChild(originalGameItem);
 
-                    // Variant game items for desktop
+                    // Variant game items
                     game.variants.forEach(variant => {
                         const variantGameItem = document.createElement('div');
                         variantGameItem.className = 'slider-item';
-                        const variantGameEntryDesktop = document.createElement('div');
-                        variantGameEntryDesktop.className = 'game-entry'; // game-entry class for desktop structure
-                        variantGameEntryDesktop.innerHTML = createFullGameRenderHTMLDesktop(variant);
-                        variantGameItem.appendChild(variantGameEntryDesktop);
+                        const variantGameEntry = document.createElement('div');
+                        variantGameEntry.className = 'game-entry';
+                        // For variants in a slider, their mobile card is generated as a variant,
+                        // but it doesn't need to host the full variant data itself or pager dots.
+                        variantGameEntry.innerHTML = createFullGameRenderHTML(variant, true, null, game.assetName);
+                        variantGameItem.appendChild(variantGameEntry);
                         sliderContentStrip.appendChild(variantGameItem);
                     });
 
@@ -324,26 +316,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     nextButton.onclick = () => navigateSlider(sliderDisplayArea, 1);
                     sliderDisplayArea.appendChild(nextButton);
 
-                    gameEntryElement.appendChild(sliderDisplayArea); // Append desktop slider to gameEntryElement
-
-                    // Mobile Slider Setup
-                    gameEntryElement.insertAdjacentHTML('beforeend', createMobileGameHTML(game));
-
+                    gameWrapperElement = sliderDisplayArea;
                 } else {
-                    // Standard entry for games without variants (both desktop and mobile)
-                    // Desktop part
-                    const standardDesktopEntry = document.createElement('div');
-                    standardDesktopEntry.className = 'game-entry desktop-only'; // Becomes desktop-only
-                    standardDesktopEntry.innerHTML = createFullGameRenderHTMLDesktop(game);
-                    gameEntryElement.appendChild(standardDesktopEntry);
-
-                    // Mobile part
-                    gameEntryElement.insertAdjacentHTML('beforeend', createMobileGameHTML(game));
+                    const standardEntry = document.createElement('div');
+                    standardEntry.className = 'game-entry';
+                    standardEntry.innerHTML = createFullGameRenderHTML(game); // No variants, so no allVariantData needed for mobile here
+                    gameWrapperElement = standardEntry;
                 }
-                timelineContainer.appendChild(gameEntryElement);
+                timelineContainer.appendChild(gameWrapperElement);
             });
 
-            // Initialize desktop slider arrow states
+            // Initialize slider arrow states
             document.querySelectorAll('.slider-display-area').forEach(sliderArea => {
                 navigateSlider(sliderArea, 0); // Initial call to set button states
             });
@@ -391,92 +374,138 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     // --- Mobile Variant Swipe Functionality ---
+    function updateMobileCardContent(cardElement, gameData) {
+        // Update hero banner
+        const heroBanner = cardElement.querySelector('.mobile-hero-banner');
+        const heroImg = heroBanner ? heroBanner.querySelector('img') : null;
+        if (heroBanner && heroImg) {
+            const newHeroSrc = `hero/${gameData.assetName}.jpg`;
+            heroBanner.dataset.heroSrc = newHeroSrc;
+            heroImg.src = newHeroSrc;
+            heroImg.alt = `${gameData.englishTitle} Hero Image`;
+        }
+
+        // Update logo
+        const logoImg = cardElement.querySelector('.mobile-main-info .mobile-logo');
+        if (logoImg) {
+            logoImg.src = `logo/${gameData.assetName}.png`;
+            logoImg.alt = `${gameData.englishTitle} Logo`;
+        }
+
+        // Update titles
+        const kanjiTitleEl = cardElement.querySelector('.mobile-main-info .kanji-title');
+        if (kanjiTitleEl) kanjiTitleEl.textContent = gameData.japaneseTitleKanji;
+        const romajiTitleEl = cardElement.querySelector('.mobile-main-info .romaji-title');
+        if (romajiTitleEl) romajiTitleEl.textContent = gameData.japaneseTitleRomaji;
+
+        // Update release details
+        const releaseAccordionContent = cardElement.querySelector('.mobile-release-accordion .accordion-content');
+        if (releaseAccordionContent) {
+            const jpReleaseList = releaseAccordionContent.querySelector('.release-region:nth-child(1) .release-list');
+            if (jpReleaseList) jpReleaseList.innerHTML = createReleaseString(gameData.releasesJP);
+
+            const enReleaseList = releaseAccordionContent.querySelector('.release-region:nth-child(2) .release-list');
+            if (enReleaseList) enReleaseList.innerHTML = createReleaseString(gameData.releasesEN);
+        }
+
+        // Update external links
+        const externalLinksContainer = cardElement.querySelector('.mobile-external-links');
+        if (externalLinksContainer) {
+            const steamLink = externalLinksContainer.querySelector('a[title*="Steam"]');
+            if (steamLink) steamLink.href = gameData.steamUrl;
+            const wikiLink = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
+            if (wikiLink) wikiLink.href = gameData.wikiUrl;
+            const fandomLink = externalLinksContainer.querySelector('a[title*="Fandom"]');
+            if (fandomLink) fandomLink.href = gameData.fandomUrl;
+        }
+
+        // Update the card's own asset name for consistency if needed, though not strictly used by display after this.
+        cardElement.dataset.assetName = gameData.assetName;
+    }
+
     function setupMobileVariantSwipes() {
-        document.querySelectorAll('.mobile-slider-container[data-variants]').forEach(sliderContainer => {
-            const strip = sliderContainer.querySelector('.mobile-slider-strip');
-            const variantsJson = sliderContainer.dataset.variants;
-            if (!strip || !variantsJson) return;
-
-            const variants = JSON.parse(variantsJson);
-            const totalVariants = variants.length;
-
+        document.querySelectorAll('.game-entry-mobile-card[data-variants]').forEach(card => {
             let touchStartX = 0;
-            let touchLastX = 0; // To track the last X position during touchmove for touchend delta
-            let currentStripTranslateX = 0; // Stores the strip's X position when touch starts
-            let currentVariantIndex = 0;
-            // let stripWidth = 0; // Total width of the strip - can be calculated if needed
-            let cardWidth = 0; // Width of a single card, assuming all are same
-
+            let touchEndX = 0;
             let isSwiping = false;
-            const swipeThreshold = 50; // Minimum pixels to be considered a swipe to change card
+            const swipeThreshold = 50; // Minimum pixels to be considered a swipe
 
-            sliderContainer.addEventListener('touchstart', (event) => {
-                if (event.touches.length !== 1 || totalVariants <= 1) return;
-                isSwiping = true;
-                touchStartX = event.touches[0].clientX;
-
-                currentVariantIndex = parseInt(sliderContainer.dataset.currentVariantIndex, 10);
-                cardWidth = strip.children[0] ? strip.children[0].offsetWidth : sliderContainer.offsetWidth; // Fallback to container width
-
-                // Calculate the strip's current translateX based on the active card index
-                // This assumes cards are 100% width of the viewport. No gaps for now.
-                currentStripTranslateX = -currentVariantIndex * cardWidth;
-
-                strip.style.transition = 'none'; // Remove transition for direct dragging
-                touchLastX = touchStartX; // Initialize touchLastX
+            card.addEventListener('touchstart', (event) => {
+                // Only react to single touch
+                if (event.touches.length === 1) {
+                    touchStartX = event.touches[0].clientX;
+                    isSwiping = true; // Assume swipe might start
+                }
             }, { passive: true });
 
-            sliderContainer.addEventListener('touchmove', (event) => {
-                if (!isSwiping || event.touches.length !== 1) return;
+            card.addEventListener('touchmove', (event) => {
+                if (event.touches.length === 1 && isSwiping) {
+                    touchEndX = event.touches[0].clientX;
+                    // Optional: Add visual feedback during swipe if desired (e.g., slight card movement)
+                    // To prevent vertical scroll while swiping horizontally:
+                    // Check if horizontal movement is more significant than vertical
+                    // For simplicity, we'll handle this at touchend. If more complex behavior is needed,
+                    // event.preventDefault() could be used here conditionally.
+                }
+            }, { passive: true }); // passive:true if not preventing scroll, false if you might.
 
-                const touchCurrentX = event.touches[0].clientX;
-                const deltaX = touchCurrentX - touchStartX; // Delta from the very start of the touch
-                let newTranslateX = currentStripTranslateX + deltaX;
+            card.addEventListener('touchend', () => {
+                if (!isSwiping || touchEndX === 0) { // Ensure touchmove happened
+                    isSwiping = false;
+                    touchEndX = 0; // Reset for next potential swipe
+                    return;
+                }
 
-                touchLastX = touchCurrentX; // Update touchLastX for touchend calculation
+                const deltaX = touchEndX - touchStartX;
+                let direction = 0;
 
-                // Optional: Boundary checks (e.g., rubber banding) could be added here.
-                // For now, allow free dragging during touchmove.
-                strip.style.transform = `translateX(${newTranslateX}px)`;
-            }, { passive: true });
-
-            sliderContainer.addEventListener('touchend', () => {
-                if (!isSwiping) return;
-                isSwiping = false;
-
-                const dragDistance = touchLastX - touchStartX; // Total distance dragged
-                let targetVariantIndex = currentVariantIndex;
-
-                if (Math.abs(dragDistance) > swipeThreshold) {
-                    if (dragDistance < 0) { // Swiped left (towards next item)
-                        targetVariantIndex = Math.min(totalVariants - 1, currentVariantIndex + 1);
-                    } else { // Swiped right (towards previous item)
-                        targetVariantIndex = Math.max(0, currentVariantIndex - 1);
+                if (Math.abs(deltaX) > swipeThreshold) {
+                    if (deltaX < 0) { // Swipe Left (next)
+                        direction = 1;
+                    } else { // Swipe Right (previous)
+                        direction = -1;
                     }
                 }
-                // If swipeThreshold is not met, targetVariantIndex remains currentVariantIndex, so it snaps back.
 
-                const finalTranslateX = -targetVariantIndex * cardWidth;
+                if (direction !== 0) {
+                    const variantsJson = card.dataset.variants;
+                    const currentVariantIndexStr = card.dataset.currentVariantIndex;
 
-                strip.style.transition = 'transform 0.3s ease-out';
-                strip.style.transform = `translateX(${finalTranslateX}px)`;
+                    if (variantsJson && currentVariantIndexStr) {
+                        try {
+                            const variants = JSON.parse(variantsJson);
+                            let currentVariantIndex = parseInt(currentVariantIndexStr, 10);
+                            const totalVariants = variants.length;
 
-                sliderContainer.dataset.currentVariantIndex = targetVariantIndex.toString();
+                            currentVariantIndex += direction;
 
-                // Pager dot update is now handled by the transitionend event listener below
-            });
+                            // Clamp index
+                            if (currentVariantIndex < 0) currentVariantIndex = 0;
+                            if (currentVariantIndex >= totalVariants) currentVariantIndex = totalVariants - 1;
 
-            strip.addEventListener('transitionend', (event) => {
-                if (event.propertyName !== 'transform') return; // Only react to transform transitions
+                            if (currentVariantIndex !== parseInt(currentVariantIndexStr, 10)) {
+                                // Update card content
+                                updateMobileCardContent(card, variants[currentVariantIndex]);
+                                card.dataset.currentVariantIndex = currentVariantIndex.toString();
 
-                const updatedVariantIndex = parseInt(sliderContainer.dataset.currentVariantIndex, 10);
-                const pagerDotsContainer = sliderContainer.querySelector('.mobile-pager-dots');
-                if (pagerDotsContainer) {
-                    const dots = pagerDotsContainer.querySelectorAll('.dot');
-                    dots.forEach((dot, idx) => {
-                        dot.classList.toggle('active', idx === updatedVariantIndex);
-                    });
+                                // Update pager dots
+                                const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
+                                if (pagerDotsContainer) {
+                                    const dots = pagerDotsContainer.querySelectorAll('.dot');
+                                    dots.forEach((dot, idx) => {
+                                        dot.classList.toggle('active', idx === currentVariantIndex);
+                                    });
+                                }
+                            }
+                        } catch (e) {
+                            console.error("Error processing variants for swipe:", e);
+                        }
+                    }
                 }
+                // Reset for next swipe
+                isSwiping = false;
+                touchStartX = 0;
+                touchEndX = 0;
             });
         });
     }

@@ -475,46 +475,30 @@ main {
     }
 
     /* Slider specific adjustments for mobile if any are needed */
-    .mobile-slider-container {
-        /* This is the overall container for a mobile slider, holding viewport and dots */
-        /* It's already mobile-only. No specific width/height, determined by content. */
-        /* It has margin-bottom from .game-entry-mobile-card if that's applied to its children.
-           Let's ensure the container itself provides the bottom margin for consistency. */
-        margin-bottom: 1.5rem;
+    /* The desktop slider arrows (.slider-arrow) should be hidden as they are part of .desktop-only */
+    .slider-display-area {
+        /* On mobile, the slider-display-area itself might not need special styles if its
+           .game-entry child (which contains the mobile card) is what's being swiped.
+           If the whole slider-display-area becomes the swipe target, then styles might go here.
+           For now, assuming swipe happens on .game-entry-mobile-card. */
+    }
+    .game-entry-slider {
+        /* This is the overflow:hidden container for desktop.
+           On mobile, if we are not using this for swipe, its role might change or it might be hidden.
+           For now, assuming it's hidden via its parent .desktop-only elements or direct children.
+           If .slider-item > .game-entry > .game-entry-mobile-card is the structure,
+           then .game-entry-slider itself would be part of the .desktop-only structure.
+        */
     }
 
-    .mobile-slider-viewport {
-        overflow: hidden;
-        width: 100%; /* Takes full width of its parent column */
-        position: relative; /* If needed for any absolute positioning inside, though not currently */
+    /* Ensure that .game-entry that contains .game-entry-mobile-card doesn't add extra padding/margin on mobile */
+    .game-entry {
+        padding: 0; /* Reset any padding if it was for desktop layout */
+        margin: 0;  /* Reset any margin if it was for desktop layout */
+        /* background: transparent; /* Ensure it doesn't have its own background conflicting with card */
+        /* display: block; /* Reset flex if it was specific to desktop two-column */
+        /* The JS structure is .game-entry > .game-entry-mobile-card and .game-entry > .desktop-stuff */
+        /* So .game-entry itself doesn't need much styling for mobile, it's just a container. */
     }
 
-    .mobile-slider-strip {
-        display: flex;
-        /* width is implicitly set by the sum of its children's widths */
-        /* transition: transform 0.3s ease-out; /* This is now applied by JS when needed */
-    }
-
-    /* Adjust .game-entry-mobile-card when it's inside a slider strip */
-    .mobile-slider-strip .game-entry-mobile-card {
-        flex: 0 0 100%; /* Each card takes 100% of viewport width */
-        box-sizing: border-box;
-        /* Remove margin-bottom from individual cards if they are in a strip,
-           as .mobile-slider-container now handles the bottom margin. */
-        margin-bottom: 0;
-    }
-
-    /* The desktop slider arrows (.slider-arrow) should be hidden as they are part of .desktop-only elements */
-    /* .slider-display-area is already desktop-only via JS adding the class or its parent structure */
-    /* .game-entry-slider is also part of desktop-only structure */
-
-
-    /* Ensure that .game-entry that contains .game-entry-mobile-card (when not in slider)
-       or .mobile-slider-container doesn't add extra padding/margin on mobile */
-    .game-entry { /* This is the overall wrapper for a game's desktop and mobile views */
-        padding: 0;
-        margin: 0;
-        /* It doesn't need display:block as its children (.desktop-only, .mobile-only) control their own display.
-           If it was flex for desktop, that's fine, as mobile children will just stack if they are block. */
-    }
 }
