@@ -17,90 +17,131 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Timeline container element:", timelineContainer);
             if (!timelineContainer) {
                 console.error("CRITICAL: timelineContainer is null or undefined!");
+                return; // Exit if container not found
             }
+
+            // Create and append Lightbox structure to the body once
+            const lightboxHTML = `
+                <div class="lightbox-overlay" id="heroLightbox">
+                    <div class="lightbox-content">
+                        <img src="" alt="Hero Image Fullscreen" id="lightboxImage">
+                    </div>
+                    <button class="lightbox-close" id="lightboxCloseBtn" aria-label="Close lightbox">&times;</button>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', lightboxHTML);
+
             let lastArc = null;
 
-            // Helper function to generate the hierarchical release string (moved outside the loop and refactored for readability)
+            // Helper function to generate the hierarchical release string
             const createReleaseString = (releases) => {
-                if (!releases || releases.length === 0) {
-                    return '';
-                }
-
+                if (!releases || releases.length === 0) return '';
                 const [firstRelease, ...remainingReleases] = releases;
-
                 const primaryReleaseHtml = `<span class="release-primary">${firstRelease.date} ${firstRelease.platforms}</span>`;
-
                 const secondaryReleasesHtml = remainingReleases.map(release =>
                     `<span class="release-secondary">, ${release.date} ${release.platforms}</span>`
                 ).join('');
-
                 return `${primaryReleaseHtml}${secondaryReleasesHtml}`;
             };
 
             // --- Helper functions for creating HTML structure ---
+            function createMobileHeroBannerHTML(game) {
+                return `
+                    <div class="mobile-hero-banner" data-hero-src="hero/${game.assetName}.jpg" data-game-title="${game.englishTitle}" role="button" tabindex="0" aria-label="View ${game.englishTitle} hero image fullscreen">
+                        <img src="hero/${game.assetName}.jpg" alt="${game.englishTitle} Hero Banner" class="mobile-hero-image">
+                    </div>
+                `;
+            }
+
             function createArtContainerHTML(game) {
                 return `
-            <div class="art-container">
-                <img src="grid/${game.assetName}.jpg" alt="${game.englishTitle} Grid Art" class="game-grid-art">
-            </div>
-        `;
+                    <div class="art-container">
+                        <img src="grid/${game.assetName}.jpg" alt="${game.englishTitle} Grid Art" class="game-grid-art">
+                    </div>
+                `;
             }
 
             function createMainInfoHTML(game) {
-                return `
-            <div class="main-info">
-                <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="game-logo">
-                <p class="japanese-title">
-                    <span class="kanji-title">${game.japaneseTitleKanji}</span>
-                    <span class="romaji-title">${game.japaneseTitleRomaji}</span>
-                </p>
-                <div class="release-details">
+                const jpReleasesHTML = createReleaseString(game.releasesJP);
+                const enReleasesHTML = createReleaseString(game.releasesEN);
+
+                const releaseDetailsContentHTML = `
                     <div class="release-region">
                         <h4 class="release-header">Japanese Release</h4>
-                        <div class="release-list">${createReleaseString(game.releasesJP)}</div>
+                        <div class="release-list">${jpReleasesHTML}</div>
                     </div>
                     <div class="release-region">
                         <h4 class="release-header">English Release</h4>
-                        <div class="release-list">${createReleaseString(game.releasesEN)}</div>
+                        <div class="release-list">${enReleasesHTML}</div>
                     </div>
-                </div>
-            </div>
-        `;
+                `;
+
+                return `
+                    <div class="main-info"> {/* Retained for potential desktop style scope */}
+                        <div class="main-info-mobile-group">
+                            <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="game-logo">
+                            <p class="japanese-title">
+                                <span class="kanji-title">${game.japaneseTitleKanji}</span>
+                                <span class="romaji-title">${game.japaneseTitleRomaji}</span>
+                            </p>
+                        </div>
+
+                        {/* Mobile Accordion */}
+                        <div class="mobile-release-accordion">
+                            <button class="mobile-release-toggle" aria-expanded="false" aria-controls="release-content-${game.assetName}">
+                                Release Details <span class="mobile-chevron">▼</span>
+                            </button>
+                            <div class="mobile-release-content" id="release-content-${game.assetName}">
+                                <div class="release-details">
+                                    ${releaseDetailsContentHTML}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Desktop Original Release Details */}
+                        <div class="release-details-desktop">
+                             <div class="release-details">
+                                ${releaseDetailsContentHTML}
+                             </div>
+                        </div>
+                    </div>
+                `;
             }
 
             function createExternalLinksHTML(game) {
                 return `
-            <div class="external-links">
-                <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
-                    <img src="logo/steam.png" alt="Steam Logo">
-                </a>
-                <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
-                    <img src="logo/wikipedia.png" alt="Wikipedia Logo">
-                </a>
-                <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
-                    <img src="logo/fandom.png" alt="Fandom Logo">
-                </a>
-            </div>
-        `;
+                    <div class="external-links">
+                        <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
+                            <img src="logo/steam.png" alt="Steam Logo">
+                        </a>
+                        <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
+                            <img src="logo/wikipedia.png" alt="Wikipedia Logo">
+                        </a>
+                        <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
+                            <img src="logo/fandom.png" alt="Fandom Logo">
+                        </a>
+                    </div>
+                `;
             }
 
             function createInfoContainerHTML(game) {
                 return `
-            <div class="info-container">
-                <div class="hero-background" style="background-image: url('hero/${game.assetName}.jpg');"></div>
-                <div class="info-content">
-                    ${createMainInfoHTML(game)}
-                    ${createExternalLinksHTML(game)}
-                </div>
-            </div>
-        `;
+                    <div class="info-container">
+                        <div class="hero-background" style="background-image: url('hero/${game.assetName}.jpg');"></div>
+                        <div class="info-content">
+                            ${createMainInfoHTML(game)}
+                            ${createExternalLinksHTML(game)}
+                        </div>
+                    </div>
+                `;
             }
 
             function createGameEntryHTML(game) {
                 return `
-            ${createArtContainerHTML(game)}
-            ${createInfoContainerHTML(game)}
-        `;
+                    ${createMobileHeroBannerHTML(game)}
+                    ${createArtContainerHTML(game)}
+                    ${createInfoContainerHTML(game)}
+                `;
             }
 
             // Create and add Arc navigation
@@ -161,18 +202,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     // New outer wrapper for slider and arrows
                     const sliderDisplayArea = document.createElement('div');
                     sliderDisplayArea.className = 'slider-display-area';
-                    sliderDisplayArea.setAttribute('data-current-index', '0'); // Keep index here for navigateSlider
+                    sliderDisplayArea.setAttribute('data-current-index', '0');
 
-                    // Inner container for the sliding content, this will have overflow:hidden
                     const gameEntrySlider = document.createElement('div');
                     gameEntrySlider.className = 'game-entry-slider';
-                    // data-current-index might be more logical on sliderDisplayArea if arrows are direct children of it.
-                    // Let's assume navigateSlider will be passed sliderDisplayArea.
 
                     const sliderContentStrip = document.createElement('div');
                     sliderContentStrip.className = 'slider-content-strip';
 
-                    // Create and add the original game entry
+                    // Original game
                     const originalGameItem = document.createElement('div');
                     originalGameItem.className = 'slider-item';
                     const originalGameEntry = document.createElement('div');
@@ -181,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     originalGameItem.appendChild(originalGameEntry);
                     sliderContentStrip.appendChild(originalGameItem);
 
-                    // Create and add variant game entries
+                    // Variants
                     game.variants.forEach(variant => {
                         const variantGameItem = document.createElement('div');
                         variantGameItem.className = 'slider-item';
@@ -192,28 +230,34 @@ document.addEventListener('DOMContentLoaded', () => {
                         sliderContentStrip.appendChild(variantGameItem);
                     });
 
-                    gameEntrySlider.appendChild(sliderContentStrip); // Add strip to the overflow-hidden container
-                    sliderDisplayArea.appendChild(gameEntrySlider); // Add overflow-hidden container to the display area
+                    gameEntrySlider.appendChild(sliderContentStrip);
+                    sliderDisplayArea.appendChild(gameEntrySlider);
 
-                    // Add Navigation Arrows to sliderDisplayArea (so they are not clipped)
                     const prevButton = document.createElement('button');
                     prevButton.className = 'slider-arrow slider-arrow-prev';
                     prevButton.innerHTML = '&#10094;';
                     prevButton.setAttribute('aria-label', 'Previous version');
-                    prevButton.onclick = () => navigateSlider(sliderDisplayArea, -1); // Pass sliderDisplayArea
+                    prevButton.onclick = () => navigateSlider(sliderDisplayArea, -1);
                     sliderDisplayArea.appendChild(prevButton);
 
                     const nextButton = document.createElement('button');
                     nextButton.className = 'slider-arrow slider-arrow-next';
                     nextButton.innerHTML = '&#10095;';
                     nextButton.setAttribute('aria-label', 'Next version');
-                    nextButton.onclick = () => navigateSlider(sliderDisplayArea, 1); // Pass sliderDisplayArea
+                    nextButton.onclick = () => navigateSlider(sliderDisplayArea, 1);
                     sliderDisplayArea.appendChild(nextButton);
 
-                    gameWrapperElement = sliderDisplayArea;
+                    const sliderWithPagerWrapper = document.createElement('div');
+                    sliderWithPagerWrapper.className = 'slider-plus-pager-wrapper';
+                    sliderWithPagerWrapper.appendChild(sliderDisplayArea);
+
+                    const pagerContainer = document.createElement('div');
+                    pagerContainer.className = 'mobile-variant-pager';
+                    sliderWithPagerWrapper.appendChild(pagerContainer);
+
+                    gameWrapperElement = sliderWithPagerWrapper;
 
                 } else {
-                    // Non-slider game entries
                     const standardEntry = document.createElement('div');
                     standardEntry.className = 'game-entry';
                     standardEntry.innerHTML = createGameEntryHTML(game);
@@ -224,22 +268,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             function navigateSlider(sliderDisplayAreaElement, direction) {
-                // sliderDisplayAreaElement is the new '.slider-display-area'
-                // The content strip is inside '.game-entry-slider' which is inside 'sliderDisplayAreaElement'
                 const contentStrip = sliderDisplayAreaElement.querySelector('.game-entry-slider .slider-content-strip');
                 if (!contentStrip) return;
 
                 const itemsCount = contentStrip.children.length;
                 let currentIndex = parseInt(sliderDisplayAreaElement.getAttribute('data-current-index'), 10);
-
                 currentIndex += direction;
-
                 if (currentIndex < 0) currentIndex = 0;
                 if (currentIndex >= itemsCount) currentIndex = itemsCount - 1;
 
                 sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
-                // Adjust translateX to account for the gap.
-                // Each item is 100% width, plus a 2rem gap.
+                // Desktop transform:
                 contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
 
                 const prevButton = sliderDisplayAreaElement.querySelector('.slider-arrow-prev');
@@ -248,8 +287,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (nextButton) nextButton.disabled = currentIndex === itemsCount - 1;
             }
 
-            // Initialize slider arrow states after all game entries are added
-            // Query for the new outer wrapper '.slider-display-area'
             document.querySelectorAll('.slider-display-area').forEach(sliderArea => {
                 const initialIndex = parseInt(sliderArea.getAttribute('data-current-index'), 10) || 0;
                 const contentStrip = sliderArea.querySelector('.game-entry-slider .slider-content-strip');
@@ -262,38 +299,167 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // --- Arc Navigation Active State Highlighting ---
+            function initializeLightbox() {
+                const lightbox = document.getElementById('heroLightbox');
+                const lightboxImage = document.getElementById('lightboxImage');
+                const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
+
+                if (!lightbox || !lightboxImage || !lightboxCloseBtn) {
+                    console.warn("Lightbox elements not found.");
+                    return;
+                }
+
+                document.querySelectorAll('.mobile-hero-banner').forEach(banner => {
+                    const openLightboxOnClick = () => {
+                        const heroSrc = banner.dataset.heroSrc;
+                        const gameTitle = banner.dataset.gameTitle || "Hero Image";
+                        if (heroSrc) {
+                            lightboxImage.src = heroSrc;
+                            lightboxImage.alt = `${gameTitle} Fullscreen Hero Art`;
+                            lightbox.classList.add('visible');
+                            document.body.style.overflow = 'hidden';
+                        }
+                    };
+                    banner.addEventListener('click', openLightboxOnClick);
+                    banner.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            openLightboxOnClick();
+                        }
+                    });
+                });
+
+                const closeLightbox = () => {
+                    lightbox.classList.remove('visible');
+                    document.body.style.overflow = '';
+                    lightboxImage.src = "";
+                    lightboxImage.alt = "Hero Image Fullscreen";
+                };
+
+                lightboxCloseBtn.addEventListener('click', closeLightbox);
+                lightbox.addEventListener('click', (e) => {
+                    if (e.target === lightbox) closeLightbox();
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && lightbox.classList.contains('visible')) closeLightbox();
+                });
+            }
+
+            function initializeAccordions() {
+                document.querySelectorAll('.mobile-release-accordion').forEach(accordion => {
+                    const toggleButton = accordion.querySelector('.mobile-release-toggle');
+                    const content = accordion.querySelector('.mobile-release-content');
+                    if (!toggleButton || !content) return;
+                    toggleButton.addEventListener('click', () => {
+                        const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+                        toggleButton.setAttribute('aria-expanded', !isExpanded);
+                        toggleButton.classList.toggle('expanded');
+                        content.classList.toggle('expanded');
+                    });
+                });
+            }
+
+            function initializeMobileSliders() {
+                document.querySelectorAll('.slider-plus-pager-wrapper').forEach(wrapper => {
+                    const sliderDisplayArea = wrapper.querySelector('.slider-display-area');
+                    const contentStrip = sliderDisplayArea.querySelector('.slider-content-strip');
+                    const pagerContainer = wrapper.querySelector('.mobile-variant-pager');
+
+                    if (!contentStrip || !pagerContainer) return;
+
+                    const items = contentStrip.querySelectorAll('.slider-item');
+                    const totalItems = items.length;
+
+                    if (totalItems <= 1) {
+                        pagerContainer.style.display = 'none';
+                        return;
+                    }
+
+                    let currentIndex = 0;
+                    let touchstartX = 0;
+                    let touchendX = 0;
+
+                    pagerContainer.innerHTML = ''; // Clear any existing dots
+                    for (let i = 0; i < totalItems; i++) {
+                        const dot = document.createElement('span');
+                        dot.classList.add('dot');
+                        if (i === 0) dot.classList.add('active');
+                        dot.dataset.index = i;
+                        dot.setAttribute('role', 'button');
+                        dot.setAttribute('tabindex', '0');
+                        dot.setAttribute('aria-label', `Go to variant ${i + 1} of ${totalItems}`);
+                        dot.addEventListener('click', () => goToSlide(i));
+                        dot.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToSlide(i); }});
+                        pagerContainer.appendChild(dot);
+                    }
+                    const dots = pagerContainer.querySelectorAll('.dot');
+
+                    function updateSliderUIVisuals() { // Renamed to avoid conflict if another updateSliderUI exists
+                        if (window.innerWidth <= 900) {
+                             contentStrip.style.transform = `translateX(-${currentIndex * 100}%)`;
+                        } else {
+                            // Ensure desktop transform is correct if somehow called
+                             contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
+                        }
+                        dots.forEach(dot => dot.classList.remove('active'));
+                        if (dots[currentIndex]) {
+                            dots[currentIndex].classList.add('active');
+                        }
+                        sliderDisplayArea.setAttribute('data-current-index', currentIndex.toString());
+                    }
+
+                    function goToSlide(index) {
+                        currentIndex = Math.max(0, Math.min(index, totalItems - 1));
+                        updateSliderUIVisuals();
+                    }
+
+                    contentStrip.addEventListener('touchstart', (event) => {
+                        if (window.innerWidth > 900) return;
+                        touchstartX = event.changedTouches[0].screenX;
+                    }, { passive: true });
+
+                    contentStrip.addEventListener('touchend', (event) => {
+                        if (window.innerWidth > 900) return;
+                        touchendX = event.changedTouches[0].screenX;
+                        handleSwipeGesture(); // Renamed
+                    });
+
+                    function handleSwipeGesture() { // Renamed
+                        const swipeThreshold = 50;
+                        if (touchendX < touchstartX - swipeThreshold) {
+                            goToSlide(currentIndex + 1);
+                        } else if (touchendX > touchstartX + swipeThreshold) {
+                            goToSlide(currentIndex - 1);
+                        }
+                    }
+
+                    updateSliderUIVisuals();
+
+                    window.addEventListener('resize', () => {
+                        // Always update UI based on current index and new screen size
+                        updateSliderUIVisuals();
+                    });
+                });
+            }
+
             const navLinks = document.querySelectorAll('.arc-navigation a');
             const arcHeaders = document.querySelectorAll('.arc-header');
-            const headerHeightThreshold = 300; // Adjust as needed, roughly header height + a bit
+            const headerHeightThreshold = 300;
 
             function updateActiveLink() {
                 let currentActiveArcId = null;
-
-                // First pass: find which arc is currently "active"
-                // Iterate backwards to find the *last* header that is above the threshold
                 for (let i = arcHeaders.length - 1; i >= 0; i--) {
                     const header = arcHeaders[i];
                     const rect = header.getBoundingClientRect();
                     if (rect.top <= headerHeightThreshold) {
                         currentActiveArcId = header.id;
-                        break; // Found the topmost visible arc header
+                        break;
                     }
                 }
-                
-                // If no header is above threshold (e.g. scrolled to very top, before first arc header)
-                // default to the first arc, or handle as preferred.
-                // For now, if nothing is "active" based on threshold, the first link will be made active if scrolled to top.
-                // Or, if scrolled way down past the last header, the last one remains active.
                 if (!currentActiveArcId && arcHeaders.length > 0 && window.scrollY < arcHeaders[0].offsetTop) {
-                     // If scrolled to the very top, before the first section, make the first link active.
                     currentActiveArcId = arcHeaders[0].id;
                 }
-
-
                 navLinks.forEach(link => {
-                    // The link's href is like "#arc-name-header"
-                    // The header's id is "arc-name-header"
                     const linkHrefId = link.getAttribute('href').substring(1);
                     if (linkHrefId === currentActiveArcId) {
                         link.classList.add('active');
@@ -305,46 +471,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (navLinks.length > 0 && arcHeaders.length > 0) {
                 window.addEventListener('scroll', updateActiveLink);
-                updateActiveLink(); // Initial call to set active link on page load
+                updateActiveLink();
             }
+
+            initializeLightbox();
+            initializeAccordions();
+            initializeMobileSliders();
+
         })
         .catch(error => {
             console.error('CRITICAL ERROR fetching or processing game data:', error);
-            // Optionally, display a user-friendly message on the page
-            // const body = document.querySelector('body');
-            // if (body) {
-            //     body.innerHTML = '<h1>Error loading game data</h1><p>Sorry, the game data could not be loaded. Please try again later.</p><p>Error details: ' + error.message + '</p>';
-            // }
         });
 
-    // Back to Top Button Functionality
     const backToTopButton = document.getElementById("backToTopBtn");
-
-    if (backToTopButton && typeof backToTopButton.addEventListener === 'function') {
-        if (typeof window !== 'undefined' && window.onscroll !== undefined) {
-            window.onscroll = function() {
-                scrollFunction();
-            };
-        }
-
+    if (backToTopButton) {
+        window.onscroll = function() { scrollFunction(); };
         function scrollFunction() {
-            const currentScrollTop = (typeof document !== 'undefined' && document.body && typeof document.body.scrollTop === 'number' ? document.body.scrollTop : 0) ||
-                                   (typeof document !== 'undefined' && document.documentElement && typeof document.documentElement.scrollTop === 'number' ? document.documentElement.scrollTop : 0);
-
-            if (backToTopButton.style) {
-                if (currentScrollTop > 100) {
-                    backToTopButton.style.display = "block";
-                } else {
-                    backToTopButton.style.display = "none";
-                }
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
             }
         }
-
         backToTopButton.addEventListener("click", function() {
-            if(typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            }
+            window.scrollTo({top: 0, behavior: 'smooth'});
         });
     }
-
 });
