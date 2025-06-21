@@ -317,9 +317,9 @@ main {
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start; /* Align content to the top */
         align-items: center;
-        padding: 1rem; /* Add some padding */
+        padding: 0.5rem 1rem 1rem 1rem; /* Reduced top padding, kept others */
         text-align: center; /* Fallback for text alignment */
     }
 
@@ -334,7 +334,7 @@ main {
     .mobile-unified-header-content .japanese-title {
         margin-top: 0;
         margin-bottom: 0.5rem; /* Consistent with old .mobile-main-info .japanese-title */
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.7); /* Enhance readability */
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.9); /* Enhance readability */
         line-height: var(--line-height-tight);
     }
 
