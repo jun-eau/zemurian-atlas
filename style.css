@@ -266,3 +266,263 @@ main {
        Its width will be constrained by .slider-item's 100% width. */
     margin-bottom: 0; /* Remove bottom margin if game-entry usually has one, to prevent double spacing if slider itself has margin */
 }
+
+/* --- Initial Hiding of Mobile/Desktop Specific Elements --- */
+/* Mobile elements are hidden by default, shown in media query */
+.mobile-only {
+    display: none;
+}
+/* Desktop elements are shown by default, hidden in media query - .desktop-only class added via JS */
+
+
+/* --- Mobile Layout Styles (max-width: 900px) --- */
+@media (max-width: 900px) {
+    main {
+        min-width: 0; /* Override desktop min-width */
+        padding: 1rem 0.5rem; /* Reduce padding for smaller screens */
+    }
+
+    header h1 { font-size: var(--font-size-xxxl); } /* Slightly smaller header */
+
+    .desktop-only {
+        display: none !important; /* Hide desktop-specific sections */
+    }
+
+    .mobile-only {
+        display: block; /* Show mobile-specific sections */
+    }
+
+    /* If .game-entry itself is used as a flex container for desktop,
+       we might need to reset its display for mobile if mobile cards are direct children.
+       However, the JS creates .game-entry which contains .desktop-only and .mobile-only children.
+       So, .game-entry can retain its display:flex from desktop, it won't harm if children control visibility.
+       If game-entry has specific padding/margin for desktop two-column, that might need adjustment.
+       For now, assuming .game-entry is mostly a wrapper.
+    */
+
+    #game-timeline-container {
+        gap: 1.5rem; /* Reduce gap between cards */
+    }
+
+    /* Game Entry Card Styling */
+    .game-entry-mobile-card {
+        display: flex;
+        flex-direction: column;
+        background-color: #2f2f3e; /* Slightly different card background */
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        margin-bottom: 1.5rem; /* Spacing between cards */
+        border: 1px solid rgba(233, 213, 161, 0.2); /* Subtle gold border */
+    }
+
+    /* 1. Cinematic Hero Banner */
+    .mobile-hero-banner {
+        width: 100%;
+        height: 160px; /* Adjust height as needed */
+        overflow: hidden;
+        cursor: pointer;
+        position: relative; /* For potential overlay effects if needed */
+    }
+    .mobile-hero-banner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Cover ensures the image fills the banner, might crop */
+        object-position: center; /* Center the image within the banner */
+        transition: transform 0.3s ease-out;
+    }
+    .mobile-hero-banner:hover img {
+        transform: scale(1.05);
+    }
+
+    /* Lightbox Styling */
+    .mobile-lightbox-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000; /* Ensure it's on top of everything */
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    #mobile-lightbox-image {
+        max-width: 95%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 4px;
+        box-shadow: 0 0 25px rgba(233, 213, 161, 0.3);
+    }
+    .mobile-lightbox-close {
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        font-size: 2.5rem; /* Larger close button */
+        color: var(--accent-gold);
+        cursor: pointer;
+        line-height: 1;
+        transition: color 0.2s ease;
+    }
+    .mobile-lightbox-close:hover {
+        color: #fff;
+    }
+
+    /* 2. Main Info Block */
+    .mobile-main-info {
+        padding: 1rem 1rem 0.5rem 1rem; /* Reduced bottom padding */
+        text-align: center;
+        background-color: rgba(0,0,0,0.1); /* Subtle background distinction */
+    }
+    .mobile-main-info .mobile-logo { /* Specific selector for mobile logo */
+        max-width: 180px; /* Slightly larger logo */
+        height: auto;
+        max-height: 70px; /* Max height for logo */
+        margin-bottom: 0.75rem;
+        filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.5));
+    }
+    .mobile-main-info .japanese-title { /* Styles for titles within mobile view */
+        margin-top: 0;
+        margin-bottom: 0.5rem; /* Space after titles */
+    }
+    .mobile-main-info .kanji-title {
+        font-size: var(--font-size-md);
+        color: var(--accent-gold);
+    }
+    .mobile-main-info .romaji-title {
+        font-size: var(--font-size-sm);
+        opacity: 0.85;
+    }
+
+    /* 3. Collapsible "Release Details" Section */
+    .mobile-release-accordion {
+        /* border-top: 1px solid rgba(233, 213, 161, 0.15); */ /* Separator line */
+    }
+    .mobile-release-accordion .accordion-bar {
+        background: rgba(255, 255, 255, 0.03); /* Subtle background for bar */
+        padding: 0.9rem 1rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(233, 213, 161, 0.1);
+        border-bottom: 1px solid rgba(233, 213, 161, 0.1);
+        transition: background-color 0.2s ease;
+    }
+    .mobile-release-accordion .accordion-bar:hover {
+        background: rgba(255, 255, 255, 0.06);
+    }
+    .mobile-release-accordion .accordion-bar span:first-child { /* "Release Details" text */
+        font-weight: 500;
+        font-size: var(--font-size-base);
+        color: var(--text-primary);
+    }
+    .mobile-release-accordion .chevron {
+        font-size: var(--font-size-sm);
+        color: var(--accent-gold);
+        transition: transform 0.3s ease;
+    }
+    .mobile-release-accordion .chevron.expanded { /* JS will toggle this class */
+        transform: rotate(180deg);
+    }
+    .mobile-release-accordion .accordion-content {
+        padding: 1rem;
+        background-color: rgba(0,0,0,0.15); /* Slightly darker for content area */
+        border-bottom: 1px solid rgba(233, 213, 161, 0.1);
+        /* display: none; is handled by JS */
+    }
+    .mobile-release-accordion .accordion-content .release-region {
+        margin-bottom: 0.75rem;
+    }
+    .mobile-release-accordion .accordion-content .release-region:last-child {
+        margin-bottom: 0;
+    }
+    .mobile-release-accordion .accordion-content .release-header {
+        font-size: var(--font-size-sm); /* Smaller header in accordion */
+        color: var(--accent-gold);
+        margin-bottom: 0.25rem;
+    }
+    .mobile-release-accordion .accordion-content .release-list {
+        font-size: var(--font-size-xs); /* Smaller text in accordion */
+        line-height: var(--line-height-normal);
+    }
+    .mobile-release-accordion .accordion-content .release-primary {
+        font-weight: normal;
+    }
+    .mobile-release-accordion .accordion-content .release-secondary {
+        opacity: 0.8;
+    }
+
+
+    /* 4. External Links Action Bar */
+    .mobile-external-links {
+        display: flex;
+        justify-content: space-around; /* Evenly space icons */
+        align-items: center;
+        padding: 0.75rem 1rem 1rem 1rem; /* Top, LR, Bottom */
+        background-color: rgba(0,0,0,0.1); /* Match main info bg */
+        border-top: 1px solid rgba(233, 213, 161, 0.1);
+    }
+    .mobile-external-links a img {
+        width: 32px; /* Icon size */
+        height: 32px;
+        opacity: 0.7;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .mobile-external-links a:hover img {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    /* Mobile "Variants" Slider - Pager Dots */
+    .mobile-pager-dots {
+        text-align: center;
+        padding: 0.75rem 0; /* Space around dots */
+        background-color: rgba(0,0,0,0.1); /* Match main info bg */
+    }
+    .mobile-pager-dots .dot {
+        display: inline-block;
+        width: 10px;   /* Larger dots */
+        height: 10px;
+        background-color: var(--text-secondary); /* Inactive dot color */
+        border-radius: 50%;
+        margin: 0 5px; /* Spacing between dots */
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        cursor: pointer; /* If we make dots clickable later */
+    }
+    .mobile-pager-dots .dot.active {
+        background-color: var(--accent-gold); /* Active dot color */
+        transform: scale(1.2);
+    }
+
+    /* Slider specific adjustments for mobile if any are needed */
+    /* The desktop slider arrows (.slider-arrow) should be hidden as they are part of .desktop-only */
+    .slider-display-area {
+        /* On mobile, the slider-display-area itself might not need special styles if its
+           .game-entry child (which contains the mobile card) is what's being swiped.
+           If the whole slider-display-area becomes the swipe target, then styles might go here.
+           For now, assuming swipe happens on .game-entry-mobile-card. */
+    }
+    .game-entry-slider {
+        /* This is the overflow:hidden container for desktop.
+           On mobile, if we are not using this for swipe, its role might change or it might be hidden.
+           For now, assuming it's hidden via its parent .desktop-only elements or direct children.
+           If .slider-item > .game-entry > .game-entry-mobile-card is the structure,
+           then .game-entry-slider itself would be part of the .desktop-only structure.
+        */
+    }
+
+    /* Ensure that .game-entry that contains .game-entry-mobile-card doesn't add extra padding/margin on mobile */
+    .game-entry {
+        padding: 0; /* Reset any padding if it was for desktop layout */
+        margin: 0;  /* Reset any margin if it was for desktop layout */
+        /* background: transparent; /* Ensure it doesn't have its own background conflicting with card */
+        /* display: block; /* Reset flex if it was specific to desktop two-column */
+        /* The JS structure is .game-entry > .game-entry-mobile-card and .game-entry > .desktop-stuff */
+        /* So .game-entry itself doesn't need much styling for mobile, it's just a container. */
+    }
+
+}
