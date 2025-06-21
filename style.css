@@ -293,7 +293,7 @@ main {
     /* 1. Unified Mobile Header */
     .mobile-unified-header {
         position: relative;
-        height: 210px; /* Fixed height for consistency */
+        /* height: 210px; Fixed height removed to allow content to define height */
         width: 100%;
         overflow: hidden; /* Ensures content respects fixed height */
     }
@@ -317,9 +317,9 @@ main {
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start; /* Align content to the top */
+        justify-content: center; /* Reverted to center */
         align-items: center;
-        padding: 0.5rem 1rem 1rem 1rem; /* Reduced top padding, kept others */
+        padding: 1.5rem 1rem; /* Adjusted top/bottom padding for balance */
         text-align: center; /* Fallback for text alignment */
     }
 
