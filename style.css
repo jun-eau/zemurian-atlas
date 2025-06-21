@@ -280,7 +280,7 @@ main {
     .game-entry-mobile-card {
         display: flex;
         flex-direction: column;
-        background-color: #2f2f3e; /* Restored card background */
+        background-color: #2f2f3e; /* Slightly different card background */
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         overflow: hidden;
@@ -301,12 +301,10 @@ main {
         height: 100%;
         object-fit: cover; /* Cover ensures the image fills the banner, might crop */
         object-position: center; /* Center the image within the banner */
-        transition: transform 0.3s ease-out, filter 0.3s ease-out; /* Added filter to transition */
-        filter: blur(3px) brightness(0.7); /* Added blur and darken effect */
+        transition: transform 0.3s ease-out;
     }
     .mobile-hero-banner:hover img {
         transform: scale(1.05);
-        filter: blur(2px) brightness(0.8); /* Slightly reduce blur and brighten on hover */
     }
 
     /* Lightbox Styling */
@@ -356,7 +354,7 @@ main {
         height: auto;
         max-height: 70px; /* Max height for logo */
         margin-bottom: 0.75rem;
-        filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.4)); /* Updated drop shadow */
+        filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.5));
     }
     .mobile-main-info .japanese-title { /* Styles for titles within mobile view */
         margin-top: 0;
@@ -365,12 +363,10 @@ main {
     .mobile-main-info .kanji-title {
         font-size: var(--font-size-md);
         color: var(--accent-gold);
-        text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5); /* Added text shadow */
     }
     .mobile-main-info .romaji-title {
         font-size: var(--font-size-sm);
         opacity: 0.85;
-        text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5); /* Added text shadow */
     }
 
     /* 3. Collapsible "Release Details" Section */
