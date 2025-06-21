@@ -292,7 +292,7 @@ main {
 
     /* 1. Unified Mobile Header */
     .mobile-unified-header {
-        position: relative;
+        position: relative; /* Anchor for the mobile nav button */
         /* height: 210px; Fixed height removed to allow content to define height */
         width: 100%;
         overflow: hidden; /* Ensures content respects fixed height */
@@ -587,4 +587,47 @@ main {
     }
     /* Former .slider-arrow hiding rule removed as the class is no longer in use. */
     /* The new .slider-nav-button is desktop-only via JS-added class or direct styling if needed. */
+
+    /* New Mobile Slider Navigation Button */
+    .slider-nav-button-mobile {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: var(--accent-gold);
+        border: 1px solid var(--accent-gold);
+        border-radius: 50%;
+        font-size: var(--font-size-lg); /* Arrow size */
+        cursor: pointer;
+        z-index: 10; /* Above header background, below potential popups */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1; /* Ensure icon is centered vertically */
+        transition: background-color 0.3s ease, opacity 0.3s ease-out, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .slider-nav-button-mobile:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+        border-color: #fff;
+    }
+
+    .slider-nav-button-mobile:disabled { /* Though current JS doesn't disable it, good to have */
+        opacity: 0.4;
+        cursor: not-allowed;
+        background-color: rgba(0, 0, 0, 0.3);
+        border-color: var(--text-secondary);
+        color: var(--text-secondary);
+    }
+
+    /* Ensure mobile slider items are correctly displayed */
+    .slider-display-area .game-entry-slider .slider-content-strip .slider-item .mobile-only {
+        display: block; /* or flex, depending on the card's own layout needs */
+    }
+    .slider-display-area .game-entry-slider .slider-content-strip .slider-item .desktop-only {
+        display: none !important;
+    }
+
 }

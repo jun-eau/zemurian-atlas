@@ -130,19 +130,12 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function createMobileCardHTML(game, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
         const heroImageUrl = `hero/${game.assetName}.jpg`;
-        // let pagerDotsHTML = ''; // Removed: Pager dots are no longer generated
+        let mobileNavButtonHTML = '';
+        // Add mobile navigation button if this card is part of a slider (has variant data with multiple items)
+        if (allVariantsData && allVariantsData.length > 1) {
+            mobileNavButtonHTML = `<button class="slider-nav-button-mobile">&#10095;</button>`; // Right arrow for "Next"
+        }
 
-        // Pager dots are only added to the main game card that has variants
-        // if (!isVariant && game.variants && game.variants.length > 0) {
-        //     pagerDotsHTML += '<span class="dot active"></span>'; // First dot for the main game
-        //     game.variants.forEach(() => pagerDotsHTML += '<span class="dot"></span>');
-        // }
-
-        // Store all variants data on the main game's mobile card for swipe updates.
-        // Also store the main game's asset name for context if needed.
-        // const variantsAttr = (allVariantsData && !isVariant) // Removed: data-variants attribute no longer needed
-        //     ? `data-variants='${JSON.stringify(allVariantsData)}' data-current-variant-index="0"`
-        //     : '';
         const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
 
 
@@ -157,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="romaji-title">${game.japaneseTitleRomaji}</span>
                         </p>
                     </div>
+                    ${mobileNavButtonHTML}
                 </div>
                 <div class="mobile-release-accordion">
                     <div class="accordion-bar">
@@ -363,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     originalGameEntry.className = 'game-entry';
                     // For the main game in a slider, pass its full variant data for the mobile card
                     const allVariantDataForMobile = [game, ...game.variants];
-                    originalGameEntry.innerHTML = createFullGameRenderHTML(game, false, allVariantDataForMobile);
+                    originalGameEntry.innerHTML = createFullGameRenderHTML(game, false, allVariantDataForMobile, null);
                     originalGameItem.appendChild(originalGameEntry);
                     sliderContentStrip.appendChild(originalGameItem);
 
@@ -373,9 +367,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         variantGameItem.className = 'slider-item';
                         const variantGameEntry = document.createElement('div');
                         variantGameEntry.className = 'game-entry';
-                        // For variants in a slider, their mobile card is generated as a variant,
-                        // but it doesn't need to host the full variant data itself or pager dots.
-                        variantGameEntry.innerHTML = createFullGameRenderHTML(variant, true, null, game.assetName);
+                        // Pass allVariantDataForMobile so the card knows it's part of a slider context
+                        variantGameEntry.innerHTML = createFullGameRenderHTML(variant, true, allVariantDataForMobile, game.assetName);
                         variantGameItem.appendChild(variantGameEntry);
                         sliderContentStrip.appendChild(variantGameItem);
                     });
@@ -411,9 +404,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 timelineContainer.appendChild(gameWrapperElement);
             });
 
-            // Initialize slider arrow states
+            // Initialize slider controls
             document.querySelectorAll('.slider-display-area').forEach(sliderArea => {
-                navigateSlider(sliderArea, 0); // Initial call to set button states
+                setupSliderControls(sliderArea); // New setup function
             });
 
             // Setup interactive elements for mobile cards
@@ -624,46 +617,91 @@ document.addEventListener('DOMContentLoaded', () => {
     */
 
     /**
-     * Handles navigation for desktop sliders (previous/next game variant).
+     * Sets up navigation controls for a slider (both desktop and mobile).
      * @param {HTMLElement} sliderDisplayAreaElement - The .slider-display-area element.
-     * @param {number} direction - -1 for previous, 1 for next, 0 for initial setup.
      */
-    function navigateSlider(sliderDisplayAreaElement, direction) {
+    function setupSliderControls(sliderDisplayAreaElement) {
         const contentStrip = sliderDisplayAreaElement.querySelector('.game-entry-slider .slider-content-strip');
-        if (!contentStrip) return;
+        if (!contentStrip || contentStrip.children.length <= 1) {
+            // Hide all nav buttons if not a true slider (0 or 1 item)
+            const desktopNavButton = sliderDisplayAreaElement.querySelector('.slider-nav-button.desktop-only');
+            if (desktopNavButton) desktopNavButton.style.display = 'none';
+
+            const firstItemMobileCard = contentStrip.querySelector('.slider-item:first-child .game-entry-mobile-card');
+            if (firstItemMobileCard) {
+                const mobileNavButton = firstItemMobileCard.querySelector('.slider-nav-button-mobile');
+                if (mobileNavButton) mobileNavButton.style.display = 'none';
+            }
+            return;
+        }
 
         const itemsCount = contentStrip.children.length;
-        let currentIndex = parseInt(sliderDisplayAreaElement.getAttribute('data-current-index'), 10);
+        let currentIndex = parseInt(sliderDisplayAreaElement.getAttribute('data-current-index'), 10) || 0;
+        sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
 
-        // If direction is 0, it's an initial setup call, don't change currentIndex yet.
-        if (direction !== 0) {
-            currentIndex += direction;
-            currentIndex = Math.max(0, Math.min(currentIndex, itemsCount - 1));
-            sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
+
+        const desktopNavButton = sliderDisplayAreaElement.querySelector('.slider-nav-button.desktop-only');
+        const mobileNavButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .mobile-only .slider-nav-button-mobile');
+
+        function updateSlidePosition() {
+            // The 2rem gap is defined in CSS for .slider-content-strip gap
+            contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
         }
 
-        contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
-
-        const navButton = sliderDisplayAreaElement.navButton; // Get stored reference
-        if (!navButton) return;
-
-        if (itemsCount <= 1) {
-            navButton.disabled = true;
-            navButton.style.display = 'none'; // Hide if only one or no items
-        } else {
-            navButton.style.display = 'flex'; // Ensure it's visible
-            navButton.disabled = false;
-
-            if (currentIndex < itemsCount - 1) {
-                // Not at the last item, so button is "Next"
-                navButton.innerHTML = '&#10095;'; // → (Next)
-                navButton.onclick = () => navigateSlider(sliderDisplayAreaElement, 1);
+        function updateDesktopButton() {
+            if (!desktopNavButton) return;
+            if (itemsCount <= 1) {
+                desktopNavButton.disabled = true;
+                desktopNavButton.style.display = 'none';
             } else {
-                // At the last item, button is "Previous"
-                navButton.innerHTML = '&#10094;'; // ← (Previous)
-                navButton.onclick = () => navigateSlider(sliderDisplayAreaElement, -1);
+                desktopNavButton.style.display = 'flex';
+                desktopNavButton.disabled = false;
+                if (currentIndex < itemsCount - 1) {
+                    desktopNavButton.innerHTML = '&#10095;'; // → (Next)
+                } else {
+                    desktopNavButton.innerHTML = '&#10094;'; // ← (Previous)
+                }
             }
         }
+
+        function updateMobileButtonsState() { // Renamed and updated
+            mobileNavButtons.forEach(btn => {
+                if (itemsCount <= 1) {
+                    btn.style.display = 'none';
+                } else {
+                    btn.style.display = 'flex'; // Or 'inline-flex' etc. based on its styling
+                    // Icon is static 'Next' (&#10095;) as per HTML generation. No change needed here.
+                }
+            });
+        }
+
+        if (desktopNavButton) {
+            desktopNavButton.onclick = () => {
+                if (currentIndex < itemsCount - 1) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0; // Cycle back to start
+                }
+                sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
+                updateSlidePosition();
+                updateDesktopButton();
+            };
+        }
+
+        mobileNavButtons.forEach(btn => {
+            btn.onclick = () => {
+                currentIndex = (currentIndex + 1) % itemsCount; // Always go next and cycle
+                sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
+                updateSlidePosition();
+                // updateDesktopButton(); // No direct need to update desktop button from mobile click unless state is shared differently
+                updateMobileButtonsState(); // Update all mobile buttons (e.g. if they were to change icon/state)
+            };
+        });
+
+        // Initial setup
+        updateSlidePosition();
+        updateDesktopButton();
+        updateMobileButtonsState(); // Call renamed function
     }
 
 });
