@@ -145,10 +145,20 @@ document.addEventListener('DOMContentLoaded', () => {
         //     : '';
         const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
 
+        // Determine if this card is for a main game that has variants
+        const hasVariants = !isVariant && game.variants && game.variants.length > 0;
+        let mobileNavButtonHTML = '';
+        if (hasVariants) {
+            // Store all variant data (main game + variants) directly on the card element for easy access by the event handler
+            // Also initialize current-variant-index to 0 (for the main game)
+            const allData = [game, ...game.variants]; // Combine main game and its variants
+            mobileNavButtonHTML = `<button class="mobile-variant-nav-button" data-all-variants='${JSON.stringify(allData)}' data-current-variant-index="0">&#10095;</button>`;
+        }
 
         return `
             <div class="game-entry-mobile-card mobile-only card-content-visible" ${mainGameAttr} data-asset-name="${game.assetName}">
                 <div class="mobile-unified-header">
+                    ${mobileNavButtonHTML} {/* Insert the button HTML here, it will be positioned absolutely */}
                     <div class="mobile-unified-header-bg" style="background-image: url('${heroImageUrl}');"></div>
                     <div class="mobile-unified-header-content">
                         <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="mobile-logo">
@@ -449,6 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Setup swipe functionality after all cards are in the DOM
             // setupMobileVariantNavigation(); // Renamed from setupMobileVariantSwipes - REMOVED as per requirements
+            setupMobileVariantButtonNavigation(); // Add this call
         })
         .catch(error => {
             console.error('CRITICAL ERROR fetching or processing game data:', error);
@@ -458,40 +469,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-    // --- Mobile Variant Navigation Functionality (formerly Swipe) --- REMOVED as per requirements
-    /*
+    // --- Mobile Variant Navigation Functionality ---
     /**
      * Updates the content of a mobile game card with new game data.
      * Used when navigating between game variants on mobile.
      * @param {HTMLElement} cardElement - The .game-entry-mobile-card element to update.
      * @param {Object} gameData - The game data object for the new variant.
      */
-    /*
     function updateMobileCardContent(cardElement, gameData) {
-        // Update hero banner
-        const heroBanner = cardElement.querySelector('.mobile-hero-banner');
-        const heroImg = heroBanner ? heroBanner.querySelector('img') : null;
-        if (heroBanner && heroImg) {
-            const newHeroSrc = `hero/${gameData.assetName}.jpg`;
-            heroBanner.dataset.heroSrc = newHeroSrc;
-            heroImg.src = newHeroSrc;
-            heroImg.alt = `${gameData.englishTitle} Hero Image`;
+        // Update unified header background
+        const headerBg = cardElement.querySelector('.mobile-unified-header .mobile-unified-header-bg');
+        if (headerBg) {
+            headerBg.style.backgroundImage = `url('hero/${gameData.assetName}.jpg')`;
         }
 
-        // Update logo
-        const logoImg = cardElement.querySelector('.mobile-main-info .mobile-logo');
+        // Update logo in unified header
+        const logoImg = cardElement.querySelector('.mobile-unified-header-content .mobile-logo');
         if (logoImg) {
             logoImg.src = `logo/${gameData.assetName}.png`;
             logoImg.alt = `${gameData.englishTitle} Logo`;
         }
 
-        // Update titles
-        const kanjiTitleEl = cardElement.querySelector('.mobile-main-info .kanji-title');
+        // Update titles in unified header
+        const kanjiTitleEl = cardElement.querySelector('.mobile-unified-header-content .kanji-title');
         if (kanjiTitleEl) kanjiTitleEl.textContent = gameData.japaneseTitleKanji;
-        const romajiTitleEl = cardElement.querySelector('.mobile-main-info .romaji-title');
+        const romajiTitleEl = cardElement.querySelector('.mobile-unified-header-content .romaji-title');
         if (romajiTitleEl) romajiTitleEl.textContent = gameData.japaneseTitleRomaji;
 
-        // Update release details
+        // Update release details in accordion
         const releaseAccordionContent = cardElement.querySelector('.mobile-release-accordion .accordion-content');
         if (releaseAccordionContent) {
             const jpReleaseList = releaseAccordionContent.querySelector('.release-region:nth-child(1) .release-list');
@@ -504,124 +509,113 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update external links
         const externalLinksContainer = cardElement.querySelector('.mobile-external-links');
         if (externalLinksContainer) {
-            const steamLink = externalLinksContainer.querySelector('a[title*="Steam"]');
+            const steamLink = externalLinksContainer.querySelector('a[href*="store.steampowered.com"], a[title*="Steam"]');
             if (steamLink) steamLink.href = gameData.steamUrl;
 
             // Update or create/remove PlayStation link
-            let psLink = externalLinksContainer.querySelector('.playstation-link');
+            let psLink = externalLinksContainer.querySelector('a[href*="store.playstation.com"], a.playstation-link');
             if (gameData.playstationUrl) {
                 if (!psLink) {
-                    // Create and insert psLink if it doesn't exist
                     psLink = document.createElement('a');
-                    psLink.className = 'playstation-link';
                     psLink.target = '_blank';
                     psLink.rel = 'noopener noreferrer';
                     psLink.title = 'PlayStation Store Page';
+                    psLink.className = 'playstation-link'; // Added class for easier selection
                     psLink.innerHTML = '<img src="logo/playstation.png" alt="PlayStation Store Logo">';
-                    // Insert after Steam, before Wikipedia
-                    const wikiLinkForInsert = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
+                    const wikiLinkForInsert = externalLinksContainer.querySelector('a[href*="wikipedia.org"]');
                     externalLinksContainer.insertBefore(psLink, wikiLinkForInsert);
                 }
                 psLink.href = gameData.playstationUrl;
-                psLink.style.display = ''; // Ensure it's visible
+                psLink.style.display = '';
             } else if (psLink) {
-                psLink.remove(); // Remove if no URL and element exists
+                psLink.remove();
             }
 
             // Update or create/remove Nintendo link
-            let nintendoLink = externalLinksContainer.querySelector('.nintendo-link');
+            let nintendoLink = externalLinksContainer.querySelector('a[href*="nintendo.com"], a.nintendo-link');
             if (gameData.nintendoUrl) {
                 if (!nintendoLink) {
-                    // Create and insert nintendoLink if it doesn't exist
                     nintendoLink = document.createElement('a');
-                    nintendoLink.className = 'nintendo-link';
                     nintendoLink.target = '_blank';
                     nintendoLink.rel = 'noopener noreferrer';
                     nintendoLink.title = 'Nintendo eShop Page';
+                    nintendoLink.className = 'nintendo-link'; // Added class for easier selection
                     nintendoLink.innerHTML = '<img src="logo/nintendo.png" alt="Nintendo eShop Logo">';
-                    // Insert after PlayStation (if it exists) or Steam, before Wikipedia
-                    const psLinkForInsert = externalLinksContainer.querySelector('.playstation-link');
-                    const wikiLinkForInsert = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
-                    if (psLinkForInsert) {
-                        psLinkForInsert.after(nintendoLink);
-                    } else if (steamLink) {
-                        steamLink.after(nintendoLink);
-                    } else { // Fallback if somehow steam link is also missing, unlikely
+                    const currentPsLink = externalLinksContainer.querySelector('a[href*="store.playstation.com"], a.playstation-link');
+                    const wikiLinkForInsert = externalLinksContainer.querySelector('a[href*="wikipedia.org"]');
+                    if (currentPsLink) {
+                        currentPsLink.after(nintendoLink);
+                    } else {
                         externalLinksContainer.insertBefore(nintendoLink, wikiLinkForInsert);
                     }
                 }
                 nintendoLink.href = gameData.nintendoUrl;
-                nintendoLink.style.display = ''; // Ensure it's visible
+                nintendoLink.style.display = '';
             } else if (nintendoLink) {
-                nintendoLink.remove(); // Remove if no URL and element exists
+                nintendoLink.remove();
             }
 
-            const wikiLink = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
+            const wikiLink = externalLinksContainer.querySelector('a[href*="wikipedia.org"]');
             if (wikiLink) wikiLink.href = gameData.wikiUrl;
-            const fandomLink = externalLinksContainer.querySelector('a[title*="Fandom"]');
+            const fandomLink = externalLinksContainer.querySelector('a[href*="fandom.com"]');
             if (fandomLink) fandomLink.href = gameData.fandomUrl;
         }
 
-        // Update the card's own asset name for consistency if needed, though not strictly used by display after this.
+        // Update the card's own asset name for consistency
         cardElement.dataset.assetName = gameData.assetName;
     }
-    */
 
     /**
-     * Sets up click-based navigation for mobile game variants using pager dots.
-     * Attaches event listeners to pager dots to update card content and trigger animations.
+     * Sets up click-based navigation for mobile game variants using the new button.
      */
-    /*
-    function setupMobileVariantNavigation() { // Renamed from setupMobileVariantSwipes
-        document.querySelectorAll('.game-entry-mobile-card[data-variants]').forEach(card => {
-            const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
-            if (!pagerDotsContainer) return;
+    function setupMobileVariantButtonNavigation() {
+        const timelineContainer = document.getElementById('game-timeline-container');
+        if (!timelineContainer) return;
 
-            const dots = pagerDotsContainer.querySelectorAll('.dot');
-            const variantsJson = card.dataset.variants;
-            if (!variantsJson) return;
+        timelineContainer.addEventListener('click', (event) => {
+            const navButton = event.target.closest('.mobile-variant-nav-button');
+            if (!navButton) return;
+
+            const cardElement = navButton.closest('.game-entry-mobile-card');
+            if (!cardElement) return;
 
             try {
-                const variants = JSON.parse(variantsJson);
-                const animationDuration = 250; // ms, should match CSS transition duration
+                const allVariantsData = JSON.parse(navButton.dataset.allVariants);
+                let currentIndex = parseInt(navButton.dataset.currentVariantIndex, 10);
+                const totalVariants = allVariantsData.length;
 
-                dots.forEach((dot, targetIndex) => {
-                    dot.addEventListener('click', () => {
-                        let currentIndex = parseInt(card.dataset.currentVariantIndex, 10);
+                // Determine if current button is 'next' (>) or 'prev' (<)
+                // The button's content determines its current function
+                const isNextButton = navButton.innerHTML.includes('10095'); // Check for HTML entity of '>'
 
-                        if (targetIndex !== currentIndex) {
-                            const direction = targetIndex > currentIndex ? 1 : -1; // 1 for next, -1 for prev
+                if (isNextButton) {
+                    currentIndex++;
+                } else {
+                    currentIndex--;
+                }
 
-                            const swipeOutClass = direction === 1 ? 'card-swiping-out-left' : 'card-swiping-out-right';
-                            const swipeInClass = direction === 1 ? 'card-swiping-in-left' : 'card-swiping-in-right';
+                // Clamp index to be within bounds (should not happen with proper button state updates, but good for safety)
+                currentIndex = Math.max(0, Math.min(currentIndex, totalVariants - 1));
 
-                            card.classList.add(swipeOutClass);
-                            card.classList.remove('card-content-visible');
+                // Update card content
+                updateMobileCardContent(cardElement, allVariantsData[currentIndex]);
 
-                            setTimeout(() => {
-                                updateMobileCardContent(card, variants[targetIndex]);
-                                card.dataset.currentVariantIndex = targetIndex.toString();
+                // Update button's data attribute and visual state
+                navButton.dataset.currentVariantIndex = currentIndex.toString();
 
-                                // Update active state for all dots
-                                dots.forEach((d, i) => d.classList.toggle('active', i === targetIndex));
-
-                                card.classList.remove(swipeOutClass);
-                                card.classList.add(swipeInClass);
-                                void card.offsetWidth; // Force reflow
-                                card.classList.add('card-content-visible');
-                                card.classList.remove(swipeInClass);
-
-                            }, animationDuration);
-                        }
-                    });
-                });
+                if (currentIndex >= totalVariants - 1) {
+                    // Now at the last variant, button should show "previous"
+                    navButton.innerHTML = '&#10094;'; // <
+                } else {
+                    // Not at the last variant, button should show "next"
+                    navButton.innerHTML = '&#10095;'; // >
+                }
 
             } catch (e) {
-                console.error("Error setting up mobile variant navigation:", e);
+                console.error("Error handling mobile variant navigation:", e, navButton.dataset.allVariants);
             }
         });
     }
-    */
 
     /**
      * Handles navigation for desktop sliders (previous/next game variant).
