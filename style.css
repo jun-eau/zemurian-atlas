@@ -456,28 +456,60 @@ main {
     /* Mobile "Variants" Slider - Pager Dots */
     .mobile-pager-dots {
         text-align: center;
-        padding: 0.75rem 0; /* Space around dots */
-        background-color: rgba(0,0,0,0.1); /* Match main info bg */
+        padding: 0.75rem 0; /* Space around the pill */
+        /* background-color: rgba(0,0,0,0.1); Removed, pill has its own bg */
+        display: flex; /* Use flex to center the pill itself if it's inline-flex */
+        justify-content: center;
+    }
+    .mobile-pager-dots-container { /* New wrapper for the pill itself */
+        display: inline-flex; /* Makes the container only as wide as its content */
+        border-radius: 20px; /* High value for pill shape */
+        background-color: rgba(255, 255, 255, 0.05); /* Subtle background for the pill container */
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        overflow: hidden; /* Ensures children conform to border-radius */
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     .mobile-pager-dots .dot {
-        display: inline-block;
-        width: 12px;   /* Slightly larger dots */
-        height: 12px;
-        background-color: rgba(255, 255, 255, 0.2); /* Inactive dot color - more subtle */
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%; /* Keep them circular for now, but larger */
-        margin: 0 6px; /* Spacing between dots */
-        transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+        display: flex; /* To center content if we add numbers */
+        align-items: center;
+        justify-content: center;
+        width: 20px;   /* Size of the segment's clickable area ( W/H before padding ) */
+        height: 20px;
+        padding: 4px 6px; /* Padding contributes to clickable area and visual size */
+        background-color: transparent; /* Inactive segments */
+        border: none; /* Remove individual borders */
+        border-right: 1px solid rgba(255, 255, 255, 0.15); /* Separator line */
+        /* border-radius: 0; Reset individual radius, handled by container or first/last child */
+        margin: 0; /* Remove margins for connected look */
+        transition: background-color 0.2s ease; /* Only transition background */
         cursor: pointer;
+        color: var(--text-secondary); /* Default text color for numbers if added */
+        font-size: var(--font-size-xs);
     }
-    .mobile-pager-dots .dot:hover {
-        background-color: rgba(255, 255, 255, 0.3);
-        border-color: rgba(255, 255, 255, 0.5);
+    .mobile-pager-dots .dot:last-child {
+        border-right: none; /* No separator for the last item */
+    }
+    .mobile-pager-dots .dot:hover { /* Hover for inactive segments */
+        background-color: rgba(255, 255, 255, 0.1);
     }
     .mobile-pager-dots .dot.active {
-        background-color: var(--accent-gold); /* Active dot color */
-        border-color: var(--accent-gold);
-        transform: scale(1.15); /* Slightly adjusted scale */
+        background-color: var(--accent-gold);
+        color: var(--primary-bg); /* For contrast if numbers are added */
+        /* transform: none; Remove previous scaling if any */
+        /* The border-right of an active segment might need to visually merge or change
+           For now, the default separator will remain. Can be refined if needed. */
+    }
+    /* Note: The border-radius for first-child and last-child on .dot elements
+       is not strictly necessary if the parent .mobile-pager-dots-container has overflow:hidden.
+       The parent's border-radius will clip the children.
+       If visual issues arise, they can be added:
+       .mobile-pager-dots .dot:first-child { border-top-left-radius: 20px; border-bottom-left-radius: 20px; }
+       .mobile-pager-dots .dot:last-child { border-top-right-radius: 20px; border-bottom-right-radius: 20px; }
+       However, this can be tricky if the dots themselves have borders.
+       Simpler to rely on parent's overflow:hidden.
+    */
+
+    /* Slider specific adjustments for mobile if any are needed */
     }
 
     /* Slider specific adjustments for mobile if any are needed */

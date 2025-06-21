@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="logo/fandom.png" alt="Fandom Logo">
                     </a>
                 </div>
-                ${pagerDotsHTML ? `<div class="mobile-pager-dots">${pagerDotsHTML}</div>` : ''}
+                ${pagerDotsHTML ? `<div class="mobile-pager-dots"><div class="mobile-pager-dots-container">${pagerDotsHTML}</div></div>` : ''}
             </div>`;
     }
 
