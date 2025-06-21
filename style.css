@@ -59,7 +59,12 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
 }
 
 /* --- Main Timeline Layout --- */
-main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
+main {
+    padding: 2rem 1rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    min-width: 600px; /* Ensure enough space for slider arrows + content */
+}
 #game-timeline-container { display: flex; flex-direction: column; gap: 3rem; }
 .game-entry {
     display: flex;
@@ -234,4 +239,78 @@ main { padding: 2rem 1rem; max-width: 1300px; margin: 0 auto; }
 #backToTopBtn:hover {
   background-color: #d4af37; /* A slightly darker gold or adjust as needed */
   opacity: 1;
+}
+
+/* --- Game Entry Slider Styles --- */
+.slider-display-area {
+    position: relative; /* New positioning context for arrows */
+    /* This container should not have overflow:hidden if arrows are outside its visual box */
+    /* It should naturally take up the width of its content (the .game-entry-slider) */
+    /* min-width from here is removed as it's now handled by 'main' element */
+}
+
+.game-entry-slider {
+    overflow: hidden; /* Crucial for hiding other slides */
+    position: relative; /* Optional: if it needs to be a positioning context for something else inside, though not strictly necessary for current setup */
+    /* width: 100%; Ensure it takes the space of a normal game-entry.
+       This might already be handled by its container or flex properties.
+       If .game-entry has a specific width/max-width, this should match it. */
+}
+
+.slider-content-strip {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    /* Width will be dynamically handled by the number of items,
+       e.g., if 2 items, it's effectively 200% of the .game-entry-slider width.
+       Each .slider-item will be 100% of .game-entry-slider width. */
+}
+
+.slider-item {
+    flex: 0 0 100%; /* Each item takes the full width of the slider viewport */
+    box-sizing: border-box;
+    /* .game-entry styles will apply to the child div within .slider-item */
+}
+
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10; /* Above the content strip */
+    background-color: rgba(0, 0, 0, 0.5); /* Will be adjusted later for fade out */
+    color: var(--accent-gold);
+    border: none;
+    padding: 15px 20px; /* Increased padding */
+    font-size: var(--font-size-xxl); /* Increased font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease, opacity 0.3s ease-out; /* Added opacity transition */
+    border-radius: 4px;
+    opacity: 1; /* Start fully visible */
+}
+
+.slider-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.slider-arrow:disabled {
+    opacity: 0; /* Will fade to invisible */
+    cursor: not-allowed;
+    pointer-events: none; /* Make it non-interactive when invisible */
+}
+
+.slider-arrow-prev {
+    left: -80px; /* Increased offset for more space */
+}
+
+.slider-arrow-next {
+    right: -80px; /* Increased offset for more space */
+}
+
+/* Ensure that the .game-entry within a .slider-item behaves as expected.
+   The default .game-entry is a flex container. This should still work.
+   If .game-entry had a max-width, it would apply here correctly. */
+.slider-item .game-entry {
+    /* No specific overrides needed here unless there are conflicts.
+       The .game-entry styles should apply as is.
+       Its width will be constrained by .slider-item's 100% width. */
+    margin-bottom: 0; /* Remove bottom margin if game-entry usually has one, to prevent double spacing if slider itself has margin */
 }
