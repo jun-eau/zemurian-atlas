@@ -254,7 +254,7 @@ main {
         padding: 1rem 0.5rem; /* Reduce padding for smaller screens */
     }
 
-    header h1 { font-size: var(--font-size-xxxl); } /* Slightly smaller header */
+    header h1 { font-size: var(--font-size-xxl); } /* Slightly smaller header */
 
     .desktop-only {
         display: none !important; /* Hide desktop-specific sections */
@@ -465,7 +465,7 @@ main {
         justify-content: center;
     }
     .mobile-external-links a img {
-        width: 32px; /* Icon size */
+        width: auto; /* Icon size */
         height: 32px;
         opacity: 0.7;
         transition: opacity 0.2s ease, transform 0.2s ease;
