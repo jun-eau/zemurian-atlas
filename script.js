@@ -148,15 +148,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return `
             <div class="game-entry-mobile-card mobile-only card-content-visible" ${variantsAttr} ${mainGameAttr} data-asset-name="${game.assetName}">
-                <div class="mobile-hero-banner" data-hero-src="${heroImageUrl}">
-                    <img src="${heroImageUrl}" alt="${game.englishTitle} Hero Image">
-                </div>
-                <div class="mobile-main-info">
-                    <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="mobile-logo">
-                    <p class="japanese-title">
-                        <span class="kanji-title">${game.japaneseTitleKanji}</span>
-                        <span class="romaji-title">${game.japaneseTitleRomaji}</span>
-                    </p>
+                <div class="mobile-unified-header">
+                    <div class="mobile-unified-header-bg" style="background-image: url('${heroImageUrl}');"></div>
+                    <div class="mobile-unified-header-content">
+                        <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="mobile-logo">
+                        <p class="japanese-title">
+                            <span class="kanji-title">${game.japaneseTitleKanji}</span>
+                            <span class="romaji-title">${game.japaneseTitleRomaji}</span>
+                        </p>
+                    </div>
                 </div>
                 <div class="mobile-release-accordion">
                     <div class="accordion-bar">

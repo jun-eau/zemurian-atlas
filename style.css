@@ -288,26 +288,69 @@ main {
         border: 1px solid rgba(233, 213, 161, 0.2); /* Subtle gold border */
     }
 
-    /* 1. Cinematic Hero Banner */
-    .mobile-hero-banner {
+    /* 1. Unified Mobile Header */
+    .mobile-unified-header {
+        position: relative;
+        height: 210px; /* Fixed height for consistency */
         width: 100%;
-        height: 160px; /* Adjust height as needed */
-        overflow: hidden;
-        /* cursor: pointer; Removed as hero is no longer clickable for lightbox */
-        position: relative; /* For potential overlay effects if needed */
-    }
-    .mobile-hero-banner img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Cover ensures the image fills the banner, might crop */
-        object-position: center; /* Center the image within the banner */
-        transition: transform 0.3s ease-out;
-    }
-    .mobile-hero-banner:hover img {
-        transform: scale(1.05);
+        overflow: hidden; /* Ensures content respects fixed height */
     }
 
-    /* Lightbox Styling */
+    .mobile-unified-header-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: cover;
+        background-position: center;
+        filter: blur(4px) brightness(0.7); /* Darken and soften the background */
+        z-index: 1;
+        /* background-image is set inline in JS */
+    }
+
+    .mobile-unified-header-content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem; /* Add some padding */
+        text-align: center; /* Fallback for text alignment */
+    }
+
+    .mobile-unified-header-content .mobile-logo {
+        max-width: 180px; /* Consistent with old .mobile-main-info .mobile-logo */
+        max-height: 70px; /* Consistent with old .mobile-main-info .mobile-logo */
+        height: auto;
+        margin-bottom: 0.75rem; /* Consistent with old .mobile-main-info .mobile-logo */
+        filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.7)); /* Match desktop for readability */
+    }
+
+    .mobile-unified-header-content .japanese-title {
+        margin-top: 0;
+        margin-bottom: 0.5rem; /* Consistent with old .mobile-main-info .japanese-title */
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.7); /* Enhance readability */
+        line-height: var(--line-height-tight);
+    }
+
+    .mobile-unified-header-content .kanji-title {
+        font-size: var(--font-size-md); /* Consistent with old .mobile-main-info .kanji-title */
+        color: var(--accent-gold);
+        font-weight: 700;
+    }
+
+    .mobile-unified-header-content .romaji-title {
+        font-size: var(--font-size-sm); /* Consistent with old .mobile-main-info .romaji-title */
+        opacity: 0.9; /* Consistent with desktop .romaji-title */
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-weight: 700;
+    }
+
+    /* Lightbox Styling (remains for potential future use, though hero banner no longer triggers it) */
     .mobile-lightbox-overlay {
         position: fixed;
         top: 0;
@@ -343,31 +386,7 @@ main {
         color: #fff;
     }
 
-    /* 2. Main Info Block */
-    .mobile-main-info {
-        padding: 1rem 1rem 0.5rem 1rem; /* Reduced bottom padding */
-        text-align: center;
-        background-color: rgba(0,0,0,0.1); /* Subtle background distinction */
-    }
-    .mobile-main-info .mobile-logo { /* Specific selector for mobile logo */
-        max-width: 180px; /* Slightly larger logo */
-        height: auto;
-        max-height: 70px; /* Max height for logo */
-        margin-bottom: 0.75rem;
-        filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.5));
-    }
-    .mobile-main-info .japanese-title { /* Styles for titles within mobile view */
-        margin-top: 0;
-        margin-bottom: 0.5rem; /* Space after titles */
-    }
-    .mobile-main-info .kanji-title {
-        font-size: var(--font-size-md);
-        color: var(--accent-gold);
-    }
-    .mobile-main-info .romaji-title {
-        font-size: var(--font-size-sm);
-        opacity: 0.85;
-    }
+    /* 2. REMOVED Main Info Block - styles are now part of .mobile-unified-header */
 
     /* 3. Collapsible "Release Details" Section */
     .mobile-release-accordion {
