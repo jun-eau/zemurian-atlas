@@ -167,30 +167,6 @@ main {
 .arc-navigation a.active {
     color: var(--accent-gold);
 }
-/* --- Back to Top Button --- */
-#backToTopBtn {
-  display: none; /* Hidden by default */
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
-  z-index: 1001; /* Ensure it's above other elements like sticky nav */
-  border: none;
-  outline: none;
-  background-color: var(--accent-gold);
-  color: var(--primary-bg); /* Text color that contrasts with accent-gold */
-  cursor: pointer;
-  padding: 12px 15px;
-  border-radius: 4px;
-  font-size: var(--font-size-md);
-  font-weight: bold;
-  opacity: 0.8;
-  transition: background-color 0.3s, opacity 0.3s;
-}
-
-#backToTopBtn:hover {
-  background-color: #d4af37; /* A slightly darker gold or adjust as needed */
-  opacity: 1;
-}
 
 /* --- Game Entry Slider Styles --- */
 .slider-display-area {
