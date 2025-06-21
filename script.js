@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         return `
-            <div class="game-entry-mobile-card mobile-only" ${variantsAttr} ${mainGameAttr} data-asset-name="${game.assetName}">
+            <div class="game-entry-mobile-card mobile-only card-content-visible" ${variantsAttr} ${mainGameAttr} data-asset-name="${game.assetName}">
                 <div class="mobile-hero-banner" data-hero-src="${heroImageUrl}">
                     <img src="${heroImageUrl}" alt="${game.englishTitle} Hero Image">
                 </div>
@@ -484,18 +484,50 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (currentVariantIndex >= totalVariants) currentVariantIndex = totalVariants - 1;
 
                             if (currentVariantIndex !== parseInt(currentVariantIndexStr, 10)) {
-                                // Update card content
-                                updateMobileCardContent(card, variants[currentVariantIndex]);
-                                card.dataset.currentVariantIndex = currentVariantIndex.toString();
+                                const animationDuration = 250; // ms, should match CSS transition duration
 
-                                // Update pager dots
-                                const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
-                                if (pagerDotsContainer) {
-                                    const dots = pagerDotsContainer.querySelectorAll('.dot');
-                                    dots.forEach((dot, idx) => {
-                                        dot.classList.toggle('active', idx === currentVariantIndex);
-                                    });
-                                }
+                                // Determine swipe direction for animation classes
+                                const swipeOutClass = direction === 1 ? 'card-swiping-out-left' : 'card-swiping-out-right';
+                                const swipeInClass = direction === 1 ? 'card-swiping-in-left' : 'card-swiping-in-right';
+
+                                // Add class to animate out current content
+                                card.classList.add(swipeOutClass);
+                                // Remove visibility class if present, to ensure out animation starts from visible state
+                                card.classList.remove('card-content-visible');
+
+
+                                setTimeout(() => {
+                                    // Update card content after "out" animation
+                                    updateMobileCardContent(card, variants[currentVariantIndex]);
+                                    card.dataset.currentVariantIndex = currentVariantIndex.toString();
+
+                                    // Prepare for "in" animation
+                                    card.classList.remove(swipeOutClass); // Remove out-animation class
+                                    card.classList.add(swipeInClass);     // Add class for initial state of in-animation (e.g., opacity 0, translated)
+
+                                    // Force reflow to ensure "in" animation starts correctly
+                                    void card.offsetWidth;
+
+                                    // Add class to trigger "in" animation (to opacity 1, translate 0)
+                                    card.classList.add('card-content-visible');
+                                    card.classList.remove(swipeInClass); // Clean up initial state class for "in"
+
+                                    // Update pager dots
+                                    const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
+                                    if (pagerDotsContainer) {
+                                        const dots = pagerDotsContainer.querySelectorAll('.dot');
+                                        dots.forEach((dot, idx) => {
+                                            dot.classList.toggle('active', idx === currentVariantIndex);
+                                        });
+                                    }
+
+                                    // Optional: Clean up card-content-visible after animation if it interferes with subsequent swipes
+                                    // setTimeout(() => {
+                                    //    card.classList.remove('card-content-visible');
+                                    // }, animationDuration);
+                                    // For now, leaving it as subsequent swipes will toggle it.
+
+                                }, animationDuration);
                             }
                         } catch (e) {
                             console.error("Error processing variants for swipe:", e);
