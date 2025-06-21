@@ -137,55 +137,6 @@ main {
 .external-links img:hover { opacity: 1; }
 
 /* --- Responsive Adjustments --- */
-@media (max-width: 900px) {
-    .game-entry {
-        flex-direction: row;
-        align-items: flex-start; /* Or stretch, if that looks better */
-        gap: 1rem; /* Add a smaller gap for mobile view */
-    }
-    .art-container {
-        flex: 0 0 40%; /* Art takes 40% of the width, doesn't grow or shrink */
-        /* Ensure aspect ratio is maintained by the image's intrinsic size */
-    }
-    .info-container {
-        flex: 1 1 58%; /* Info takes the remaining space, can grow or shrink */
-        /* max-width to prevent it from becoming too wide if art-container is less than 40% */
-        max-width: calc(60% - 1rem); /* Adjust based on the gap */
-    }
-    .info-content {
-        padding: 1rem 0; /* Adjust padding for smaller screens (top/bottom: 1rem, left/right: 0) */
-    }
-    /* It might also be necessary to adjust text sizes or margins within .info-container for mobile */
-    .game-logo {
-        max-width: 70%; /* Allow logo to be a bit smaller on mobile */
-        max-height: 100px; /* Adjust max height for logo */
-    }
-    .japanese-title {
-        font-size: var(--font-size-md); /* Slightly smaller Japanese title */
-    }
-    .kanji-title {
-        font-size: var(--font-size-md); /* Adjust based on actual font and space */
-    }
-    .romaji-title {
-        font-size: var(--font-size-sm); /* Adjust based on actual font and space */
-    }
-    .release-header {
-        font-size: var(--font-size-base);
-    }
-    .release-primary {
-        font-size: var(--font-size-sm);
-    }
-    .release-secondary {
-        font-size: var(--font-size-xs);
-    }
-    .external-links {
-        gap: 0.75rem; /* Smaller gap for external links */
-    }
-    .external-links img {
-        height: 36px; /* Smaller icons */
-    }
-}
-
 /* Arc Navigation Styling */
 .arc-navigation {
     text-align: center; /* Center the navigation links */
