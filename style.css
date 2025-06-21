@@ -596,5 +596,7 @@ main {
         font-size: var(--font-size-xs); /* Smaller font for mobile arc nav */
         margin: 0 3px; /* Reduce margin */
     }
-    /* The .arc-separator rule was removed as text node separators are used, not spans. */
+    header .arc-navigation .arc-separator { /* If we use a span for separators */
+        margin: 0 3px;
+    }
 }
