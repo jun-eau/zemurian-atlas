@@ -130,24 +130,24 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function createMobileCardHTML(game, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
         const heroImageUrl = `hero/${game.assetName}.jpg`;
-        let pagerDotsHTML = '';
+        // let pagerDotsHTML = ''; // Removed: Pager dots are no longer generated
 
         // Pager dots are only added to the main game card that has variants
-        if (!isVariant && game.variants && game.variants.length > 0) {
-            pagerDotsHTML += '<span class="dot active"></span>'; // First dot for the main game
-            game.variants.forEach(() => pagerDotsHTML += '<span class="dot"></span>');
-        }
+        // if (!isVariant && game.variants && game.variants.length > 0) {
+        //     pagerDotsHTML += '<span class="dot active"></span>'; // First dot for the main game
+        //     game.variants.forEach(() => pagerDotsHTML += '<span class="dot"></span>');
+        // }
 
         // Store all variants data on the main game's mobile card for swipe updates.
         // Also store the main game's asset name for context if needed.
-        const variantsAttr = (allVariantsData && !isVariant)
-            ? `data-variants='${JSON.stringify(allVariantsData)}' data-current-variant-index="0"`
-            : '';
+        // const variantsAttr = (allVariantsData && !isVariant) // Removed: data-variants attribute no longer needed
+        //     ? `data-variants='${JSON.stringify(allVariantsData)}' data-current-variant-index="0"`
+        //     : '';
         const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
 
 
         return `
-            <div class="game-entry-mobile-card mobile-only card-content-visible" ${variantsAttr} ${mainGameAttr} data-asset-name="${game.assetName}">
+            <div class="game-entry-mobile-card mobile-only card-content-visible" ${mainGameAttr} data-asset-name="${game.assetName}">
                 <div class="mobile-unified-header">
                     <div class="mobile-unified-header-bg" style="background-image: url('${heroImageUrl}');"></div>
                     <div class="mobile-unified-header-content">
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="logo/fandom.png" alt="Fandom Logo">
                     </a>
                 </div>
-                ${pagerDotsHTML ? `<div class="mobile-pager-dots"><div class="mobile-pager-dots-container">${pagerDotsHTML}</div></div>` : ''}
+
             </div>`;
     }
 
@@ -448,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Setup swipe functionality after all cards are in the DOM
-            setupMobileVariantNavigation(); // Renamed from setupMobileVariantSwipes
+            // setupMobileVariantNavigation(); // Renamed from setupMobileVariantSwipes - REMOVED as per requirements
         })
         .catch(error => {
             console.error('CRITICAL ERROR fetching or processing game data:', error);
@@ -458,14 +458,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-    // --- Mobile Variant Navigation Functionality (formerly Swipe) ---
-
+    // --- Mobile Variant Navigation Functionality (formerly Swipe) --- REMOVED as per requirements
+    /*
     /**
      * Updates the content of a mobile game card with new game data.
      * Used when navigating between game variants on mobile.
      * @param {HTMLElement} cardElement - The .game-entry-mobile-card element to update.
      * @param {Object} gameData - The game data object for the new variant.
      */
+    /*
     function updateMobileCardContent(cardElement, gameData) {
         // Update hero banner
         const heroBanner = cardElement.querySelector('.mobile-hero-banner');
@@ -564,11 +565,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update the card's own asset name for consistency if needed, though not strictly used by display after this.
         cardElement.dataset.assetName = gameData.assetName;
     }
+    */
 
     /**
      * Sets up click-based navigation for mobile game variants using pager dots.
      * Attaches event listeners to pager dots to update card content and trigger animations.
      */
+    /*
     function setupMobileVariantNavigation() { // Renamed from setupMobileVariantSwipes
         document.querySelectorAll('.game-entry-mobile-card[data-variants]').forEach(card => {
             const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
@@ -618,6 +621,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    */
 
     /**
      * Handles navigation for desktop sliders (previous/next game variant).
