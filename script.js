@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Setup swipe functionality after all cards are in the DOM
-            setupMobileVariantSwipes();
+            setupMobileVariantNavigation(); // Renamed from setupMobileVariantSwipes
         })
         .catch(error => {
             console.error('CRITICAL ERROR fetching or processing game data:', error);
@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-    // --- Mobile Variant Swipe Functionality ---
+    // --- Mobile Variant Navigation Functionality (formerly Swipe) ---
     function updateMobileCardContent(cardElement, gameData) {
         // Update hero banner
         const heroBanner = cardElement.querySelector('.mobile-hero-banner');
@@ -423,122 +423,53 @@ document.addEventListener('DOMContentLoaded', () => {
         cardElement.dataset.assetName = gameData.assetName;
     }
 
-    function setupMobileVariantSwipes() {
+    function setupMobileVariantNavigation() { // Renamed from setupMobileVariantSwipes
         document.querySelectorAll('.game-entry-mobile-card[data-variants]').forEach(card => {
-            let touchStartX = 0;
-            let touchEndX = 0;
-            let isSwiping = false;
-            const swipeThreshold = 50; // Minimum pixels to be considered a swipe
+            const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
+            if (!pagerDotsContainer) return;
 
-            card.addEventListener('touchstart', (event) => {
-                // Only react to single touch
-                if (event.touches.length === 1) {
-                    touchStartX = event.touches[0].clientX;
-                    isSwiping = true; // Assume swipe might start
-                }
-            }, { passive: true });
+            const dots = pagerDotsContainer.querySelectorAll('.dot');
+            const variantsJson = card.dataset.variants;
+            if (!variantsJson) return;
 
-            card.addEventListener('touchmove', (event) => {
-                if (event.touches.length === 1 && isSwiping) {
-                    touchEndX = event.touches[0].clientX;
-                    // Optional: Add visual feedback during swipe if desired (e.g., slight card movement)
-                    // To prevent vertical scroll while swiping horizontally:
-                    // Check if horizontal movement is more significant than vertical
-                    // For simplicity, we'll handle this at touchend. If more complex behavior is needed,
-                    // event.preventDefault() could be used here conditionally.
-                }
-            }, { passive: true }); // passive:true if not preventing scroll, false if you might.
+            try {
+                const variants = JSON.parse(variantsJson);
+                const animationDuration = 250; // ms, should match CSS transition duration
 
-            card.addEventListener('touchend', () => {
-                if (!isSwiping || touchEndX === 0) { // Ensure touchmove happened
-                    isSwiping = false;
-                    touchEndX = 0; // Reset for next potential swipe
-                    return;
-                }
+                dots.forEach((dot, targetIndex) => {
+                    dot.addEventListener('click', () => {
+                        let currentIndex = parseInt(card.dataset.currentVariantIndex, 10);
 
-                const deltaX = touchEndX - touchStartX;
-                let direction = 0;
+                        if (targetIndex !== currentIndex) {
+                            const direction = targetIndex > currentIndex ? 1 : -1; // 1 for next, -1 for prev
 
-                if (Math.abs(deltaX) > swipeThreshold) {
-                    if (deltaX < 0) { // Swipe Left (next)
-                        direction = 1;
-                    } else { // Swipe Right (previous)
-                        direction = -1;
-                    }
-                }
+                            const swipeOutClass = direction === 1 ? 'card-swiping-out-left' : 'card-swiping-out-right';
+                            const swipeInClass = direction === 1 ? 'card-swiping-in-left' : 'card-swiping-in-right';
 
-                if (direction !== 0) {
-                    const variantsJson = card.dataset.variants;
-                    const currentVariantIndexStr = card.dataset.currentVariantIndex;
+                            card.classList.add(swipeOutClass);
+                            card.classList.remove('card-content-visible');
 
-                    if (variantsJson && currentVariantIndexStr) {
-                        try {
-                            const variants = JSON.parse(variantsJson);
-                            let currentVariantIndex = parseInt(currentVariantIndexStr, 10);
-                            const totalVariants = variants.length;
+                            setTimeout(() => {
+                                updateMobileCardContent(card, variants[targetIndex]);
+                                card.dataset.currentVariantIndex = targetIndex.toString();
 
-                            currentVariantIndex += direction;
+                                // Update active state for all dots
+                                dots.forEach((d, i) => d.classList.toggle('active', i === targetIndex));
 
-                            // Clamp index
-                            if (currentVariantIndex < 0) currentVariantIndex = 0;
-                            if (currentVariantIndex >= totalVariants) currentVariantIndex = totalVariants - 1;
+                                card.classList.remove(swipeOutClass);
+                                card.classList.add(swipeInClass);
+                                void card.offsetWidth; // Force reflow
+                                card.classList.add('card-content-visible');
+                                card.classList.remove(swipeInClass);
 
-                            if (currentVariantIndex !== parseInt(currentVariantIndexStr, 10)) {
-                                const animationDuration = 250; // ms, should match CSS transition duration
-
-                                // Determine swipe direction for animation classes
-                                const swipeOutClass = direction === 1 ? 'card-swiping-out-left' : 'card-swiping-out-right';
-                                const swipeInClass = direction === 1 ? 'card-swiping-in-left' : 'card-swiping-in-right';
-
-                                // Add class to animate out current content
-                                card.classList.add(swipeOutClass);
-                                // Remove visibility class if present, to ensure out animation starts from visible state
-                                card.classList.remove('card-content-visible');
-
-
-                                setTimeout(() => {
-                                    // Update card content after "out" animation
-                                    updateMobileCardContent(card, variants[currentVariantIndex]);
-                                    card.dataset.currentVariantIndex = currentVariantIndex.toString();
-
-                                    // Prepare for "in" animation
-                                    card.classList.remove(swipeOutClass); // Remove out-animation class
-                                    card.classList.add(swipeInClass);     // Add class for initial state of in-animation (e.g., opacity 0, translated)
-
-                                    // Force reflow to ensure "in" animation starts correctly
-                                    void card.offsetWidth;
-
-                                    // Add class to trigger "in" animation (to opacity 1, translate 0)
-                                    card.classList.add('card-content-visible');
-                                    card.classList.remove(swipeInClass); // Clean up initial state class for "in"
-
-                                    // Update pager dots
-                                    const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
-                                    if (pagerDotsContainer) {
-                                        const dots = pagerDotsContainer.querySelectorAll('.dot');
-                                        dots.forEach((dot, idx) => {
-                                            dot.classList.toggle('active', idx === currentVariantIndex);
-                                        });
-                                    }
-
-                                    // Optional: Clean up card-content-visible after animation if it interferes with subsequent swipes
-                                    // setTimeout(() => {
-                                    //    card.classList.remove('card-content-visible');
-                                    // }, animationDuration);
-                                    // For now, leaving it as subsequent swipes will toggle it.
-
-                                }, animationDuration);
-                            }
-                        } catch (e) {
-                            console.error("Error processing variants for swipe:", e);
+                            }, animationDuration);
                         }
-                    }
-                }
-                // Reset for next swipe
-                isSwiping = false;
-                touchStartX = 0;
-                touchEndX = 0;
-            });
+                    });
+                });
+
+            } catch (e) {
+                console.error("Error setting up mobile variant navigation:", e);
+            }
         });
     }
 
