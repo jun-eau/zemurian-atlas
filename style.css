@@ -167,7 +167,30 @@ main {
 .arc-navigation a.active {
     color: var(--accent-gold);
 }
-/* --- Back to Top Button CSS has been removed --- */
+/* --- Back to Top Button --- */
+#backToTopBtn {
+  display: none; /* Hidden by default */
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 1001; /* Ensure it's above other elements like sticky nav */
+  border: none;
+  outline: none;
+  background-color: var(--accent-gold);
+  color: var(--primary-bg); /* Text color that contrasts with accent-gold */
+  cursor: pointer;
+  padding: 12px 15px;
+  border-radius: 4px;
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  opacity: 0.8;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+#backToTopBtn:hover {
+  background-color: #d4af37; /* A slightly darker gold or adjust as needed */
+  opacity: 1;
+}
 
 /* --- Game Entry Slider Styles --- */
 .slider-display-area {
@@ -283,57 +306,15 @@ main {
 
     /* Game Entry Card Styling */
     .game-entry-mobile-card {
-        display: flex; /* This might need to be re-evaluated if children are all position:absolute */
-        /* If direct children are for layout (not animated content), flex is fine.
-           If the card itself becomes a container for swappable absolute positioned content blocks,
-           then its own display might not matter as much as its position:relative and overflow:hidden.
-           Let's assume the current flex structure builds the static parts of the card, and then
-           a specific region within it will handle the animated content.
-           Alternatively, the *entire* card's content becomes swappable.
-           The plan implies entire card content slides. So, .game-entry-mobile-card needs position:relative.
-           Its direct children (hero, main-info etc.) will be wrapped in a new sliding div.
-        */
-        flex-direction: column; /* Keep for now, might be overridden by content wrapper */
-        background-color: #2f2f3e;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        overflow: hidden; /* Crucial for sliding animation */
-        margin-bottom: 1.5rem;
-        border: 1px solid rgba(233, 213, 161, 0.2);
-        position: relative; /* For absolute positioning of content children */
-        min-height: 450px; /* Approximate minimum height, adjust as needed, to prevent collapse during animation */
-    }
-
-    .mobile-card-content-wrapper {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%; /* This might be tricky if height is dynamic. Consider flex column for children. */
         display: flex;
         flex-direction: column;
-        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth transition */
-        background-color: #2f2f3e; /* Match card background to avoid flicker */
+        background-color: #2f2f3e; /* Slightly different card background */
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        margin-bottom: 1.5rem; /* Spacing between cards */
+        border: 1px solid rgba(233, 213, 161, 0.2); /* Subtle gold border */
     }
-
-    /* Animation States */
-    .mobile-card-content-wrapper.slide-out-to-left {
-        transform: translateX(-100%);
-    }
-    .mobile-card-content-wrapper.slide-out-to-right {
-        transform: translateX(100%);
-    }
-    .mobile-card-content-wrapper.slide-in { /* Target state, coming from either side */
-        transform: translateX(0%);
-    }
-    /* Initial positions before sliding in (JS will set these temporarily) */
-    .mobile-card-content-wrapper.prepare-slide-from-left {
-        transform: translateX(-100%);
-    }
-    .mobile-card-content-wrapper.prepare-slide-from-right {
-        transform: translateX(100%);
-    }
-
 
     /* 1. Cinematic Hero Banner */
     .mobile-hero-banner {
@@ -517,30 +498,21 @@ main {
         transform: scale(1.2);
     }
 
-    /* Slider specific adjustments for mobile */
-    .slider-display-area .slider-arrow { /* Target arrows specifically within a slider area */
-        display: none !important;
+    /* Slider specific adjustments for mobile if any are needed */
+    /* The desktop slider arrows (.slider-arrow) should be hidden as they are part of .desktop-only */
+    .slider-display-area {
+        /* On mobile, the slider-display-area itself might not need special styles if its
+           .game-entry child (which contains the mobile card) is what's being swiped.
+           If the whole slider-display-area becomes the swipe target, then styles might go here.
+           For now, assuming swipe happens on .game-entry-mobile-card. */
     }
-
-    /* Neutralize the desktop slider mechanism for variant games on mobile */
-    .slider-display-area .game-entry-slider {
-        overflow: visible !important;
-    }
-    .slider-display-area .slider-content-strip {
-        display: block !important; /* Stack items */
-        transform: none !important; /* Remove JS-applied transform */
-        gap: 0 !important; /* Reset desktop gap */
-        width: 100% !important; /* Ensure it doesn't try to be wider */
-    }
-
-    /* Ensure only the first slider-item's content is rendered by the layout engine for mobile,
-       as the mobile card within it will handle its own variant display. */
-    .slider-display-area .slider-item {
-        width: 100% !important; /* Make item take full width if parent is block */
-        flex-basis: auto !important; /* Reset flex basis */
-    }
-    .slider-display-area .slider-item:not(:first-child) {
-        display: none !important;
+    .game-entry-slider {
+        /* This is the overflow:hidden container for desktop.
+           On mobile, if we are not using this for swipe, its role might change or it might be hidden.
+           For now, assuming it's hidden via its parent .desktop-only elements or direct children.
+           If .slider-item > .game-entry > .game-entry-mobile-card is the structure,
+           then .game-entry-slider itself would be part of the .desktop-only structure.
+        */
     }
 
     /* Ensure that .game-entry that contains .game-entry-mobile-card doesn't add extra padding/margin on mobile */

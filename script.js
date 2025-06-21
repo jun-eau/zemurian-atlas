@@ -74,70 +74,62 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Mobile HTML Generation ---
-
-    // New function to generate only the inner content of a mobile card
-    function generateMobileCardInnerContentHTML(gameData) {
-        const heroImageUrl = `hero/${gameData.assetName}.jpg`;
-        return `
-            <div class="mobile-hero-banner" data-hero-src="${heroImageUrl}">
-                <img src="${heroImageUrl}" alt="${gameData.englishTitle} Hero Image">
-            </div>
-            <div class="mobile-main-info">
-                <img src="logo/${gameData.assetName}.png" alt="${gameData.englishTitle} Logo" class="mobile-logo">
-                <p class="japanese-title">
-                    <span class="kanji-title">${gameData.japaneseTitleKanji}</span>
-                    <span class="romaji-title">${gameData.japaneseTitleRomaji}</span>
-                </p>
-            </div>
-            <div class="mobile-release-accordion">
-                <div class="accordion-bar">
-                    <span>Release Details</span>
-                    <span class="chevron">▼</span>
-                </div>
-                <div class="accordion-content" style="display: none;">
-                    <div class="release-region">
-                        <h4 class="release-header">Japanese Release</h4>
-                        <div class="release-list">${createReleaseString(gameData.releasesJP)}</div>
-                    </div>
-                    <div class="release-region">
-                        <h4 class="release-header">English Release</h4>
-                        <div class="release-list">${createReleaseString(gameData.releasesEN)}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="mobile-external-links">
-                <a href="${gameData.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
-                    <img src="logo/steam.png" alt="Steam Logo">
-                </a>
-                <a href="${gameData.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
-                    <img src="logo/wikipedia.png" alt="Wikipedia Logo">
-                </a>
-                <a href="${gameData.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
-                    <img src="logo/fandom.png" alt="Fandom Logo">
-                </a>
-            </div>
-        `;
-    }
-
     function createMobileCardHTML(game, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
+        const heroImageUrl = `hero/${game.assetName}.jpg`;
         let pagerDotsHTML = '';
+
+        // Pager dots are only added to the main game card that has variants
         if (!isVariant && game.variants && game.variants.length > 0) {
             pagerDotsHTML += '<span class="dot active"></span>'; // First dot for the main game
             game.variants.forEach(() => pagerDotsHTML += '<span class="dot"></span>');
         }
 
+        // Store all variants data on the main game's mobile card for swipe updates.
+        // Also store the main game's asset name for context if needed.
         const variantsAttr = (allVariantsData && !isVariant)
             ? `data-variants='${JSON.stringify(allVariantsData)}' data-current-variant-index="0"`
             : '';
         const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
 
-        // Initial content for the first wrapper
-        const initialContentHTML = generateMobileCardInnerContentHTML(game);
 
         return `
             <div class="game-entry-mobile-card mobile-only" ${variantsAttr} ${mainGameAttr} data-asset-name="${game.assetName}">
-                <div class="mobile-card-content-wrapper">
-                    ${initialContentHTML}
+                <div class="mobile-hero-banner" data-hero-src="${heroImageUrl}">
+                    <img src="${heroImageUrl}" alt="${game.englishTitle} Hero Image">
+                </div>
+                <div class="mobile-main-info">
+                    <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="mobile-logo">
+                    <p class="japanese-title">
+                        <span class="kanji-title">${game.japaneseTitleKanji}</span>
+                        <span class="romaji-title">${game.japaneseTitleRomaji}</span>
+                    </p>
+                </div>
+                <div class="mobile-release-accordion">
+                    <div class="accordion-bar">
+                        <span>Release Details</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="accordion-content" style="display: none;">
+                        <div class="release-region">
+                            <h4 class="release-header">Japanese Release</h4>
+                            <div class="release-list">${createReleaseString(game.releasesJP)}</div>
+                        </div>
+                        <div class="release-region">
+                            <h4 class="release-header">English Release</h4>
+                            <div class="release-list">${createReleaseString(game.releasesEN)}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mobile-external-links">
+                    <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
+                        <img src="logo/steam.png" alt="Steam Logo">
+                    </a>
+                    <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
+                        <img src="logo/wikipedia.png" alt="Wikipedia Logo">
+                    </a>
+                    <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
+                        <img src="logo/fandom.png" alt="Fandom Logo">
+                    </a>
                 </div>
                 ${pagerDotsHTML ? `<div class="mobile-pager-dots">${pagerDotsHTML}</div>` : ''}
             </div>`;
@@ -382,178 +374,139 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     // --- Mobile Variant Swipe Functionality ---
-    // The old `updateMobileCardContent` function was here and has been removed as it's no longer used.
-
-    function animateVariantChange(card, newVariantData, direction) { // direction: 1 for next (slides left), -1 for prev (slides right)
-        const currentContentWrapper = card.querySelector('.mobile-card-content-wrapper');
-        if (!currentContentWrapper) {
-            console.error("Current content wrapper not found for animation.");
-            // Fallback to simple update if structure is wrong (should not happen)
-            // This could happen if the initial card structure was not created with a wrapper.
-            // However, createMobileCardHTML ensures a wrapper exists.
-            // For robustness, we could recreate the card's content if no wrapper is found.
-            const shell = card.querySelector('.mobile-pager-dots') ? card.querySelector('.mobile-pager-dots').cloneNode(true) : null;
-            card.innerHTML = ''; // Clear card
-            const newInitialContentWrapper = document.createElement('div');
-            newInitialContentWrapper.className = 'mobile-card-content-wrapper';
-            newInitialContentWrapper.innerHTML = generateMobileCardInnerContentHTML(newVariantData);
-            card.appendChild(newInitialContentWrapper);
-            if (shell) card.appendChild(shell); // Re-append dots if they existed
-            console.warn("Fallback: Recreated card content due to missing wrapper for animation.");
-            return;
+    function updateMobileCardContent(cardElement, gameData) {
+        // Update hero banner
+        const heroBanner = cardElement.querySelector('.mobile-hero-banner');
+        const heroImg = heroBanner ? heroBanner.querySelector('img') : null;
+        if (heroBanner && heroImg) {
+            const newHeroSrc = `hero/${gameData.assetName}.jpg`;
+            heroBanner.dataset.heroSrc = newHeroSrc;
+            heroImg.src = newHeroSrc;
+            heroImg.alt = `${gameData.englishTitle} Hero Image`;
         }
 
-        const newContentWrapper = document.createElement('div');
-        newContentWrapper.className = 'mobile-card-content-wrapper';
-        newContentWrapper.innerHTML = generateMobileCardInnerContentHTML(newVariantData);
-
-        // Set initial position for the new content
-        if (direction === 1) { // Sliding to next (new content from right)
-            newContentWrapper.classList.add('prepare-slide-from-right');
-        } else { // Sliding to previous (new content from left)
-            newContentWrapper.classList.add('prepare-slide-from-left');
+        // Update logo
+        const logoImg = cardElement.querySelector('.mobile-main-info .mobile-logo');
+        if (logoImg) {
+            logoImg.src = `logo/${gameData.assetName}.png`;
+            logoImg.alt = `${gameData.englishTitle} Logo`;
         }
-        card.appendChild(newContentWrapper);
 
-        // Force reflow to ensure initial position is applied before transition starts
-        // Reading offsetHeight is a common trick for this.
-        void newContentWrapper.offsetHeight;
+        // Update titles
+        const kanjiTitleEl = cardElement.querySelector('.mobile-main-info .kanji-title');
+        if (kanjiTitleEl) kanjiTitleEl.textContent = gameData.japaneseTitleKanji;
+        const romajiTitleEl = cardElement.querySelector('.mobile-main-info .romaji-title');
+        if (romajiTitleEl) romajiTitleEl.textContent = gameData.japaneseTitleRomaji;
 
-        // Start animation
-        requestAnimationFrame(() => {
-            if (direction === 1) {
-                currentContentWrapper.classList.add('slide-out-to-left');
-                newContentWrapper.classList.remove('prepare-slide-from-right');
-            } else {
-                currentContentWrapper.classList.add('slide-out-to-right');
-                newContentWrapper.classList.remove('prepare-slide-from-left');
-            }
-            newContentWrapper.classList.add('slide-in'); // Common class for sliding to translateX(0)
-        });
+        // Update release details
+        const releaseAccordionContent = cardElement.querySelector('.mobile-release-accordion .accordion-content');
+        if (releaseAccordionContent) {
+            const jpReleaseList = releaseAccordionContent.querySelector('.release-region:nth-child(1) .release-list');
+            if (jpReleaseList) jpReleaseList.innerHTML = createReleaseString(gameData.releasesJP);
 
-        newContentWrapper.addEventListener('transitionend', function handler(event) {
-            // Ensure we're reacting to the transform transition on the new wrapper itself
-            if (event.propertyName !== 'transform' || event.target !== newContentWrapper) {
-                return;
-            }
-
-            if (currentContentWrapper && currentContentWrapper.parentNode === card) {
-                 card.removeChild(currentContentWrapper);
-            }
-            newContentWrapper.classList.remove('slide-in', 'prepare-slide-from-left', 'prepare-slide-from-right');
-            // No specific class needed for "active" state once it's the only one.
-
-            newContentWrapper.removeEventListener('transitionend', handler);
-        }, { once: true }); // Ensure listener is called only once
-    }
-
-
-    function changeVariant(card, targetIndex) {
-        const variantsJson = card.dataset.variants;
-        const currentVariantIndexStr = card.dataset.currentVariantIndex;
-
-        if (variantsJson && currentVariantIndexStr) {
-            try {
-                const variants = JSON.parse(variantsJson);
-                let currentVariantIndex = parseInt(currentVariantIndexStr, 10);
-                const totalVariants = variants.length;
-
-                // Ensure targetIndex is valid
-                if (targetIndex < 0 || targetIndex >= totalVariants || targetIndex === currentVariantIndex) {
-                    return; // No change needed or invalid index
-                }
-
-                const direction = targetIndex > currentVariantIndex ? 1 : -1;
-
-                animateVariantChange(card, variants[targetIndex], direction);
-                card.dataset.currentVariantIndex = targetIndex.toString();
-                card.dataset.assetName = variants[targetIndex].assetName; // Update main card asset name too
-
-                // Update pager dots
-                const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
-                if (pagerDotsContainer) {
-                    const dots = pagerDotsContainer.querySelectorAll('.dot');
-                    dots.forEach((dot, idx) => {
-                        dot.classList.toggle('active', idx === targetIndex);
-                    });
-                }
-
-            } catch (e) {
-                console.error("Error processing variants for change:", e);
-            }
+            const enReleaseList = releaseAccordionContent.querySelector('.release-region:nth-child(2) .release-list');
+            if (enReleaseList) enReleaseList.innerHTML = createReleaseString(gameData.releasesEN);
         }
+
+        // Update external links
+        const externalLinksContainer = cardElement.querySelector('.mobile-external-links');
+        if (externalLinksContainer) {
+            const steamLink = externalLinksContainer.querySelector('a[title*="Steam"]');
+            if (steamLink) steamLink.href = gameData.steamUrl;
+            const wikiLink = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
+            if (wikiLink) wikiLink.href = gameData.wikiUrl;
+            const fandomLink = externalLinksContainer.querySelector('a[title*="Fandom"]');
+            if (fandomLink) fandomLink.href = gameData.fandomUrl;
+        }
+
+        // Update the card's own asset name for consistency if needed, though not strictly used by display after this.
+        cardElement.dataset.assetName = gameData.assetName;
     }
 
     function setupMobileVariantSwipes() {
         document.querySelectorAll('.game-entry-mobile-card[data-variants]').forEach(card => {
             let touchStartX = 0;
             let touchEndX = 0;
-            let isProcessingSwipe = false; // Lock to prevent multiple triggers
-            const swipeThreshold = 50;
+            let isSwiping = false;
+            const swipeThreshold = 50; // Minimum pixels to be considered a swipe
 
             card.addEventListener('touchstart', (event) => {
-                if (isProcessingSwipe || event.touches.length !== 1) return;
-                touchStartX = event.touches[0].clientX;
-                touchEndX = 0; // Reset touchEndX
+                // Only react to single touch
+                if (event.touches.length === 1) {
+                    touchStartX = event.touches[0].clientX;
+                    isSwiping = true; // Assume swipe might start
+                }
             }, { passive: true });
 
             card.addEventListener('touchmove', (event) => {
-                if (isProcessingSwipe || event.touches.length !== 1) return;
-                touchEndX = event.touches[0].clientX;
-            }, { passive: true });
+                if (event.touches.length === 1 && isSwiping) {
+                    touchEndX = event.touches[0].clientX;
+                    // Optional: Add visual feedback during swipe if desired (e.g., slight card movement)
+                    // To prevent vertical scroll while swiping horizontally:
+                    // Check if horizontal movement is more significant than vertical
+                    // For simplicity, we'll handle this at touchend. If more complex behavior is needed,
+                    // event.preventDefault() could be used here conditionally.
+                }
+            }, { passive: true }); // passive:true if not preventing scroll, false if you might.
 
             card.addEventListener('touchend', () => {
-                if (isProcessingSwipe || touchEndX === 0) { // Ensure touchmove happened
-                    touchStartX = 0; // Reset for next swipe
+                if (!isSwiping || touchEndX === 0) { // Ensure touchmove happened
+                    isSwiping = false;
+                    touchEndX = 0; // Reset for next potential swipe
                     return;
                 }
 
-                isProcessingSwipe = true; // Set lock
-
                 const deltaX = touchEndX - touchStartX;
-                let swipeDirection = 0; // 1 for next, -1 for prev
+                let direction = 0;
 
                 if (Math.abs(deltaX) > swipeThreshold) {
-                    if (deltaX < 0) swipeDirection = 1; // Swipe Left (next)
-                    else swipeDirection = -1;          // Swipe Right (previous)
-                }
-
-                if (swipeDirection !== 0) {
-                    const currentVariantIndex = parseInt(card.dataset.currentVariantIndex, 10);
-                    const variants = JSON.parse(card.dataset.variants);
-                    const targetIndex = currentVariantIndex + swipeDirection;
-
-                    if (targetIndex >= 0 && targetIndex < variants.length) {
-                        changeVariant(card, targetIndex);
+                    if (deltaX < 0) { // Swipe Left (next)
+                        direction = 1;
+                    } else { // Swipe Right (previous)
+                        direction = -1;
                     }
                 }
 
-                // Reset for next swipe attempt after a short delay to allow animation to start/finish
-                setTimeout(() => {
-                    isProcessingSwipe = false;
-                }, 500); // Adjust delay based on transition duration
+                if (direction !== 0) {
+                    const variantsJson = card.dataset.variants;
+                    const currentVariantIndexStr = card.dataset.currentVariantIndex;
+
+                    if (variantsJson && currentVariantIndexStr) {
+                        try {
+                            const variants = JSON.parse(variantsJson);
+                            let currentVariantIndex = parseInt(currentVariantIndexStr, 10);
+                            const totalVariants = variants.length;
+
+                            currentVariantIndex += direction;
+
+                            // Clamp index
+                            if (currentVariantIndex < 0) currentVariantIndex = 0;
+                            if (currentVariantIndex >= totalVariants) currentVariantIndex = totalVariants - 1;
+
+                            if (currentVariantIndex !== parseInt(currentVariantIndexStr, 10)) {
+                                // Update card content
+                                updateMobileCardContent(card, variants[currentVariantIndex]);
+                                card.dataset.currentVariantIndex = currentVariantIndex.toString();
+
+                                // Update pager dots
+                                const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
+                                if (pagerDotsContainer) {
+                                    const dots = pagerDotsContainer.querySelectorAll('.dot');
+                                    dots.forEach((dot, idx) => {
+                                        dot.classList.toggle('active', idx === currentVariantIndex);
+                                    });
+                                }
+                            }
+                        } catch (e) {
+                            console.error("Error processing variants for swipe:", e);
+                        }
+                    }
+                }
+                // Reset for next swipe
+                isSwiping = false;
                 touchStartX = 0;
                 touchEndX = 0;
             });
-
-            // Add click listeners for pager dots on this card
-            const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
-            if (pagerDotsContainer) {
-                const dots = pagerDotsContainer.querySelectorAll('.dot');
-                dots.forEach((dot, index) => {
-                    dot.addEventListener('click', () => {
-                        // Check if this dot is already active or if an animation is in progress
-                        if (dot.classList.contains('active') || isProcessingSwipe) {
-                            return;
-                        }
-                        isProcessingSwipe = true; // Set lock for dot click as well
-                        changeVariant(card, index);
-                        setTimeout(() => { // Release lock after animation
-                            isProcessingSwipe = false;
-                        }, 500);
-                    });
-                });
-            }
         });
     }
 
@@ -574,5 +527,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nextButton) nextButton.disabled = currentIndex === itemsCount - 1;
     }
 
-    // Back to Top Button logic was here. It has been removed.
+    // Back to Top Button
+    const backToTopButton = document.getElementById("backToTopBtn");
+    if (backToTopButton) {
+        window.onscroll = function() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        };
+        backToTopButton.addEventListener("click", () => {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+    }
 });
