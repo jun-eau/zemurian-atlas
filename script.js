@@ -130,10 +130,13 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function createMobileCardHTML(game, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
         const heroImageUrl = `hero/${game.assetName}.jpg`;
-        let mobileNavButtonHTML = '';
-        // Add mobile navigation button if this card is part of a slider (has variant data with multiple items)
+        let mobileNavButtonsHTML = '';
+        // Add mobile navigation buttons if this card is part of a slider
         if (allVariantsData && allVariantsData.length > 1) {
-            mobileNavButtonHTML = `<button class="slider-nav-button-mobile">&#10095;</button>`; // Right arrow for "Next"
+            mobileNavButtonsHTML = `
+                <button class="slider-nav-button-mobile slider-nav-mobile-prev" style="display: none;">&#10094;</button>
+                <button class="slider-nav-button-mobile slider-nav-mobile-next" style="display: none;">&#10095;</button>
+            `;
         }
 
         const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
@@ -150,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="romaji-title">${game.japaneseTitleRomaji}</span>
                         </p>
                     </div>
-                    ${mobileNavButtonHTML}
+                    ${mobileNavButtonsHTML}
                 </div>
                 <div class="mobile-release-accordion">
                     <div class="accordion-bar">
@@ -641,7 +644,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         const desktopNavButton = sliderDisplayAreaElement.querySelector('.slider-nav-button.desktop-only');
-        const mobileNavButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .mobile-only .slider-nav-button-mobile');
+        // Select all potential mobile nav buttons within this slider area
+        const allMobilePrevButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .mobile-only .slider-nav-mobile-prev');
+        const allMobileNextButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .mobile-only .slider-nav-mobile-next');
 
         function updateSlidePosition() {
             // The 2rem gap is defined in CSS for .slider-content-strip gap
@@ -664,16 +669,37 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        function updateMobileButtonsState() { // Renamed and updated
-            mobileNavButtons.forEach(btn => {
-                if (itemsCount <= 1) {
-                    btn.style.display = 'none';
-                } else {
-                    btn.style.display = 'flex'; // Or 'inline-flex' etc. based on its styling
-                    // Icon is static 'Next' (&#10095;) as per HTML generation. No change needed here.
+        function updateMobileButtonsState() {
+            const sliderItems = contentStrip.children; // Get all .slider-item elements
+
+            for (let i = 0; i < sliderItems.length; i++) {
+                const item = sliderItems[i];
+                const prevBtn = item.querySelector('.slider-nav-mobile-prev');
+                const nextBtn = item.querySelector('.slider-nav-mobile-next');
+
+                if (!prevBtn || !nextBtn) continue;
+
+                if (i === currentIndex) { // This is the active card
+                    if (itemsCount <= 1) { // Should not happen due to earlier check, but for safety
+                        prevBtn.style.display = 'none';
+                        nextBtn.style.display = 'none';
+                    } else if (currentIndex === 0) { // First slide
+                        prevBtn.style.display = 'none';
+                        nextBtn.style.display = 'flex';
+                    } else if (currentIndex === itemsCount - 1) { // Last slide
+                        prevBtn.style.display = 'flex';
+                        nextBtn.style.display = 'none';
+                    } else { // Slides in between
+                        prevBtn.style.display = 'flex';
+                        nextBtn.style.display = 'flex';
+                    }
+                } else { // This is an inactive card
+                    prevBtn.style.display = 'none';
+                    nextBtn.style.display = 'none';
                 }
-            });
+            }
         }
+
 
         if (desktopNavButton) {
             desktopNavButton.onclick = () => {
@@ -688,20 +714,34 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        mobileNavButtons.forEach(btn => {
+        allMobilePrevButtons.forEach(btn => {
             btn.onclick = () => {
-                currentIndex = (currentIndex + 1) % itemsCount; // Always go next and cycle
-                sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
-                updateSlidePosition();
-                // updateDesktopButton(); // No direct need to update desktop button from mobile click unless state is shared differently
-                updateMobileButtonsState(); // Update all mobile buttons (e.g. if they were to change icon/state)
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
+                    updateSlidePosition();
+                    updateDesktopButton(); // Keep desktop button in sync
+                    updateMobileButtonsState();
+                }
+            };
+        });
+
+        allMobileNextButtons.forEach(btn => {
+            btn.onclick = () => {
+                if (currentIndex < itemsCount - 1) {
+                    currentIndex++;
+                    sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
+                    updateSlidePosition();
+                    updateDesktopButton(); // Keep desktop button in sync
+                    updateMobileButtonsState();
+                }
             };
         });
 
         // Initial setup
         updateSlidePosition();
         updateDesktopButton();
-        updateMobileButtonsState(); // Call renamed function
+        updateMobileButtonsState();
     }
 
 });

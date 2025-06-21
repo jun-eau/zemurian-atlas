@@ -588,11 +588,8 @@ main {
     /* Former .slider-arrow hiding rule removed as the class is no longer in use. */
     /* The new .slider-nav-button is desktop-only via JS-added class or direct styling if needed. */
 
-    /* New Mobile Slider Navigation Button */
-    .slider-nav-button-mobile {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
+    /* Base styles for Mobile Slider Navigation Buttons */
+    .slider-nav-button-mobile { /* This will serve as the base class */
         width: 40px;
         height: 40px;
         background-color: rgba(0, 0, 0, 0.6);
@@ -602,11 +599,13 @@ main {
         font-size: var(--font-size-lg); /* Arrow size */
         cursor: pointer;
         z-index: 10; /* Above header background, below potential popups */
-        display: flex;
+        display: flex; /* Will be set to flex by JS when shown */
         align-items: center;
         justify-content: center;
         line-height: 1; /* Ensure icon is centered vertically */
         transition: background-color 0.3s ease, opacity 0.3s ease-out, color 0.3s ease, border-color 0.3s ease;
+        position: absolute; /* Common positioning attribute */
+        bottom: 10px; /* Common positioning attribute */
     }
 
     .slider-nav-button-mobile:hover {
@@ -614,12 +613,23 @@ main {
         border-color: #fff;
     }
 
-    .slider-nav-button-mobile:disabled { /* Though current JS doesn't disable it, good to have */
+    /* Though current JS doesn't explicitly disable them, :disabled styles are good practice */
+    .slider-nav-button-mobile:disabled {
         opacity: 0.4;
         cursor: not-allowed;
         background-color: rgba(0, 0, 0, 0.3);
         border-color: var(--text-secondary);
         color: var(--text-secondary);
+    }
+
+    /* Specific positioning for Next button */
+    .slider-nav-mobile-next {
+        right: 10px;
+    }
+
+    /* Specific positioning for Previous button */
+    .slider-nav-mobile-prev {
+        left: 10px;
     }
 
     /* Ensure mobile slider items are correctly displayed */
