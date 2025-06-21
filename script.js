@@ -74,6 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
                     <img src="logo/steam.png" alt="Steam Logo">
                 </a>
+                ${game.playstationUrl ? `
+                <a href="${game.playstationUrl}" target="_blank" rel="noopener noreferrer" title="PlayStation Store Page">
+                    <img src="logo/playstation.png" alt="PlayStation Store Logo">
+                </a>` : ''}
+                ${game.nintendoUrl ? `
+                <a href="${game.nintendoUrl}" target="_blank" rel="noopener noreferrer" title="Nintendo eShop Page">
+                    <img src="logo/nintendo.png" alt="Nintendo eShop Logo">
+                </a>` : ''}
                 <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
                     <img src="logo/wikipedia.png" alt="Wikipedia Logo">
                 </a>
@@ -170,6 +178,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
                         <img src="logo/steam.png" alt="Steam Logo">
                     </a>
+                    ${game.playstationUrl ? `
+                    <a href="${game.playstationUrl}" target="_blank" rel="noopener noreferrer" title="PlayStation Store Page" class="playstation-link">
+                        <img src="logo/playstation.png" alt="PlayStation Store Logo">
+                    </a>` : ''}
+                    ${game.nintendoUrl ? `
+                    <a href="${game.nintendoUrl}" target="_blank" rel="noopener noreferrer" title="Nintendo eShop Page" class="nintendo-link">
+                        <img src="logo/nintendo.png" alt="Nintendo eShop Logo">
+                    </a>` : ''}
                     <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
                         <img src="logo/wikipedia.png" alt="Wikipedia Logo">
                     </a>
@@ -489,6 +505,56 @@ document.addEventListener('DOMContentLoaded', () => {
         if (externalLinksContainer) {
             const steamLink = externalLinksContainer.querySelector('a[title*="Steam"]');
             if (steamLink) steamLink.href = gameData.steamUrl;
+
+            // Update or create/remove PlayStation link
+            let psLink = externalLinksContainer.querySelector('.playstation-link');
+            if (gameData.playstationUrl) {
+                if (!psLink) {
+                    // Create and insert psLink if it doesn't exist
+                    psLink = document.createElement('a');
+                    psLink.className = 'playstation-link';
+                    psLink.target = '_blank';
+                    psLink.rel = 'noopener noreferrer';
+                    psLink.title = 'PlayStation Store Page';
+                    psLink.innerHTML = '<img src="logo/playstation.png" alt="PlayStation Store Logo">';
+                    // Insert after Steam, before Wikipedia
+                    const wikiLinkForInsert = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
+                    externalLinksContainer.insertBefore(psLink, wikiLinkForInsert);
+                }
+                psLink.href = gameData.playstationUrl;
+                psLink.style.display = ''; // Ensure it's visible
+            } else if (psLink) {
+                psLink.remove(); // Remove if no URL and element exists
+            }
+
+            // Update or create/remove Nintendo link
+            let nintendoLink = externalLinksContainer.querySelector('.nintendo-link');
+            if (gameData.nintendoUrl) {
+                if (!nintendoLink) {
+                    // Create and insert nintendoLink if it doesn't exist
+                    nintendoLink = document.createElement('a');
+                    nintendoLink.className = 'nintendo-link';
+                    nintendoLink.target = '_blank';
+                    nintendoLink.rel = 'noopener noreferrer';
+                    nintendoLink.title = 'Nintendo eShop Page';
+                    nintendoLink.innerHTML = '<img src="logo/nintendo.png" alt="Nintendo eShop Logo">';
+                    // Insert after PlayStation (if it exists) or Steam, before Wikipedia
+                    const psLinkForInsert = externalLinksContainer.querySelector('.playstation-link');
+                    const wikiLinkForInsert = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
+                    if (psLinkForInsert) {
+                        psLinkForInsert.after(nintendoLink);
+                    } else if (steamLink) {
+                        steamLink.after(nintendoLink);
+                    } else { // Fallback if somehow steam link is also missing, unlikely
+                        externalLinksContainer.insertBefore(nintendoLink, wikiLinkForInsert);
+                    }
+                }
+                nintendoLink.href = gameData.nintendoUrl;
+                nintendoLink.style.display = ''; // Ensure it's visible
+            } else if (nintendoLink) {
+                nintendoLink.remove(); // Remove if no URL and element exists
+            }
+
             const wikiLink = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
             if (wikiLink) wikiLink.href = gameData.wikiUrl;
             const fandomLink = externalLinksContainer.querySelector('a[title*="Fandom"]');
