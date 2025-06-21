@@ -453,13 +453,14 @@ main {
         transform: scale(1.1);
     }
 
-    /* Mobile "Variants" Slider - Pager Dots */
-    .mobile-pager-dots {
+    /* Mobile "Variants" Slider - Pager Dots (now part of .mobile-slider-display-area) */
+    .mobile-slider-display-area .mobile-pager-dots { /* Specific to pager dots within the new slider */
         text-align: center;
-        padding: 0.75rem 0; /* Space around dots */
-        background-color: rgba(0,0,0,0.1); /* Match main info bg */
+        padding: 0.75rem 0;
+        background-color: rgba(0,0,0,0.1); /* Consistent with other mobile card sections */
+        /* position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); z-index:5; */ /* Optional: overlay dots */
     }
-    .mobile-pager-dots .dot {
+    .mobile-slider-display-area .mobile-pager-dots .dot { /* Specific to dots within this container */
         display: inline-block;
         width: 10px;   /* Larger dots */
         height: 10px;
@@ -469,30 +470,50 @@ main {
         transition: background-color 0.3s ease, transform 0.3s ease;
         cursor: pointer; /* If we make dots clickable later */
     }
-    .mobile-pager-dots .dot.active {
+    .mobile-slider-display-area .mobile-pager-dots .dot.active {
         background-color: var(--accent-gold); /* Active dot color */
         transform: scale(1.2);
     }
 
-    /* Slider specific adjustments for mobile if any are needed */
-    /* The desktop slider arrows (.slider-arrow) should be hidden as they are part of .desktop-only */
-    .slider-display-area {
-        /* On mobile, the slider-display-area itself might not need special styles if its
-           .game-entry child (which contains the mobile card) is what's being swiped.
-           If the whole slider-display-area becomes the swipe target, then styles might go here.
-           For now, assuming swipe happens on .game-entry-mobile-card. */
-    }
-    .game-entry-slider {
-        /* This is the overflow:hidden container for desktop.
-           On mobile, if we are not using this for swipe, its role might change or it might be hidden.
-           For now, assuming it's hidden via its parent .desktop-only elements or direct children.
-           If .slider-item > .game-entry > .game-entry-mobile-card is the structure,
-           then .game-entry-slider itself would be part of the .desktop-only structure.
-        */
+    /* New Mobile Slider Styles */
+    .mobile-slider-display-area {
+        overflow: hidden; /* Crucial for hiding other slides */
+        position: relative; /* For pager dots if they were absolutely positioned */
+        /* The .game-entry-mobile-card styling (bg, border, shadow) should apply to items
+           within .mobile-slider-item, not this container itself, unless desired.
+           This container is primarily for layout and overflow. */
+        /* Remove margin-bottom from individual cards if this container has it */
     }
 
-    /* Ensure that .game-entry that contains .game-entry-mobile-card doesn't add extra padding/margin on mobile */
-    .game-entry {
+    .mobile-slider-content-strip {
+        display: flex;
+        transition: transform 0.4s ease-in-out; /* Animation for sliding */
+        /* Gap between slides is not needed if each slide is 100% width and no bleed-over is desired */
+        /* If a small gap is desired visually between 'cards' when they are not full width,
+           it can be added to .mobile-slider-item's margin. */
+    }
+
+    .mobile-slider-item {
+        flex: 0 0 100%; /* Each item takes the full width of the slider viewport */
+        box-sizing: border-box;
+        /* The .game-entry-mobile-card within this item will provide the actual visual styling. */
+        /* If .game-entry-mobile-card has margin-bottom, it might create unwanted space
+           if this slider is the last element in its parent. Consider overrides. */
+    }
+
+    /* Adjustments for game-entry-mobile-card when it's inside a mobile-slider-item */
+    .mobile-slider-item .game-entry-mobile-card {
+        margin-bottom: 0; /* Remove bottom margin, as spacing is handled by the slider container or its parent */
+        border-radius: 0; /* Optional: remove border-radius if slides are edge-to-edge in the strip */
+                          /* Or keep it if the slider area itself has padding/rounded corners */
+        /* border: none; */ /* Optional: remove border if it interferes with seamless sliding */
+        /* box-shadow: none; */ /* Optional: remove shadow if it looks odd during transition or on edges */
+    }
+
+
+    /* Ensure that .game-entry that contains .mobile-slider-display-area or a single .game-entry-mobile-card
+       doesn't add extra padding/margin on mobile */
+    .game-entry { /* This is the parent container for both desktop and mobile game representations */
         padding: 0; /* Reset any padding if it was for desktop layout */
         margin: 0;  /* Reset any margin if it was for desktop layout */
         /* background: transparent; /* Ensure it doesn't have its own background conflicting with card */
