@@ -517,30 +517,34 @@ main {
         transform: scale(1.2);
     }
 
-    /* Slider specific adjustments for mobile */
-    .slider-display-area .slider-arrow { /* Target arrows specifically within a slider area */
-        display: none !important;
+    /* Slider specific adjustments for mobile for games with variants */
+    .slider-display-area .slider-arrow {
+        display: none !important; /* Hide desktop arrows */
     }
 
-    /* Neutralize the desktop slider mechanism for variant games on mobile */
     .slider-display-area .game-entry-slider {
-        overflow: visible !important;
-    }
-    .slider-display-area .slider-content-strip {
-        display: block !important; /* Stack items */
-        transform: none !important; /* Remove JS-applied transform */
-        gap: 0 !important; /* Reset desktop gap */
-        width: 100% !important; /* Ensure it doesn't try to be wider */
+        overflow: visible !important; /* Allow dynamic height of the mobile card */
+        width: 100% !important; /* Ensure it occupies the necessary space */
     }
 
-    /* Ensure only the first slider-item's content is rendered by the layout engine for mobile,
-       as the mobile card within it will handle its own variant display. */
-    .slider-display-area .slider-item {
-        width: 100% !important; /* Make item take full width if parent is block */
-        flex-basis: auto !important; /* Reset flex basis */
+    .slider-display-area .slider-content-strip {
+        display: block !important;   /* Override desktop flex display */
+        transform: none !important;  /* Reset any desktop JS transforms */
+        width: 100% !important;      /* Take full width in block context */
+        gap: 0 !important;           /* Reset desktop gap */
     }
+
+    .slider-display-area .slider-item {
+        width: 100% !important;      /* Each item takes full width of the block parent */
+        /* Resetting potential flex properties, though parent is now block */
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
+        flex-basis: auto !important;
+        margin-bottom: 0 !important; /* Reset any margin if from desktop slider item styling */
+    }
+
     .slider-display-area .slider-item:not(:first-child) {
-        display: none !important;
+        display: none !important; /* Hide all but the first desktop slide item */
     }
 
     /* Ensure that .game-entry that contains .game-entry-mobile-card doesn't add extra padding/margin on mobile */
