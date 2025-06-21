@@ -504,7 +504,7 @@ main {
     /* Adjustments for game-entry-mobile-card when it's inside a mobile-slider-item */
     .mobile-slider-item .game-entry-mobile-card {
         margin-bottom: 0; /* Remove bottom margin, as spacing is handled by the slider container or its parent */
-        border-radius: 0; /* Optional: remove border-radius if slides are edge-to-edge in the strip */
+        /* border-radius: 0; */ /* Removed to restore rounded corners on individual cards within the slider */
                           /* Or keep it if the slider area itself has padding/rounded corners */
         /* border: none; */ /* Optional: remove border if it interferes with seamless sliding */
         /* box-shadow: none; */ /* Optional: remove shadow if it looks odd during transition or on edges */
