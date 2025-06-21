@@ -501,4 +501,59 @@ main {
         /* So .game-entry itself doesn't need much styling for mobile, it's just a container. */
     }
 
+    /* Mobile Card Swipe Animations */
+    .game-entry-mobile-card .mobile-hero-banner,
+    .game-entry-mobile-card .mobile-main-info,
+    .game-entry-mobile-card .mobile-release-accordion, /* Target accordion directly if content is part of it */
+    .game-entry-mobile-card .mobile-external-links {
+        transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+    }
+
+    .game-entry-mobile-card.card-swiping-out-left .mobile-hero-banner,
+    .game-entry-mobile-card.card-swiping-out-left .mobile-main-info,
+    .game-entry-mobile-card.card-swiping-out-left .mobile-release-accordion,
+    .game-entry-mobile-card.card-swiping-out-left .mobile-external-links {
+        opacity: 0;
+        transform: translateX(-30px); /* Slide out to the left */
+    }
+
+    .game-entry-mobile-card.card-swiping-out-right .mobile-hero-banner,
+    .game-entry-mobile-card.card-swiping-out-right .mobile-main-info,
+    .game-entry-mobile-card.card-swiping-out-right .mobile-release-accordion,
+    .game-entry-mobile-card.card-swiping-out-right .mobile-external-links {
+        opacity: 0;
+        transform: translateX(30px); /* Slide out to the right */
+    }
+
+    /* Initial state for incoming content (before animation) */
+    .game-entry-mobile-card.card-swiping-in-left .mobile-hero-banner,
+    .game-entry-mobile-card.card-swiping-in-left .mobile-main-info,
+    .game-entry-mobile-card.card-swiping-in-left .mobile-release-accordion,
+    .game-entry-mobile-card.card-swiping-in-left .mobile-external-links {
+        opacity: 0;
+        transform: translateX(30px); /* Start off-screen to the right */
+    }
+
+    .game-entry-mobile-card.card-swiping-in-right .mobile-hero-banner,
+    .game-entry-mobile-card.card-swiping-in-right .mobile-main-info,
+    .game-entry-mobile-card.card-swiping-in-right .mobile-release-accordion,
+    .game-entry-mobile-card.card-swiping-in-right .mobile-external-links {
+        opacity: 0;
+        transform: translateX(-30px); /* Start off-screen to the left */
+    }
+
+    /* Target state for incoming content (visible and in place) - will transition to this */
+    .game-entry-mobile-card.card-content-visible .mobile-hero-banner,
+    .game-entry-mobile-card.card-content-visible .mobile-main-info,
+    .game-entry-mobile-card.card-content-visible .mobile-release-accordion,
+    .game-entry-mobile-card.card-content-visible .mobile-external-links {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+
+    /* Hide desktop slider arrows on mobile */
+    .slider-arrow {
+        display: none;
+    }
 }
