@@ -1,5 +1,16 @@
+/**
+ * @file script.js
+ * Handles dynamic game data loading, HTML generation for game entries (desktop & mobile),
+ * and interactive features like sliders, accordions, lightbox, and navigation.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     // --- Global Helper Functions ---
+
+    /**
+     * Creates a formatted HTML string for release dates.
+     * @param {Array<Object>} releases - Array of release objects, each with date and platforms.
+     * @returns {string} HTML string representing the formatted release dates.
+     */
     const createReleaseString = (releases) => {
         if (!releases || releases.length === 0) {
             return '';
@@ -13,6 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Desktop HTML Generation ---
+
+    /**
+     * Creates HTML for the desktop game art container.
+     * @param {Object} game - The game data object.
+     * @returns {string} HTML string for the art container.
+     */
     function createDesktopArtContainerHTML(game) {
         return `
             <div class="art-container desktop-only">
@@ -20,6 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
     }
 
+    /**
+     * Creates HTML for the desktop main info section (logo, titles, releases).
+     * @param {Object} game - The game data object.
+     * @returns {string} HTML string for the main info section.
+     */
     function createDesktopMainInfoHTML(game) {
         return `
             <div class="main-info">
@@ -41,6 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
     }
 
+    /**
+     * Creates HTML for the desktop external links section.
+     * @param {Object} game - The game data object.
+     * @returns {string} HTML string for the external links.
+     */
     function createDesktopExternalLinksHTML(game) {
         return `
             <div class="external-links">
@@ -56,6 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
     }
 
+    /**
+     * Creates HTML for the desktop info container (background, content).
+     * @param {Object} game - The game data object.
+     * @returns {string} HTML string for the info container.
+     */
     function createDesktopInfoContainerHTML(game) {
         return `
             <div class="info-container desktop-only">
@@ -67,6 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
     }
 
+    /**
+     * Creates the complete HTML for a desktop game entry.
+     * @param {Object} game - The game data object.
+     * @returns {string} HTML string for the desktop game entry.
+     */
     function createGameEntryDesktopHTML(game) {
         return `
             ${createDesktopArtContainerHTML(game)}
@@ -74,6 +111,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Mobile HTML Generation ---
+
+    /**
+     * Creates HTML for a mobile game card.
+     * @param {Object} game - The game data for the current card.
+     * @param {boolean} [isVariant=false] - Whether this card is for a variant.
+     * @param {Array<Object>|null} [allVariantsData=null] - Full list of variants (including main game) if this is the main game card.
+     * @param {string|null} [mainGameAssetName=null] - Asset name of the main game if this is a variant card.
+     * @returns {string} HTML string for the mobile game card.
+     */
     function createMobileCardHTML(game, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
         const heroImageUrl = `hero/${game.assetName}.jpg`;
         let pagerDotsHTML = '';
@@ -135,7 +181,14 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
     }
 
-    // Combined function for a single game object (main or variant)
+    /**
+     * Creates the combined HTML for both desktop and mobile views of a single game or variant.
+     * @param {Object} gameData - The game data for the current item.
+     * @param {boolean} [isVariant=false] - Whether this item is a variant.
+     * @param {Array<Object>|null} [allVariantsData=null] - Full list of variants (including main) for mobile card context.
+     * @param {string|null} [mainGameAssetName=null] - Asset name of the main game for mobile variant context.
+     * @returns {string} HTML string for the complete game render.
+     */
     function createFullGameRenderHTML(gameData, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
         // For variants, allVariantsData would be the full list [mainGame, variant1, variant2...]
         // and mainGameAssetName would be the assetName of the original game.
@@ -146,6 +199,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Lightbox Setup ---
+    /**
+     * Sets up the mobile lightbox functionality.
+     * Creates lightbox DOM elements if they don't exist and attaches event listeners.
+     */
     function setupLightbox() {
         if (document.getElementById('mobile-lightbox')) return; // Already created
 
@@ -166,16 +223,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Event delegation for hero banners, as they are dynamically added
-        document.body.addEventListener('click', function(event) {
-            const banner = event.target.closest('.mobile-hero-banner');
-            if (banner && banner.parentElement.classList.contains('mobile-only')) { // Ensure it's for the mobile card
-                const heroSrc = banner.dataset.heroSrc;
-                if (heroSrc) {
-                    lightboxImage.src = heroSrc;
-                    lightbox.style.display = 'flex';
-                }
-            }
-        });
+        // document.body.addEventListener('click', function(event) {
+        //     const banner = event.target.closest('.mobile-hero-banner');
+        //     if (banner && banner.parentElement.classList.contains('mobile-only')) { // Ensure it's for the mobile card
+        //         const heroSrc = banner.dataset.heroSrc;
+        //         if (heroSrc) {
+        //             lightboxImage.src = heroSrc;
+        //             lightbox.style.display = 'flex';
+        //         }
+        //     }
+        // });
+        // Lightbox functionality for mobile hero images removed as per new requirements.
+        // The lightbox HTML and general close logic will remain in case it's used for other purposes later.
 
         lightboxClose.addEventListener('click', () => {
             lightbox.style.display = 'none';
@@ -190,6 +249,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Accordion Setup ---
+    /**
+     * Sets up accordion functionality for mobile release details.
+     * Uses event delegation on the body.
+     */
     function setupAccordions() {
         // Event delegation for accordions
         document.body.addEventListener('click', function(event) {
@@ -308,13 +371,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     prevButton.className = 'slider-arrow slider-arrow-prev';
                     prevButton.innerHTML = '&#10094;';
                     prevButton.onclick = () => navigateSlider(sliderDisplayArea, -1);
-                    sliderDisplayArea.appendChild(prevButton);
+                    // sliderDisplayArea.appendChild(prevButton); // Old prev button removed
 
-                    const nextButton = document.createElement('button');
-                    nextButton.className = 'slider-arrow slider-arrow-next';
-                    nextButton.innerHTML = '&#10095;';
-                    nextButton.onclick = () => navigateSlider(sliderDisplayArea, 1);
-                    sliderDisplayArea.appendChild(nextButton);
+                    // const nextButton = document.createElement('button'); // Old next button removed
+                    // nextButton.className = 'slider-arrow slider-arrow-next';
+                    // nextButton.innerHTML = '&#10095;';
+                    // nextButton.onclick = () => navigateSlider(sliderDisplayArea, 1);
+                    // sliderDisplayArea.appendChild(nextButton);
+
+                    const navButton = document.createElement('button');
+                    navButton.className = 'slider-nav-button desktop-only'; // Added desktop-only
+                    // Icon and onclick will be set by navigateSlider
+                    sliderDisplayArea.appendChild(navButton);
+                    sliderDisplayArea.navButton = navButton; // Store reference to the button
 
                     gameWrapperElement = sliderDisplayArea;
                 } else {
@@ -374,6 +443,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     // --- Mobile Variant Navigation Functionality (formerly Swipe) ---
+
+    /**
+     * Updates the content of a mobile game card with new game data.
+     * Used when navigating between game variants on mobile.
+     * @param {HTMLElement} cardElement - The .game-entry-mobile-card element to update.
+     * @param {Object} gameData - The game data object for the new variant.
+     */
     function updateMobileCardContent(cardElement, gameData) {
         // Update hero banner
         const heroBanner = cardElement.querySelector('.mobile-hero-banner');
@@ -423,6 +499,10 @@ document.addEventListener('DOMContentLoaded', () => {
         cardElement.dataset.assetName = gameData.assetName;
     }
 
+    /**
+     * Sets up click-based navigation for mobile game variants using pager dots.
+     * Attaches event listeners to pager dots to update card content and trigger animations.
+     */
     function setupMobileVariantNavigation() { // Renamed from setupMobileVariantSwipes
         document.querySelectorAll('.game-entry-mobile-card[data-variants]').forEach(card => {
             const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
@@ -473,21 +553,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /**
+     * Handles navigation for desktop sliders (previous/next game variant).
+     * @param {HTMLElement} sliderDisplayAreaElement - The .slider-display-area element.
+     * @param {number} direction - -1 for previous, 1 for next, 0 for initial setup.
+     */
     function navigateSlider(sliderDisplayAreaElement, direction) {
         const contentStrip = sliderDisplayAreaElement.querySelector('.game-entry-slider .slider-content-strip');
         if (!contentStrip) return;
 
         const itemsCount = contentStrip.children.length;
         let currentIndex = parseInt(sliderDisplayAreaElement.getAttribute('data-current-index'), 10);
-        currentIndex += direction;
-        currentIndex = Math.max(0, Math.min(currentIndex, itemsCount - 1));
-        sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
+
+        // If direction is 0, it's an initial setup call, don't change currentIndex yet.
+        if (direction !== 0) {
+            currentIndex += direction;
+            currentIndex = Math.max(0, Math.min(currentIndex, itemsCount - 1));
+            sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
+        }
+
         contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
 
-        const prevButton = sliderDisplayAreaElement.querySelector('.slider-arrow-prev');
-        const nextButton = sliderDisplayAreaElement.querySelector('.slider-arrow-next');
-        if (prevButton) prevButton.disabled = currentIndex === 0;
-        if (nextButton) nextButton.disabled = currentIndex === itemsCount - 1;
+        const navButton = sliderDisplayAreaElement.navButton; // Get stored reference
+        if (!navButton) return;
+
+        if (itemsCount <= 1) {
+            navButton.disabled = true;
+            navButton.style.display = 'none'; // Hide if only one or no items
+        } else {
+            navButton.style.display = 'flex'; // Ensure it's visible
+            navButton.disabled = false;
+
+            if (currentIndex < itemsCount - 1) {
+                // Not at the last item, so button is "Next"
+                navButton.innerHTML = '&#10095;'; // → (Next)
+                navButton.onclick = () => navigateSlider(sliderDisplayAreaElement, 1);
+            } else {
+                // At the last item, button is "Previous"
+                navButton.innerHTML = '&#10094;'; // ← (Previous)
+                navButton.onclick = () => navigateSlider(sliderDisplayAreaElement, -1);
+            }
+        }
     }
 
 });

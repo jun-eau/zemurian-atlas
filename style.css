@@ -199,49 +199,45 @@ main {
     /* .game-entry styles will apply to the child div within .slider-item */
 }
 
-.slider-arrow {
+/* Styles for .slider-arrow, .slider-arrow-prev, .slider-arrow-next are removed. */
+/* New styles for the single desktop slider navigation button are added below. */
+
+
+/* New styles for the single desktop slider navigation button */
+.slider-nav-button {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10; /* Above the content strip */
-    background-color: rgba(0, 0, 0, 0.5); /* Will be adjusted later for fade out */
+    bottom: 15px;
+    right: 15px;
+    z-index: 15; /* Ensure it's above hero image, but below potential modals */
+    background-color: rgba(0, 0, 0, 0.6);
     color: var(--accent-gold);
-    border: none;
-    padding: 15px 20px; /* Increased padding */
-    font-size: var(--font-size-xxl); /* Increased font size */
+    border: 1px solid var(--accent-gold);
+    border-radius: 50%; /* Circular button */
+    width: 44px;
+    height: 44px;
+    font-size: var(--font-size-xl); /* Arrow size */
     cursor: pointer;
-    transition: background-color 0.3s ease, opacity 0.3s ease-out; /* Added opacity transition */
-    border-radius: 4px;
-    opacity: 1; /* Start fully visible */
+    transition: background-color 0.3s ease, opacity 0.3s ease-out, color 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
-.slider-arrow:hover {
+.slider-nav-button:hover {
     background-color: rgba(0, 0, 0, 0.8);
+    border-color: #fff;
 }
 
-.slider-arrow:disabled {
-    opacity: 0; /* Will fade to invisible */
+.slider-nav-button:disabled {
+    opacity: 0.4;
     cursor: not-allowed;
-    pointer-events: none; /* Make it non-interactive when invisible */
+    background-color: rgba(0, 0, 0, 0.3);
+    border-color: var(--text-secondary);
+    color: var(--text-secondary);
 }
 
-.slider-arrow-prev {
-    left: -80px; /* Increased offset for more space */
-}
-
-.slider-arrow-next {
-    right: -80px; /* Increased offset for more space */
-}
-
-/* Ensure that the .game-entry within a .slider-item behaves as expected.
-   The default .game-entry is a flex container. This should still work.
-   If .game-entry had a max-width, it would apply here correctly. */
-.slider-item .game-entry {
-    /* No specific overrides needed here unless there are conflicts.
-       The .game-entry styles should apply as is.
-       Its width will be constrained by .slider-item's 100% width. */
-    margin-bottom: 0; /* Remove bottom margin if game-entry usually has one, to prevent double spacing if slider itself has margin */
-}
+/* .slider-item .game-entry specific styling was removed as not needed */
 
 /* --- Initial Hiding of Mobile/Desktop Specific Elements --- */
 /* Mobile elements are hidden by default, shown in media query */
@@ -297,7 +293,7 @@ main {
         width: 100%;
         height: 160px; /* Adjust height as needed */
         overflow: hidden;
-        cursor: pointer;
+        /* cursor: pointer; Removed as hero is no longer clickable for lightbox */
         position: relative; /* For potential overlay effects if needed */
     }
     .mobile-hero-banner img {
@@ -453,93 +449,68 @@ main {
         transform: scale(1.1);
     }
 
-    /* Mobile "Variants" Slider - Pager Dots */
-    .mobile-pager-dots {
+    /* Mobile "Variants" Pager Pill Buttons */
+    .mobile-pager-dots { /* This div centers the pill container */
         text-align: center;
-        padding: 0.75rem 0; /* Space around the pill */
-        /* background-color: rgba(0,0,0,0.1); Removed, pill has its own bg */
-        display: flex; /* Use flex to center the pill itself if it's inline-flex */
+        padding: 0.75rem 0;
+        display: flex;
         justify-content: center;
     }
-    .mobile-pager-dots-container { /* New wrapper for the pill itself */
-        display: inline-flex; /* Makes the container only as wide as its content */
-        border-radius: 20px; /* High value for pill shape */
-        background-color: rgba(255, 255, 255, 0.05); /* Subtle background for the pill container */
+    .mobile-pager-dots-container { /* The pill container itself */
+        display: inline-flex;
+        border-radius: 20px; /* Rounded ends for the pill */
+        background-color: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.15);
-        overflow: hidden; /* Ensures children conform to border-radius */
+        overflow: hidden; /* Ensures segments conform to the pill shape */
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    .mobile-pager-dots .dot {
-        display: flex; /* To center content if we add numbers */
+    .mobile-pager-dots .dot { /* Individual segment/button within the pill */
+        display: flex;
         align-items: center;
         justify-content: center;
-        width: 20px;   /* Size of the segment's clickable area ( W/H before padding ) */
-        height: 20px;
-        padding: 4px 6px; /* Padding contributes to clickable area and visual size */
-        background-color: transparent; /* Inactive segments */
-        border: none; /* Remove individual borders */
-        border-right: 1px solid rgba(255, 255, 255, 0.15); /* Separator line */
-        /* border-radius: 0; Reset individual radius, handled by container or first/last child */
-        margin: 0; /* Remove margins for connected look */
-        transition: background-color 0.2s ease; /* Only transition background */
+        width: 36px;   /* Width of the segment - adjusted to 36px */
+        height: 20px;  /* Height of the segment */
+        padding: 4px 6px; /* Padding contributes to overall size and touch target */
+        background-color: transparent; /* Default for inactive segments */
+        border: none; /* Individual borders removed */
+        border-right: 1px solid rgba(255, 255, 255, 0.15); /* Separator line between segments */
+        margin: 0; /* No margin for a connected look */
+        transition: background-color 0.2s ease; /* Smooth transition for background changes */
         cursor: pointer;
-        color: var(--text-secondary); /* Default text color for numbers if added */
+        color: var(--text-secondary); /* Default text color (e.g., for future numbers) */
         font-size: var(--font-size-xs);
     }
     .mobile-pager-dots .dot:last-child {
-        border-right: none; /* No separator for the last item */
+        border-right: none; /* No separator for the last segment */
     }
-    .mobile-pager-dots .dot:hover { /* Hover for inactive segments */
+    .mobile-pager-dots .dot:hover { /* Hover state for inactive segments */
         background-color: rgba(255, 255, 255, 0.1);
     }
-    .mobile-pager-dots .dot.active {
+    .mobile-pager-dots .dot.active { /* Active segment */
         background-color: var(--accent-gold);
-        color: var(--primary-bg); /* For contrast if numbers are added */
-        /* transform: none; Remove previous scaling if any */
-        /* The border-right of an active segment might need to visually merge or change
-           For now, the default separator will remain. Can be refined if needed. */
+        color: var(--primary-bg); /* Text color for active segment (e.g., for future numbers) */
     }
-    /* Note: The border-radius for first-child and last-child on .dot elements
-       is not strictly necessary if the parent .mobile-pager-dots-container has overflow:hidden.
-       The parent's border-radius will clip the children.
-       If visual issues arise, they can be added:
-       .mobile-pager-dots .dot:first-child { border-top-left-radius: 20px; border-bottom-left-radius: 20px; }
-       .mobile-pager-dots .dot:last-child { border-top-right-radius: 20px; border-bottom-right-radius: 20px; }
-       However, this can be tricky if the dots themselves have borders.
-       Simpler to rely on parent's overflow:hidden.
-    */
+    /* End of Mobile "Variants" Pager Pill Buttons */
+
 
     /* Slider specific adjustments for mobile if any are needed */
-    }
-
-    /* Slider specific adjustments for mobile if any are needed */
-    /* The desktop slider arrows (.slider-arrow) should be hidden as they are part of .desktop-only */
+    /* Desktop slider arrows are hidden on mobile via .slider-arrow { display: none; } below */
     .slider-display-area {
-        /* On mobile, the slider-display-area itself might not need special styles if its
-           .game-entry child (which contains the mobile card) is what's being swiped.
-           If the whole slider-display-area becomes the swipe target, then styles might go here.
-           For now, assuming swipe happens on .game-entry-mobile-card. */
+        /* No specific mobile styles needed here for the display area itself. */
+        /* Its children control desktop/mobile visibility. */
     }
     .game-entry-slider {
-        /* This is the overflow:hidden container for desktop.
-           On mobile, if we are not using this for swipe, its role might change or it might be hidden.
-           For now, assuming it's hidden via its parent .desktop-only elements or direct children.
-           If .slider-item > .game-entry > .game-entry-mobile-card is the structure,
-           then .game-entry-slider itself would be part of the .desktop-only structure.
-        */
+        /* This is the overflow:hidden container for desktop slides. */
+        /* It's part of the .desktop-only content generated by JS. */
     }
 
-    /* Ensure that .game-entry that contains .game-entry-mobile-card doesn't add extra padding/margin on mobile */
+    /* Reset .game-entry styles when it's a container on mobile, as its children handle styling */
     .game-entry {
-        padding: 0; /* Reset any padding if it was for desktop layout */
-        margin: 0;  /* Reset any margin if it was for desktop layout */
-        /* background: transparent; /* Ensure it doesn't have its own background conflicting with card */
-        /* display: block; /* Reset flex if it was specific to desktop two-column */
-        /* The JS structure is .game-entry > .game-entry-mobile-card and .game-entry > .desktop-stuff */
-        /* So .game-entry itself doesn't need much styling for mobile, it's just a container. */
+        padding: 0;
+        margin: 0;
     }
 
-    /* Mobile Card Swipe Animations */
+    /* Mobile Card Variant Navigation Animations */
     .game-entry-mobile-card .mobile-hero-banner,
     .game-entry-mobile-card .mobile-main-info,
     .game-entry-mobile-card .mobile-release-accordion, /* Target accordion directly if content is part of it */
@@ -588,10 +559,6 @@ main {
         opacity: 1;
         transform: translateX(0);
     }
-
-
-    /* Hide desktop slider arrows on mobile */
-    .slider-arrow {
-        display: none;
-    }
+    /* Former .slider-arrow hiding rule removed as the class is no longer in use. */
+    /* The new .slider-nav-button is desktop-only via JS-added class or direct styling if needed. */
 }
