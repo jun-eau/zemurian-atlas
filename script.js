@@ -155,12 +155,109 @@ document.addEventListener('DOMContentLoaded', () => {
                     lastArc = game.arc;
                 }
 
-                const entry = document.createElement('div');
-                entry.className = 'game-entry';
+                let gameWrapperElement; // This will be the element added to timelineContainer
 
-                entry.innerHTML = createGameEntryHTML(game); // Call the new main function
+                if (game.variants && game.variants.length > 0) {
+                    // New outer wrapper for slider and arrows
+                    const sliderDisplayArea = document.createElement('div');
+                    sliderDisplayArea.className = 'slider-display-area';
+                    sliderDisplayArea.setAttribute('data-current-index', '0'); // Keep index here for navigateSlider
 
-                timelineContainer.appendChild(entry);
+                    // Inner container for the sliding content, this will have overflow:hidden
+                    const gameEntrySlider = document.createElement('div');
+                    gameEntrySlider.className = 'game-entry-slider';
+                    // data-current-index might be more logical on sliderDisplayArea if arrows are direct children of it.
+                    // Let's assume navigateSlider will be passed sliderDisplayArea.
+
+                    const sliderContentStrip = document.createElement('div');
+                    sliderContentStrip.className = 'slider-content-strip';
+
+                    // Create and add the original game entry
+                    const originalGameItem = document.createElement('div');
+                    originalGameItem.className = 'slider-item';
+                    const originalGameEntry = document.createElement('div');
+                    originalGameEntry.className = 'game-entry';
+                    originalGameEntry.innerHTML = createGameEntryHTML(game);
+                    originalGameItem.appendChild(originalGameEntry);
+                    sliderContentStrip.appendChild(originalGameItem);
+
+                    // Create and add variant game entries
+                    game.variants.forEach(variant => {
+                        const variantGameItem = document.createElement('div');
+                        variantGameItem.className = 'slider-item';
+                        const variantGameEntry = document.createElement('div');
+                        variantGameEntry.className = 'game-entry';
+                        variantGameEntry.innerHTML = createGameEntryHTML(variant);
+                        variantGameItem.appendChild(variantGameEntry);
+                        sliderContentStrip.appendChild(variantGameItem);
+                    });
+
+                    gameEntrySlider.appendChild(sliderContentStrip); // Add strip to the overflow-hidden container
+                    sliderDisplayArea.appendChild(gameEntrySlider); // Add overflow-hidden container to the display area
+
+                    // Add Navigation Arrows to sliderDisplayArea (so they are not clipped)
+                    const prevButton = document.createElement('button');
+                    prevButton.className = 'slider-arrow slider-arrow-prev';
+                    prevButton.innerHTML = '&#10094;';
+                    prevButton.setAttribute('aria-label', 'Previous version');
+                    prevButton.onclick = () => navigateSlider(sliderDisplayArea, -1); // Pass sliderDisplayArea
+                    sliderDisplayArea.appendChild(prevButton);
+
+                    const nextButton = document.createElement('button');
+                    nextButton.className = 'slider-arrow slider-arrow-next';
+                    nextButton.innerHTML = '&#10095;';
+                    nextButton.setAttribute('aria-label', 'Next version');
+                    nextButton.onclick = () => navigateSlider(sliderDisplayArea, 1); // Pass sliderDisplayArea
+                    sliderDisplayArea.appendChild(nextButton);
+
+                    gameWrapperElement = sliderDisplayArea;
+
+                } else {
+                    // Non-slider game entries
+                    const standardEntry = document.createElement('div');
+                    standardEntry.className = 'game-entry';
+                    standardEntry.innerHTML = createGameEntryHTML(game);
+                    gameWrapperElement = standardEntry;
+                }
+
+                timelineContainer.appendChild(gameWrapperElement);
+            });
+
+            function navigateSlider(sliderDisplayAreaElement, direction) {
+                // sliderDisplayAreaElement is the new '.slider-display-area'
+                // The content strip is inside '.game-entry-slider' which is inside 'sliderDisplayAreaElement'
+                const contentStrip = sliderDisplayAreaElement.querySelector('.game-entry-slider .slider-content-strip');
+                if (!contentStrip) return;
+
+                const itemsCount = contentStrip.children.length;
+                let currentIndex = parseInt(sliderDisplayAreaElement.getAttribute('data-current-index'), 10);
+
+                currentIndex += direction;
+
+                if (currentIndex < 0) currentIndex = 0;
+                if (currentIndex >= itemsCount) currentIndex = itemsCount - 1;
+
+                sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
+                contentStrip.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+                const prevButton = sliderDisplayAreaElement.querySelector('.slider-arrow-prev');
+                const nextButton = sliderDisplayAreaElement.querySelector('.slider-arrow-next');
+                if (prevButton) prevButton.disabled = currentIndex === 0;
+                if (nextButton) nextButton.disabled = currentIndex === itemsCount - 1;
+            }
+
+            // Initialize slider arrow states after all game entries are added
+            // Query for the new outer wrapper '.slider-display-area'
+            document.querySelectorAll('.slider-display-area').forEach(sliderArea => {
+                const initialIndex = parseInt(sliderArea.getAttribute('data-current-index'), 10) || 0;
+                const contentStrip = sliderArea.querySelector('.game-entry-slider .slider-content-strip');
+                if (contentStrip) {
+                    const itemsCount = contentStrip.children.length;
+                    const prevButton = sliderArea.querySelector('.slider-arrow-prev');
+                    const nextButton = sliderArea.querySelector('.slider-arrow-next');
+                    if (prevButton) prevButton.disabled = initialIndex === 0;
+                    if (nextButton) nextButton.disabled = initialIndex >= itemsCount - 1;
+                }
             });
 
             // --- Arc Navigation Active State Highlighting ---

@@ -17,6 +17,23 @@
         "releasesEN": [
             { "date": "March 29, 2011", "platforms": "(PSP)" },
             { "date": "July 29, 2014", "platforms": "(PC)" }
+        ],
+        "variants": [
+          {
+            "englishTitle": "Trails in the Sky 1st Chapter",
+            "japaneseTitleKanji": "空の軌跡 the 1st",
+            "japaneseTitleRomaji": "Sora no Kiseki the 1st",
+            "assetName": "trails-in-the-sky-1st-chapter",
+            "steamUrl": "https://store.steampowered.com/app/251150/",
+            "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky#Trails_in_the_Sky_1st_Chapter",
+            "fandomUrl": "https://kiseki.fandom.com/wiki/Trails_in_the_Sky_1st_Chapter",
+            "releasesJP": [
+              { "date": "September 19, 2025", "platforms": "(PC, PS5, Switch)" }
+            ],
+            "releasesEN": [
+              { "date": "September 19, 2025", "platforms": "(PC, PS5, Switch)" }
+            ]
+          }
         ]
     },
     {
