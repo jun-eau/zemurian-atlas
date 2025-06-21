@@ -29,6 +29,8 @@
             "steamUrl": "https://store.steampowered.com/app/3375780/",
             "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky#Trails_in_the_Sky_1st_Chapter",
             "fandomUrl": "https://kiseki.fandom.com/wiki/Trails_in_the_Sky_1st_Chapter",
+        "playstationUrl": "https://store.playstation.com/en-us/concept/10013078",
+        "nintendoUrl": null,
             "releasesJP": [
               { "date": "September 19, 2025", "platforms": "(PC, PS5, Switch)" }
             ],
