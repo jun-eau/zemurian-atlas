@@ -238,7 +238,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (currentIndex >= itemsCount) currentIndex = itemsCount - 1;
 
                 sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
-                contentStrip.style.transform = `translateX(-${currentIndex * 100}%)`;
+                // Adjust translateX to account for the gap.
+                // Each item is 100% width, plus a 2rem gap.
+                contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
 
                 const prevButton = sliderDisplayAreaElement.querySelector('.slider-arrow-prev');
                 const nextButton = sliderDisplayAreaElement.querySelector('.slider-arrow-next');
