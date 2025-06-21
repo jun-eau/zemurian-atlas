@@ -211,6 +211,7 @@ main {
 .slider-content-strip {
     display: flex;
     transition: transform 0.5s ease-in-out;
+    gap: 2rem; /* Added gap between slider items */
     /* Width will be dynamically handled by the number of items,
        e.g., if 2 items, it's effectively 200% of the .game-entry-slider width.
        Each .slider-item will be 100% of .game-entry-slider width. */
