@@ -461,17 +461,23 @@ main {
     }
     .mobile-pager-dots .dot {
         display: inline-block;
-        width: 10px;   /* Larger dots */
-        height: 10px;
-        background-color: var(--text-secondary); /* Inactive dot color */
-        border-radius: 50%;
-        margin: 0 5px; /* Spacing between dots */
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        cursor: pointer; /* If we make dots clickable later */
+        width: 12px;   /* Slightly larger dots */
+        height: 12px;
+        background-color: rgba(255, 255, 255, 0.2); /* Inactive dot color - more subtle */
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%; /* Keep them circular for now, but larger */
+        margin: 0 6px; /* Spacing between dots */
+        transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+        cursor: pointer;
+    }
+    .mobile-pager-dots .dot:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
     }
     .mobile-pager-dots .dot.active {
         background-color: var(--accent-gold); /* Active dot color */
-        transform: scale(1.2);
+        border-color: var(--accent-gold);
+        transform: scale(1.15); /* Slightly adjusted scale */
     }
 
     /* Slider specific adjustments for mobile if any are needed */
