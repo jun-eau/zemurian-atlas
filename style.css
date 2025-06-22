@@ -41,15 +41,19 @@ header {
     z-index: 1000;
     padding-bottom: 0; /* Adjust padding to accommodate new nav styling */
 }
-header h1 { margin: 0 0 0.5rem 0; font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 5vw, 3rem); font-weight: 700; color: var(--accent-gold); }
+header h1 { margin: 0 0 0.25rem 0; font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 5vw, 3rem); font-weight: 700; color: var(--accent-gold); } /* Reduced bottom margin from 0.5rem to 0.25rem */
 /* header h2 removed as it's not used globally anymore */
 footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-size-sm); }
 
 /* --- Main Navigation Styling --- */
 .main-navigation {
-    padding: 0.75rem 0 0.75rem 0; /* Generous vertical padding */
-    margin-bottom: 0; /* Reset default margin if any */
-    /* border-top: 1px solid rgba(233, 213, 161, 0.2); Optional top border */
+    padding: 0.5rem 0 0.5rem 0; /* Vertical padding */
+    margin-bottom: 0;
+    display: flex; /* Enable flexbox */
+    justify-content: center; /* Center links horizontally */
+    align-items: center; /* Align items vertically */
+    flex-wrap: nowrap; /* Prevent wrapping to new line */
+    overflow-x: auto; /* Add scroll if content overflows, though ideally it won't */
 }
 
 .main-navigation a {
@@ -58,10 +62,12 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     font-size: var(--font-size-md); /* Larger than arc-nav */
     color: var(--text-primary);
     text-decoration: none;
-    margin: 0 1.25rem; /* More generous spacing */
+    margin: 0 0.75rem; /* Reduced horizontal margin to allow more flex, can be adjusted */
     padding: 0.5rem 0.75rem;
     border-radius: 6px;
     transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    white-space: nowrap; /* Prevent text within a link from wrapping */
+    flex-shrink: 0; /* Prevent links from shrinking themselves, margin will shrink */
 }
 
 .main-navigation a:hover {
@@ -176,8 +182,8 @@ main {
 .arc-navigation {
     text-align: center; /* Center the navigation links */
     margin-top: 0; /* Adjusted due to main-navigation spacing */
-    margin-bottom: 0.5rem; /* Space below arc-nav before page content begins if header border is an issue */
-    padding: 0.5rem 0 0.75rem 0; /* Adjusted padding; more bottom padding to push content down from header bottom border */
+    margin-bottom: 0; /* Remove bottom margin, rely on padding */
+    padding: 0.6rem 0 0.6rem 0; /* Adjusted padding to be more symmetrical */
     color: #cccccc; /* Light gray color for '•' separators (inherited by text nodes) */
     border-top: 1px solid rgba(233, 213, 161, 0.15); /* Separator line from main-nav */
 }
