@@ -130,14 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function createMobileCardHTML(game, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
         const heroImageUrl = `hero/${game.assetName}.jpg`;
-        let mobileNavButtonsHTML = '';
         // Add mobile navigation buttons if this card is part of a slider
-        if (allVariantsData && allVariantsData.length > 1) {
-            mobileNavButtonsHTML = `
-                <button class="slider-nav-button-mobile slider-nav-mobile-prev" style="display: none;">&#10094;</button>
-                <button class="slider-nav-button-mobile slider-nav-mobile-next" style="display: none;">&#10095;</button>
-            `;
-        }
+        // mobileNavButtonsHTML was here, removed as unused.
 
         const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
 
@@ -250,17 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Event delegation for hero banners, as they are dynamically added
-        // document.body.addEventListener('click', function(event) {
-        //     const banner = event.target.closest('.mobile-hero-banner');
-        //     if (banner && banner.parentElement.classList.contains('mobile-only')) { // Ensure it's for the mobile card
-        //         const heroSrc = banner.dataset.heroSrc;
-        //         if (heroSrc) {
-        //             lightboxImage.src = heroSrc;
-        //             lightbox.style.display = 'flex';
-        //         }
-        //     }
-        // });
         // Lightbox functionality for mobile hero images removed as per new requirements.
         // The lightbox HTML and general close logic will remain in case it's used for other purposes later.
 
@@ -294,7 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     bar.setAttribute('aria-expanded', !isExpanded);
                     if (chevron) {
                         chevron.classList.toggle('expanded', !isExpanded);
-                        // chevron.textContent = isExpanded ? '▼' : '▲'; // Removed this line
                     }
                 }
             }
@@ -405,17 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     gameEntrySlider.appendChild(sliderContentStrip);
                     sliderDisplayArea.appendChild(gameEntrySlider);
 
-                    const prevButton = document.createElement('button');
-                    prevButton.className = 'slider-arrow slider-arrow-prev';
-                    prevButton.innerHTML = '&#10094;';
-                    prevButton.onclick = () => navigateSlider(sliderDisplayArea, -1);
-                    // sliderDisplayArea.appendChild(prevButton); // Old prev button removed
-
-                    // const nextButton = document.createElement('button'); // Old next button removed
-                    // nextButton.className = 'slider-arrow slider-arrow-next';
-                    // nextButton.innerHTML = '&#10095;';
-                    // nextButton.onclick = () => navigateSlider(sliderDisplayArea, 1);
-                    // sliderDisplayArea.appendChild(nextButton);
+                    // Old prevButton and nextButton code was here, removed.
 
                     const navButton = document.createElement('button');
                     navButton.className = 'slider-nav-button desktop-only'; // Added desktop-only
@@ -485,171 +457,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>`;
             }
         });
-
-    // --- Mobile Variant Navigation Functionality (formerly Swipe) --- REMOVED as per requirements
-    /*
-    /**
-     * Updates the content of a mobile game card with new game data.
-     * Used when navigating between game variants on mobile.
-     * @param {HTMLElement} cardElement - The .game-entry-mobile-card element to update.
-     * @param {Object} gameData - The game data object for the new variant.
-     */
-    /*
-    function updateMobileCardContent(cardElement, gameData) {
-        // Update hero banner
-        const heroBanner = cardElement.querySelector('.mobile-hero-banner');
-        const heroImg = heroBanner ? heroBanner.querySelector('img') : null;
-        if (heroBanner && heroImg) {
-            const newHeroSrc = `hero/${gameData.assetName}.jpg`;
-            heroBanner.dataset.heroSrc = newHeroSrc;
-            heroImg.src = newHeroSrc;
-            heroImg.alt = `${gameData.englishTitle} Hero Image`;
-        }
-
-        // Update logo
-        const logoImg = cardElement.querySelector('.mobile-main-info .mobile-logo');
-        if (logoImg) {
-            logoImg.src = `logo/${gameData.assetName}.png`;
-            logoImg.alt = `${gameData.englishTitle} Logo`;
-        }
-
-        // Update titles
-        const kanjiTitleEl = cardElement.querySelector('.mobile-main-info .kanji-title');
-        if (kanjiTitleEl) kanjiTitleEl.textContent = gameData.japaneseTitleKanji;
-        const romajiTitleEl = cardElement.querySelector('.mobile-main-info .romaji-title');
-        if (romajiTitleEl) romajiTitleEl.textContent = gameData.japaneseTitleRomaji;
-
-        // Update release details
-        const releaseAccordionContent = cardElement.querySelector('.mobile-release-accordion .accordion-content');
-        if (releaseAccordionContent) {
-            const jpReleaseList = releaseAccordionContent.querySelector('.release-region:nth-child(1) .release-list');
-            if (jpReleaseList) jpReleaseList.innerHTML = createReleaseString(gameData.releasesJP);
-
-            const enReleaseList = releaseAccordionContent.querySelector('.release-region:nth-child(2) .release-list');
-            if (enReleaseList) enReleaseList.innerHTML = createReleaseString(gameData.releasesEN);
-        }
-
-        // Update external links
-        const externalLinksContainer = cardElement.querySelector('.mobile-external-links');
-        if (externalLinksContainer) {
-            const steamLink = externalLinksContainer.querySelector('a[title*="Steam"]');
-            if (steamLink) steamLink.href = gameData.steamUrl;
-
-            // Update or create/remove PlayStation link
-            let psLink = externalLinksContainer.querySelector('.playstation-link');
-            if (gameData.playstationUrl) {
-                if (!psLink) {
-                    // Create and insert psLink if it doesn't exist
-                    psLink = document.createElement('a');
-                    psLink.className = 'playstation-link';
-                    psLink.target = '_blank';
-                    psLink.rel = 'noopener noreferrer';
-                    psLink.title = 'PlayStation Store Page';
-                    psLink.innerHTML = '<img src="logo/playstation.png" alt="PlayStation Store Logo">';
-                    // Insert after Steam, before Wikipedia
-                    const wikiLinkForInsert = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
-                    externalLinksContainer.insertBefore(psLink, wikiLinkForInsert);
-                }
-                psLink.href = gameData.playstationUrl;
-                psLink.style.display = ''; // Ensure it's visible
-            } else if (psLink) {
-                psLink.remove(); // Remove if no URL and element exists
-            }
-
-            // Update or create/remove Nintendo link
-            let nintendoLink = externalLinksContainer.querySelector('.nintendo-link');
-            if (gameData.nintendoUrl) {
-                if (!nintendoLink) {
-                    // Create and insert nintendoLink if it doesn't exist
-                    nintendoLink = document.createElement('a');
-                    nintendoLink.className = 'nintendo-link';
-                    nintendoLink.target = '_blank';
-                    nintendoLink.rel = 'noopener noreferrer';
-                    nintendoLink.title = 'Nintendo eShop Page';
-                    nintendoLink.innerHTML = '<img src="logo/nintendo.png" alt="Nintendo eShop Logo">';
-                    // Insert after PlayStation (if it exists) or Steam, before Wikipedia
-                    const psLinkForInsert = externalLinksContainer.querySelector('.playstation-link');
-                    const wikiLinkForInsert = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
-                    if (psLinkForInsert) {
-                        psLinkForInsert.after(nintendoLink);
-                    } else if (steamLink) {
-                        steamLink.after(nintendoLink);
-                    } else { // Fallback if somehow steam link is also missing, unlikely
-                        externalLinksContainer.insertBefore(nintendoLink, wikiLinkForInsert);
-                    }
-                }
-                nintendoLink.href = gameData.nintendoUrl;
-                nintendoLink.style.display = ''; // Ensure it's visible
-            } else if (nintendoLink) {
-                nintendoLink.remove(); // Remove if no URL and element exists
-            }
-
-            const wikiLink = externalLinksContainer.querySelector('a[title*="Wikipedia"]');
-            if (wikiLink) wikiLink.href = gameData.wikiUrl;
-            const fandomLink = externalLinksContainer.querySelector('a[title*="Fandom"]');
-            if (fandomLink) fandomLink.href = gameData.fandomUrl;
-        }
-
-        // Update the card's own asset name for consistency if needed, though not strictly used by display after this.
-        cardElement.dataset.assetName = gameData.assetName;
-    }
-    */
-
-    /**
-     * Sets up click-based navigation for mobile game variants using pager dots.
-     * Attaches event listeners to pager dots to update card content and trigger animations.
-     */
-    /*
-    function setupMobileVariantNavigation() { // Renamed from setupMobileVariantSwipes
-        document.querySelectorAll('.game-entry-mobile-card[data-variants]').forEach(card => {
-            const pagerDotsContainer = card.querySelector('.mobile-pager-dots');
-            if (!pagerDotsContainer) return;
-
-            const dots = pagerDotsContainer.querySelectorAll('.dot');
-            const variantsJson = card.dataset.variants;
-            if (!variantsJson) return;
-
-            try {
-                const variants = JSON.parse(variantsJson);
-                const animationDuration = 250; // ms, should match CSS transition duration
-
-                dots.forEach((dot, targetIndex) => {
-                    dot.addEventListener('click', () => {
-                        let currentIndex = parseInt(card.dataset.currentVariantIndex, 10);
-
-                        if (targetIndex !== currentIndex) {
-                            const direction = targetIndex > currentIndex ? 1 : -1; // 1 for next, -1 for prev
-
-                            const swipeOutClass = direction === 1 ? 'card-swiping-out-left' : 'card-swiping-out-right';
-                            const swipeInClass = direction === 1 ? 'card-swiping-in-left' : 'card-swiping-in-right';
-
-                            card.classList.add(swipeOutClass);
-                            card.classList.remove('card-content-visible');
-
-                            setTimeout(() => {
-                                updateMobileCardContent(card, variants[targetIndex]);
-                                card.dataset.currentVariantIndex = targetIndex.toString();
-
-                                // Update active state for all dots
-                                dots.forEach((d, i) => d.classList.toggle('active', i === targetIndex));
-
-                                card.classList.remove(swipeOutClass);
-                                card.classList.add(swipeInClass);
-                                void card.offsetWidth; // Force reflow
-                                card.classList.add('card-content-visible');
-                                card.classList.remove(swipeInClass);
-
-                            }, animationDuration);
-                        }
-                    });
-                });
-
-            } catch (e) {
-                console.error("Error setting up mobile variant navigation:", e);
-            }
-        });
-    }
-    */
 
     /**
      * Sets up navigation controls for a slider (both desktop and mobile).

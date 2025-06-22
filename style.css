@@ -199,10 +199,6 @@ main {
     /* .game-entry styles will apply to the child div within .slider-item */
 }
 
-/* Styles for .slider-arrow, .slider-arrow-prev, .slider-arrow-next are removed. */
-/* New styles for the single desktop slider navigation button are added below. */
-
-
 /* New styles for the single desktop slider navigation button */
 .slider-nav-button {
     position: absolute;
@@ -293,7 +289,6 @@ main {
     /* 1. Unified Mobile Header */
     .mobile-unified-header {
         position: relative; /* Anchor for the mobile nav button */
-        /* height: 210px; Fixed height removed to allow content to define height */
         width: 100%;
         overflow: hidden; /* Ensures content respects fixed height */
     }
@@ -392,7 +387,6 @@ main {
 
     /* 3. Collapsible "Release Details" Section */
     .mobile-release-accordion {
-        /* border-top: 1px solid rgba(233, 213, 161, 0.15); */ /* Separator line */
     }
     .mobile-release-accordion .accordion-bar {
         background: rgba(255, 255, 255, 0.03); /* Subtle background for bar */
