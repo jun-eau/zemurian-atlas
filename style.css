@@ -640,23 +640,35 @@ main {
        The header's overflow:hidden will clip the top of the button if the button's top-outer corner radius
        is larger than the header's effective corner radius, or if it's simply square.
        The card's overall border-radius (12px) is the reference.
+       Update: Make buttons fully rectangular and let parent clipping define the D-shape.
     */
+    .slider-nav-button-mobile { /* Apply to base class now */
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 45px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: var(--accent-gold);
+        border: none;
+        font-size: var(--font-size-xl);
+        cursor: pointer;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border-radius: 0; /* Ensure buttons are perfect rectangles */
+    }
+
     .slider-nav-mobile-prev {
         left: 0; /* Flush to the left */
-        /* Round top-left and bottom-left corners for the outer edge of the "D". Top/bottom edges square. */
-        border-top-left-radius: 12px;    /* Match card's border radius */
-        border-bottom-left-radius: 12px; /* Match card's border radius */
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+        /* No specific border-radius here, inherits from .slider-nav-button-mobile */
     }
 
     .slider-nav-mobile-next {
         right: 0; /* Flush to the right */
-        /* Round top-right and bottom-right corners for the outer edge of the "D". Top/bottom edges square. */
-        border-top-right-radius: 12px;   /* Match card's border radius */
-        border-bottom-right-radius: 12px;/* Match card's border radius */
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+        /* No specific border-radius here, inherits from .slider-nav-button-mobile */
     }
 
     /* Ensure mobile slider items are correctly displayed */
