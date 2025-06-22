@@ -137,10 +137,44 @@ main {
 .external-links img:hover { opacity: 1; }
 
 /* --- Responsive Adjustments --- */
+
+/* --- Main Navigation Styling --- */
+.main-navigation {
+    text-align: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(233, 213, 161, 0.2); /* Subtle border below main nav */
+    margin-bottom: 0.5rem; /* Space between main nav and arc nav or content */
+}
+
+.main-navigation a {
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: var(--font-size-base); /* Slightly larger than arc nav */
+    color: var(--text-secondary); /* Subdued color for inactive links */
+    text-decoration: none;
+    margin: 0 1rem; /* More spacing for main navigation items */
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.main-navigation a:hover {
+    color: var(--text-primary);
+    background-color: rgba(233, 213, 161, 0.1); /* Subtle gold background on hover */
+}
+
+.main-navigation a.active {
+    color: var(--accent-gold);
+    /* Optional: Add a more distinct visual cue for active, like an underline or different background */
+    /* text-decoration: underline; */
+    /* text-decoration-color: var(--accent-gold); */
+}
+
+
 /* Arc Navigation Styling */
 .arc-navigation {
     text-align: center; /* Center the navigation links */
-    margin-top: 5px; /* Add some space above the navigation */
+    /* margin-top: 5px; /* Add some space above the navigation */ /* Removed, handled by main-nav margin-bottom */
     margin-bottom: 5px; /* Add some space below the navigation */
     padding: 0.5rem 0; /* Adjusted padding for sticky state */
     color: #cccccc; /* Light gray color for '•' separators (inherited by text nodes) */
@@ -543,4 +577,56 @@ main {
         display: none !important;
     }
 
+}
+
+/* --- Home Page Specific Styles --- */
+.home-intro {
+    text-align: center;
+    padding: 3rem 1rem;
+    margin: 2rem auto;
+    max-width: 800px; /* Limit width for better readability */
+    background-color: rgba(0, 0, 0, 0.2); /* Subtle background */
+    border-radius: 8px;
+    border: 1px solid rgba(233, 213, 161, 0.1); /* Subtle gold border */
+}
+
+.home-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: var(--font-size-xxxl);
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+}
+
+.home-intro p {
+    font-size: var(--font-size-lg);
+    color: var(--text-primary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: 2.5rem;
+}
+
+.home-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem; /* Space between buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens if needed */
+}
+
+.home-nav-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--accent-gold);
+    color: var(--primary-bg); /* Dark text on gold button */
+    font-size: var(--font-size-md);
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.home-nav-button:hover {
+    background-color: transparent; /* Transparent background on hover */
+    color: var(--accent-gold); /* Gold text */
+    border-color: var(--accent-gold); /* Gold border */
+    transform: translateY(-2px); /* Slight lift effect */
 }
