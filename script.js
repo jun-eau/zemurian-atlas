@@ -97,12 +97,21 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {string} HTML string for the info container.
      */
     function createDesktopInfoContainerHTML(game) {
+        // The button's content (arrow) and specific event listener will be set up
+        // by setupSliderControls, which will identify if this container is part of a slider.
+        // Add a placeholder class for now, like 'desktop-slider-toggle-button'.
+        // aria-controls will also be set by setupSliderControls.
+        const navButtonHTML = `
+            <button class="desktop-slider-toggle-button" aria-label="Toggle slide"></button>
+        `;
+
         return `
             <div class="info-container desktop-only">
                 <div class="hero-background" style="background-image: url('hero/${game.assetName}.jpg');" loading="lazy"></div>
                 <div class="info-content">
                     ${createDesktopMainInfoHTML(game)}
                     ${createDesktopExternalLinksHTML(game)}
+                    ${navButtonHTML}
                 </div>
             </div>`;
     }
@@ -387,14 +396,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     gameEntrySlider.appendChild(sliderContentStrip);
                     sliderDisplayArea.appendChild(gameEntrySlider);
 
-                    // Old prevButton and nextButton code was here, removed.
-
-                    const navButton = document.createElement('button');
-                    navButton.className = 'slider-nav-button desktop-only'; // Added desktop-only
-                    navButton.setAttribute('aria-controls', contentStripId);
-                    // Icon and onclick will be set by navigateSlider, aria-label will be set in setupSliderControls
-                    sliderDisplayArea.appendChild(navButton);
-                    sliderDisplayArea.navButton = navButton; // Store reference to the button
+                    // The desktop navigation button is now generated within each info-container.
+                    // No need to create and append it here.
+                    // The reference sliderDisplayArea.navButton is no longer needed as setupSliderControls
+                    // will find the buttons within the .slider-item elements.
 
                     gameWrapperElement = sliderDisplayArea;
                 } else {
@@ -466,8 +471,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const contentStrip = sliderDisplayAreaElement.querySelector('.game-entry-slider .slider-content-strip');
         if (!contentStrip || contentStrip.children.length <= 1) {
             // Hide all nav buttons if not a true slider (0 or 1 item)
-            const desktopNavButton = sliderDisplayAreaElement.querySelector('.slider-nav-button.desktop-only');
-            if (desktopNavButton) desktopNavButton.style.display = 'none';
+            // Desktop buttons are inside .info-container, so we need to find them if they exist.
+            const desktopNavButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .info-container .desktop-slider-toggle-button');
+            desktopNavButtons.forEach(btn => btn.style.display = 'none');
 
             const firstItemMobileCard = contentStrip.querySelector('.slider-item:first-child .game-entry-mobile-card');
             if (firstItemMobileCard) {
@@ -483,7 +489,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const contentStripId = contentStrip.id; // Get the ID from the content strip itself
 
-        const desktopNavButton = sliderDisplayAreaElement.querySelector('.slider-nav-button.desktop-only');
+        // Desktop buttons are now inside each .slider-item's .info-container.
+        // We'll handle them in updateDesktopButtonState.
+        const allDesktopToggleButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .info-container .desktop-slider-toggle-button');
+        allDesktopToggleButtons.forEach(btn => btn.setAttribute('aria-controls', contentStripId));
+
+
         // Select all potential mobile nav buttons within this slider area
         const allMobilePrevButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .mobile-only .slider-nav-mobile-prev');
         const allMobileNextButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .mobile-only .slider-nav-mobile-next');
@@ -498,26 +509,65 @@ document.addEventListener('DOMContentLoaded', () => {
             contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
         }
 
-        function updateDesktopButton() {
-            if (!desktopNavButton) return;
-            // itemsCount is at most 2 for a slider with variants.
-            // If itemsCount is 1, the initial check in setupSliderControls hides the button.
-            // This function now assumes itemsCount is 2 if the button is visible.
-            if (itemsCount <= 1) { // This case should ideally be caught by the initial setup
-                desktopNavButton.disabled = true;
-                desktopNavButton.style.display = 'none';
-            } else { // Assumes itemsCount is 2
-                desktopNavButton.style.display = 'flex';
-                desktopNavButton.disabled = false;
-                if (currentIndex === 0) {
-                    desktopNavButton.innerHTML = '&#10095;'; // → (Next)
-                    desktopNavButton.setAttribute('aria-label', 'Next item');
-                } else { // currentIndex must be 1
-                    desktopNavButton.innerHTML = '&#10094;'; // ← (Previous)
-                    desktopNavButton.setAttribute('aria-label', 'Previous item');
-                }
+        function updateDesktopButtonState() {
+            // Desktop buttons are inside each slider item.
+            // Only the button in the *active* slide's info-container should be effectively visible/interactive.
+            // However, CSS will handle visibility based on the .desktop-only class and media queries.
+            // Here, we just set content and aria-label for *all* desktop buttons,
+            // as they slide with their respective cards.
+            // The click listener will be attached to all of them, but only the one in the
+            // visible card will be practically clickable.
+
+            if (itemsCount <= 1) { // Should be caught by initial check
+                allDesktopToggleButtons.forEach(btn => {
+                    btn.style.display = 'none';
+                    btn.disabled = true;
+                });
+                return;
             }
+
+            allDesktopToggleButtons.forEach((btn, index) => {
+                // The button's appearance/action depends on the *slider's* current index,
+                // not the index of the button itself in the NodeList.
+                // Since there are only two items in a slider (0 and 1),
+                // the button in item 0 shows "Next", button in item 1 shows "Prev".
+                // This logic is for when the slider is on a particular card.
+                // The button itself doesn't change, its host card does.
+                // So, the button on card 0 *always* means "go to card 1" (Next)
+                // and the button on card 1 *always* means "go to card 0" (Prev).
+                // The `currentIndex` of the *slider* determines which card (and thus which button) is active.
+
+                btn.style.display = 'flex'; // Assuming flex for alignment, adjust with CSS
+                btn.disabled = false;
+
+                if (index === 0) { // Button associated with the first item
+                    btn.innerHTML = '&#10095;'; // → (Next)
+                    btn.setAttribute('aria-label', 'Next item');
+                    btn.onclick = () => {
+                        if (currentIndex === 0) { // Only act if this button's card is active
+                            currentIndex = 1;
+                            sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
+                            updateSlidePosition();
+                            // updateDesktopButtonState(); // Re-evaluating button states if needed, but content is fixed per button
+                            // updateMobileButtonsState(); // Keep mobile in sync
+                        }
+                    };
+                } else { // Button associated with the second item (index 1)
+                    btn.innerHTML = '&#10094;'; // ← (Previous)
+                    btn.setAttribute('aria-label', 'Previous item');
+                    btn.onclick = () => {
+                        if (currentIndex === 1) { // Only act if this button's card is active
+                            currentIndex = 0;
+                            sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
+                            updateSlidePosition();
+                            // updateDesktopButtonState();
+                            // updateMobileButtonsState();
+                        }
+                    };
+                }
+            });
         }
+
 
         function updateMobileButtonsState() {
             // This function is called when a slider has 2 items (original + variant).
@@ -551,21 +601,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // No need to handle itemsCount > 2 as per new constraints.
         }
 
-
-        if (desktopNavButton) {
-            desktopNavButton.onclick = () => {
-                // With max 2 items, currentIndex can only be 0 or 1.
-                // itemsCount will be 2 if this button is active.
-                if (currentIndex === 0) {
-                    currentIndex = 1;
-                } else {
-                    currentIndex = 0;
-                }
-                sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
-                updateSlidePosition();
-                updateDesktopButton();
-            };
-        }
+        // Desktop button onclick handlers are now set within updateDesktopButtonState,
+        // as each button (one per card) has a fixed action.
 
         allMobilePrevButtons.forEach(btn => {
             btn.onclick = () => {
@@ -573,7 +610,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentIndex--;
                     sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
                     updateSlidePosition();
-                    updateDesktopButton(); // Keep desktop button in sync
+                    // updateDesktopButtonState(); // Desktop state doesn't change based on mobile clicks directly
                     updateMobileButtonsState();
                 }
             };
@@ -585,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentIndex++;
                     sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
                     updateSlidePosition();
-                    updateDesktopButton(); // Keep desktop button in sync
+                    // updateDesktopButtonState();
                     updateMobileButtonsState();
                 }
             };
@@ -593,7 +630,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Initial setup
         updateSlidePosition();
-        updateDesktopButton();
+        updateDesktopButtonState(); // Use the new function for desktop buttons
         updateMobileButtonsState();
     }
 

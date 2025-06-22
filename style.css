@@ -199,41 +199,55 @@ main {
     /* .game-entry styles will apply to the child div within .slider-item */
 }
 
-/* New styles for the single desktop slider navigation button */
-.slider-nav-button {
+/* New styles for the desktop slider toggle button inside .info-content */
+.desktop-slider-toggle-button {
     position: absolute;
-    bottom: 15px;
-    right: 15px;
-    z-index: 15; /* Ensure it's above hero image, but below potential modals */
-    background-color: rgba(0, 0, 0, 0.6);
+    top: 50%; /* Vertically center */
+    transform: translateY(-50%); /* Adjust for exact vertical centering */
+    right: 15px; /* Internal gap from the right edge */
+    z-index: 10; /* Ensure it's above other content within info-content */
+
+    width: 40px; /* Adjust width as needed for a tall rectangle */
+    height: 50%; /* Approximately 50% of the .info-container height */
+
+    background-color: rgba(20, 20, 20, 0.75); /* Darker, slightly transparent */
     color: var(--accent-gold);
     border: 1px solid var(--accent-gold);
-    border-radius: 50%; /* Circular button */
-    width: 44px;
-    height: 44px;
+    border-radius: 8px; /* Rounded corners */
+
     font-size: var(--font-size-xl); /* Arrow size */
     cursor: pointer;
-    transition: background-color 0.3s ease, opacity 0.3s ease-out, color 0.3s ease, border-color 0.3s ease;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1;
+    line-height: 1; /* Helps center icon text */
+
+    opacity: 0.85;
+    transition: background-color 0.3s ease, opacity 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-.slider-nav-button:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+.desktop-slider-toggle-button:hover {
+    background-color: rgba(0, 0, 0, 0.9);
     border-color: #fff;
+    color: #fff;
+    opacity: 1;
 }
 
-.slider-nav-button:disabled {
-    opacity: 0.4;
+.desktop-slider-toggle-button:disabled {
+    opacity: 0.3;
     cursor: not-allowed;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(50, 50, 50, 0.5);
     border-color: var(--text-secondary);
     color: var(--text-secondary);
 }
 
-/* .slider-item .game-entry specific styling was removed as not needed */
+/* Remove or comment out old .slider-nav-button styles if they are no longer used */
+/*
+.slider-nav-button { ... }
+.slider-nav-button:hover { ... }
+.slider-nav-button:disabled { ... }
+*/
 
 /* --- Initial Hiding of Mobile/Desktop Specific Elements --- */
 /* Mobile elements are hidden by default, shown in media query */
@@ -582,49 +596,55 @@ main {
     /* Former .slider-arrow hiding rule removed as the class is no longer in use. */
     /* The new .slider-nav-button is desktop-only via JS-added class or direct styling if needed. */
 
-    /* Base styles for Mobile Slider Navigation Buttons */
-    .slider-nav-button-mobile { /* This will serve as the base class */
-        width: 40px;
-        height: 40px;
-        background-color: rgba(0, 0, 0, 0.6);
+    /* Redesigned Mobile Slider Navigation Buttons */
+    .slider-nav-button-mobile {
+        position: absolute;
+        top: 0; /* Align to the top of .mobile-unified-header */
+        height: 100%; /* Full height of .mobile-unified-header */
+        width: 45px; /* Width of the button */
+        background-color: rgba(0, 0, 0, 0.5);
         color: var(--accent-gold);
-        border: 1px solid var(--accent-gold);
-        border-radius: 50%;
-        font-size: var(--font-size-lg); /* Arrow size */
+        border: none; /* Remove default border */
+        /* border-radius will be specific to prev/next */
+        font-size: var(--font-size-xl); /* Arrow size, adjust as needed */
         cursor: pointer;
-        z-index: 10; /* Above header background, below potential popups */
-        display: flex; /* Will be set to flex by JS when shown */
+        z-index: 5; /* Above header background, below header content if necessary */
+        display: flex;
         align-items: center;
         justify-content: center;
-        line-height: 1; /* Ensure icon is centered vertically */
-        transition: background-color 0.3s ease, opacity 0.3s ease-out, color 0.3s ease, border-color 0.3s ease;
-        position: absolute; /* Common positioning attribute */
-        bottom: 10px; /* Common positioning attribute */
+        line-height: 1;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        /* Remove bottom positioning */
     }
 
     .slider-nav-button-mobile:hover {
-        background-color: rgba(0, 0, 0, 0.8);
-        border-color: #fff;
+        background-color: rgba(0, 0, 0, 0.75);
+        color: #fff;
     }
 
-    /* Though current JS doesn't explicitly disable them, :disabled styles are good practice */
-    .slider-nav-button-mobile:disabled {
+    .slider-nav-button-mobile:disabled { /* Style for disabled state if ever used by JS */
         opacity: 0.4;
         cursor: not-allowed;
-        background-color: rgba(0, 0, 0, 0.3);
-        border-color: var(--text-secondary);
+        background-color: rgba(0, 0, 0, 0.2);
         color: var(--text-secondary);
     }
 
-    /* Specific positioning for Next button */
+    .slider-nav-mobile-prev {
+        left: 0; /* Flush to the left */
+        border-radius: 12px 0 0 12px; /* "D" shape: assuming .mobile-unified-header or card has 12px top-left radius */
+                                      /* Adjust if parent's border-radius is different or if no rounding on parent */
+                                      /* If .mobile-unified-header has no border-radius, use 0 for top-right/bottom-right */
+    }
+    /* If .game-entry-mobile-card has border-radius: 12px, and .mobile-unified-header is the first child,
+       the top-left of .mobile-unified-header will align with the card's rounding.
+       So, the button's top-left should match this (e.g., 12px), and its right side should be square (0).
+    */
+
     .slider-nav-mobile-next {
-        right: 10px;
+        right: 0; /* Flush to the right */
+        border-radius: 0 12px 12px 0; /* "D" shape: assuming .mobile-unified-header or card has 12px top-right radius */
     }
 
-    /* Specific positioning for Previous button */
-    .slider-nav-mobile-prev {
-        left: 10px;
-    }
 
     /* Ensure mobile slider items are correctly displayed */
     .slider-display-area .game-entry-slider .slider-content-strip .slider-item .mobile-only {
