@@ -40,7 +40,7 @@ header {
     background-color: var(--primary-bg);
     z-index: 1000;
 }
-header h1 { margin: 0 0 0.25rem 0; font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 6vw, 3rem); font-weight: 700; color: var(--accent-gold); }
+header h1 { margin: 0 0 0.25rem 0; font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 5vw, 3rem); font-weight: 700; color: var(--accent-gold); }
 header h2 { margin: 0; font-size: var(--font-size-lg); color: var(--text-secondary); font-weight: 400; }
 footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-size-sm); }
 
