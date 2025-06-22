@@ -283,8 +283,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 arcNav.className = 'arc-navigation';
                 uniqueArcs.forEach(arc => {
                     const link = document.createElement('a');
-                    link.textContent = arc;
-                    link.href = '#' + arc.toLowerCase().replace(/\s+/g, '-') + '-header';
+                    // Modify display text for navigation links
+                    let displayText = arc;
+                    if (arc.includes(" Arc")) { // Check if " Arc" (with a space) exists
+                        displayText = arc.replace(" Arc", "").trim();
+                    }
+                    // Handle cases like "Calvard Arc" which might become "Calvard"
+                    // but ensure if an arc was just "Arc" it doesn't become empty.
+                    // However, current data doesn't have such a case.
+                    // If displayText becomes empty and original arc was "Arc", revert to "Arc".
+                    // This specific check might be redundant given current data like "Liberl Arc".
+                    if (displayText === "" && arc.toLowerCase() === "arc") {
+                        displayText = "Arc";
+                    }
+
+                    link.textContent = displayText;
+                    link.href = '#' + arc.toLowerCase().replace(/\s+/g, '-') + '-header'; // Keep href the same
                     arcNav.appendChild(link);
                     if (uniqueArcs.indexOf(arc) < uniqueArcs.length - 1) {
                         arcNav.appendChild(document.createTextNode(' • '));
