@@ -629,22 +629,35 @@ main {
         color: var(--text-secondary);
     }
 
+    /*
+       For mobile button clipping:
+       - The parent .mobile-unified-header has overflow: hidden.
+       - The .game-entry-mobile-card (grandparent) has border-radius: 12px and overflow: hidden.
+       This means the .mobile-unified-header's top corners will appear rounded.
+       To make the buttons look like a "D" shape that's clipped by the header's top and bottom edges:
+       - Round only the outer vertical edge of each button.
+       - Keep the top and bottom edges of the buttons square (radius 0).
+       The header's overflow:hidden will clip the top of the button if the button's top-outer corner radius
+       is larger than the header's effective corner radius, or if it's simply square.
+       The card's overall border-radius (12px) is the reference.
+    */
     .slider-nav-mobile-prev {
         left: 0; /* Flush to the left */
-        border-radius: 12px 0 0 12px; /* "D" shape: assuming .mobile-unified-header or card has 12px top-left radius */
-                                      /* Adjust if parent's border-radius is different or if no rounding on parent */
-                                      /* If .mobile-unified-header has no border-radius, use 0 for top-right/bottom-right */
+        /* Round top-left and bottom-left corners for the outer edge of the "D". Top/bottom edges square. */
+        border-top-left-radius: 12px;    /* Match card's border radius */
+        border-bottom-left-radius: 12px; /* Match card's border radius */
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
     }
-    /* If .game-entry-mobile-card has border-radius: 12px, and .mobile-unified-header is the first child,
-       the top-left of .mobile-unified-header will align with the card's rounding.
-       So, the button's top-left should match this (e.g., 12px), and its right side should be square (0).
-    */
 
     .slider-nav-mobile-next {
         right: 0; /* Flush to the right */
-        border-radius: 0 12px 12px 0; /* "D" shape: assuming .mobile-unified-header or card has 12px top-right radius */
+        /* Round top-right and bottom-right corners for the outer edge of the "D". Top/bottom edges square. */
+        border-top-right-radius: 12px;   /* Match card's border radius */
+        border-bottom-right-radius: 12px;/* Match card's border radius */
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
     }
-
 
     /* Ensure mobile slider items are correctly displayed */
     .slider-display-area .game-entry-slider .slider-content-strip .slider-item .mobile-only {

@@ -94,16 +94,19 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Creates HTML for the desktop info container (background, content).
      * @param {Object} game - The game data object.
+     * @param {boolean} isSliderItem - Whether this container is for an item in a slider.
      * @returns {string} HTML string for the info container.
      */
-    function createDesktopInfoContainerHTML(game) {
-        // The button's content (arrow) and specific event listener will be set up
-        // by setupSliderControls, which will identify if this container is part of a slider.
-        // Add a placeholder class for now, like 'desktop-slider-toggle-button'.
-        // aria-controls will also be set by setupSliderControls.
-        const navButtonHTML = `
-            <button class="desktop-slider-toggle-button" aria-label="Toggle slide"></button>
-        `;
+    function createDesktopInfoContainerHTML(game, isSliderItem) {
+        let navButtonHTML = '';
+        if (isSliderItem) {
+            // The button's content (arrow) and specific event listener will be set up
+            // by setupSliderControls.
+            // aria-controls will also be set by setupSliderControls.
+            navButtonHTML = `
+                <button class="desktop-slider-toggle-button" aria-label="Toggle slide"></button>
+            `;
+        }
 
         return `
             <div class="info-container desktop-only">
@@ -119,12 +122,13 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Creates the complete HTML for a desktop game entry.
      * @param {Object} game - The game data object.
+     * @param {boolean} isSliderItem - Whether this entry is part of a slider.
      * @returns {string} HTML string for the desktop game entry.
      */
-    function createGameEntryDesktopHTML(game) {
+    function createGameEntryDesktopHTML(game, isSliderItem) {
         return `
             ${createDesktopArtContainerHTML(game)}
-            ${createDesktopInfoContainerHTML(game)}`;
+            ${createDesktopInfoContainerHTML(game, isSliderItem)}`;
     }
 
     // --- Mobile HTML Generation ---
@@ -220,11 +224,15 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {string|null} [mainGameAssetName=null] - Asset name of the main game for mobile variant context.
      * @returns {string} HTML string for the complete game render.
      */
-    function createFullGameRenderHTML(gameData, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
+    function createFullGameRenderHTML(gameData, isSliderItemContext = false, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
+        // isSliderItemContext indicates if the current game entry (original or variant) is part of a slider.
+        // This is true if allVariantsData exists and has more than one item.
+        // This flag is specifically for createGameEntryDesktopHTML.
+
         // For variants, allVariantsData would be the full list [mainGame, variant1, variant2...]
         // and mainGameAssetName would be the assetName of the original game.
         return `
-            ${createGameEntryDesktopHTML(gameData)}
+            ${createGameEntryDesktopHTML(gameData, isSliderItemContext)}
             ${createMobileCardHTML(gameData, isVariant, allVariantsData, mainGameAssetName)}
         `;
     }
@@ -375,7 +383,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     originalGameEntry.className = 'game-entry';
                     // For the main game in a slider, pass its full variant data for the mobile card
                     const allVariantDataForMobile = [game, ...game.variants];
-                    originalGameEntry.innerHTML = createFullGameRenderHTML(game, false, allVariantDataForMobile, null);
+                    // true for isSliderItemContext because this is the slider rendering path
+                    originalGameEntry.innerHTML = createFullGameRenderHTML(game, true, false, allVariantDataForMobile, null);
                     originalGameItem.appendChild(originalGameEntry);
                     sliderContentStrip.appendChild(originalGameItem);
 
@@ -388,7 +397,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         const variantGameEntry = document.createElement('div');
                         variantGameEntry.className = 'game-entry';
                         // Pass allVariantDataForMobile so the card knows it's part of a slider context
-                        variantGameEntry.innerHTML = createFullGameRenderHTML(variant, true, allVariantDataForMobile, game.assetName);
+                        // true for isSliderItemContext
+                        variantGameEntry.innerHTML = createFullGameRenderHTML(variant, true, true, allVariantDataForMobile, game.assetName);
                         variantGameItem.appendChild(variantGameEntry);
                         sliderContentStrip.appendChild(variantGameItem);
                     });
@@ -405,7 +415,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     const standardEntry = document.createElement('div');
                     standardEntry.className = 'game-entry';
-                    standardEntry.innerHTML = createFullGameRenderHTML(game); // No variants, so no allVariantData needed for mobile here
+                    // false for isSliderItemContext because this is NOT the slider rendering path
+                    // No variants, so no allVariantData needed for mobile here
+                    standardEntry.innerHTML = createFullGameRenderHTML(game, false, false, null, null);
                     gameWrapperElement = standardEntry;
                 }
                 timelineContainer.appendChild(gameWrapperElement);
