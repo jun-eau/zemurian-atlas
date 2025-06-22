@@ -40,7 +40,7 @@ header {
     background-color: var(--primary-bg);
     z-index: 1000;
 }
-header h1 { margin: 0 0 0.25rem 0; font-family: 'Playfair Display', serif; font-size: var(--font-size-xxxxl); font-weight: 700; color: var(--accent-gold); }
+header h1 { margin: 0 0 0.25rem 0; font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 6vw, 3rem); font-weight: 700; color: var(--accent-gold); }
 header h2 { margin: 0; font-size: var(--font-size-lg); color: var(--text-secondary); font-weight: 400; }
 footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-size-sm); }
 
@@ -254,7 +254,7 @@ main {
         padding: 1rem 0.5rem; /* Reduce padding for smaller screens */
     }
 
-    header h1 { font-size: var(--font-size-xxl); } /* Slightly smaller header */
+    /* header h1 font-size is now handled by clamp() in the main rule */
 
     .desktop-only {
         display: none !important; /* Hide desktop-specific sections */
