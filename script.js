@@ -94,27 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Creates HTML for the desktop info container (background, content).
      * @param {Object} game - The game data object.
-     * @param {boolean} [isSliderItem=false] - Whether this item is part of a slider.
-     * @param {number} [itemIndexInSlider=0] - The index of this item within the slider (0 or 1).
-     * @param {string} [contentStripId=''] - The ID of the content strip this button will control.
      * @returns {string} HTML string for the info container.
      */
-    function createDesktopInfoContainerHTML(game, isSliderItem = false, itemIndexInSlider = 0, contentStripId = '') {
-        let navButtonHTML = '';
-        if (isSliderItem) {
-            // Arrow direction will be set/updated by JavaScript in setupSliderControls
-            // For now, we can set a default or leave it to be populated by JS.
-            // Let's add a placeholder class or data attribute for easy selection.
-            navButtonHTML = `
-                <button
-                    class="slider-nav-button desktop-only"
-                    data-slider-item-index="${itemIndexInSlider}"
-                    aria-controls="${contentStripId}"
-                >
-                    <!-- Arrow will be populated by JS -->
-                </button>`;
-        }
-
+    function createDesktopInfoContainerHTML(game) {
         return `
             <div class="info-container desktop-only">
                 <div class="hero-background" style="background-image: url('hero/${game.assetName}.jpg');" loading="lazy"></div>
@@ -122,22 +104,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${createDesktopMainInfoHTML(game)}
                     ${createDesktopExternalLinksHTML(game)}
                 </div>
-                ${navButtonHTML}
             </div>`;
     }
 
     /**
      * Creates the complete HTML for a desktop game entry.
      * @param {Object} game - The game data object.
-     * @param {boolean} [isSliderItem=false] - Whether this item is part of a slider.
-     * @param {number} [itemIndexInSlider=0] - The index of this item within the slider (0 or 1).
-     * @param {string} [contentStripId=''] - The ID of the content strip for the button.
      * @returns {string} HTML string for the desktop game entry.
      */
-    function createGameEntryDesktopHTML(game, isSliderItem = false, itemIndexInSlider = 0, contentStripId = '') {
+    function createGameEntryDesktopHTML(game) {
         return `
             ${createDesktopArtContainerHTML(game)}
-            ${createDesktopInfoContainerHTML(game, isSliderItem, itemIndexInSlider, contentStripId)}`;
+            ${createDesktopInfoContainerHTML(game)}`;
     }
 
     // --- Mobile HTML Generation ---
@@ -231,16 +209,13 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {boolean} [isVariant=false] - Whether this item is a variant.
      * @param {Array<Object>|null} [allVariantsData=null] - Full list of variants (including main) for mobile card context.
      * @param {string|null} [mainGameAssetName=null] - Asset name of the main game for mobile variant context.
-     * @param {boolean} [isDesktopSliderItem=false] - Flag for desktop slider item.
-     * @param {number} [desktopItemIndex=0] - Index for desktop slider item.
-     * @param {string} [desktopContentStripId=''] - Content strip ID for desktop button.
      * @returns {string} HTML string for the complete game render.
      */
-    function createFullGameRenderHTML(gameData, isVariant = false, allVariantsData = null, mainGameAssetName = null, isDesktopSliderItem = false, desktopItemIndex = 0, desktopContentStripId = '') {
+    function createFullGameRenderHTML(gameData, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
         // For variants, allVariantsData would be the full list [mainGame, variant1, variant2...]
         // and mainGameAssetName would be the assetName of the original game.
         return `
-            ${createGameEntryDesktopHTML(gameData, isDesktopSliderItem, desktopItemIndex, desktopContentStripId)}
+            ${createGameEntryDesktopHTML(gameData)}
             ${createMobileCardHTML(gameData, isVariant, allVariantsData, mainGameAssetName)}
         `;
     }
@@ -391,13 +366,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     originalGameEntry.className = 'game-entry';
                     // For the main game in a slider, pass its full variant data for the mobile card
                     const allVariantDataForMobile = [game, ...game.variants];
-                    // For desktop, this is the first item in the slider (index 0)
-                    originalGameEntry.innerHTML = createFullGameRenderHTML(game, false, allVariantDataForMobile, null, true, 0, contentStripId);
+                    originalGameEntry.innerHTML = createFullGameRenderHTML(game, false, allVariantDataForMobile, null);
                     originalGameItem.appendChild(originalGameEntry);
                     sliderContentStrip.appendChild(originalGameItem);
 
                     // Variant game items
-                    game.variants.forEach((variant, index) => { // Assuming only one variant, so index will be 0 here for the variant itself
+                    game.variants.forEach(variant => {
                         const variantGameItem = document.createElement('div');
                         variantGameItem.className = 'slider-item';
                         variantGameItem.setAttribute('role', 'group');
@@ -405,8 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const variantGameEntry = document.createElement('div');
                         variantGameEntry.className = 'game-entry';
                         // Pass allVariantDataForMobile so the card knows it's part of a slider context
-                        // For desktop, this is the second item in the slider (index 1)
-                        variantGameEntry.innerHTML = createFullGameRenderHTML(variant, true, allVariantDataForMobile, game.assetName, true, 1, contentStripId);
+                        variantGameEntry.innerHTML = createFullGameRenderHTML(variant, true, allVariantDataForMobile, game.assetName);
                         variantGameItem.appendChild(variantGameEntry);
                         sliderContentStrip.appendChild(variantGameItem);
                     });
@@ -414,19 +387,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     gameEntrySlider.appendChild(sliderContentStrip);
                     sliderDisplayArea.appendChild(gameEntrySlider);
 
-                    // REMOVE THE OLD SINGLE DESKTOP BUTTON CREATION
-                    // const navButton = document.createElement('button');
-                    // navButton.className = 'slider-nav-button desktop-only';
-                    // navButton.setAttribute('aria-controls', contentStripId);
-                    // sliderDisplayArea.appendChild(navButton);
-                    // sliderDisplayArea.navButton = navButton;
+                    // Old prevButton and nextButton code was here, removed.
+
+                    const navButton = document.createElement('button');
+                    navButton.className = 'slider-nav-button desktop-only'; // Added desktop-only
+                    navButton.setAttribute('aria-controls', contentStripId);
+                    // Icon and onclick will be set by navigateSlider, aria-label will be set in setupSliderControls
+                    sliderDisplayArea.appendChild(navButton);
+                    sliderDisplayArea.navButton = navButton; // Store reference to the button
 
                     gameWrapperElement = sliderDisplayArea;
                 } else {
                     const standardEntry = document.createElement('div');
                     standardEntry.className = 'game-entry';
-                    // For non-slider items, pass false for isDesktopSliderItem
-                    standardEntry.innerHTML = createFullGameRenderHTML(game, false, null, null, false);
+                    standardEntry.innerHTML = createFullGameRenderHTML(game); // No variants, so no allVariantData needed for mobile here
                     gameWrapperElement = standardEntry;
                 }
                 timelineContainer.appendChild(gameWrapperElement);
@@ -490,62 +464,60 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function setupSliderControls(sliderDisplayAreaElement) {
         const contentStrip = sliderDisplayAreaElement.querySelector('.game-entry-slider .slider-content-strip');
-        // Get all new desktop buttons within their respective .info-container
-        const desktopNavButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .info-container .slider-nav-button.desktop-only');
-
         if (!contentStrip || contentStrip.children.length <= 1) {
-            // Hide all desktop nav buttons if not a true slider
-            desktopNavButtons.forEach(btn => btn.style.display = 'none');
+            // Hide all nav buttons if not a true slider (0 or 1 item)
+            const desktopNavButton = sliderDisplayAreaElement.querySelector('.slider-nav-button.desktop-only');
+            if (desktopNavButton) desktopNavButton.style.display = 'none';
 
-            // Hide mobile nav buttons as before
             const firstItemMobileCard = contentStrip.querySelector('.slider-item:first-child .game-entry-mobile-card');
             if (firstItemMobileCard) {
-                const mobileNavButtons = firstItemMobileCard.querySelectorAll('.slider-nav-button-mobile');
-                mobileNavButtons.forEach(btn => btn.style.display = 'none');
+                const mobileNavButton = firstItemMobileCard.querySelector('.slider-nav-button-mobile');
+                if (mobileNavButton) mobileNavButton.style.display = 'none';
             }
             return;
         }
 
-        const itemsCount = contentStrip.children.length; // Should be 2 for sliders
+        const itemsCount = contentStrip.children.length;
         let currentIndex = parseInt(sliderDisplayAreaElement.getAttribute('data-current-index'), 10) || 0;
         sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
 
-        const contentStripId = contentStrip.id;
+        const contentStripId = contentStrip.id; // Get the ID from the content strip itself
 
-        // Mobile buttons setup (remains largely the same)
+        const desktopNavButton = sliderDisplayAreaElement.querySelector('.slider-nav-button.desktop-only');
+        // Select all potential mobile nav buttons within this slider area
         const allMobilePrevButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .mobile-only .slider-nav-mobile-prev');
         const allMobileNextButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .mobile-only .slider-nav-mobile-next');
+
+        // Set aria-controls for mobile buttons
         allMobilePrevButtons.forEach(btn => btn.setAttribute('aria-controls', contentStripId));
         allMobileNextButtons.forEach(btn => btn.setAttribute('aria-controls', contentStripId));
 
+
         function updateSlidePosition() {
+            // The 2rem gap is defined in CSS for .slider-content-strip gap
             contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
         }
 
-        function updateDesktopButtonsUI() {
-            if (itemsCount <= 1) { // Should be caught by the initial check
-                desktopNavButtons.forEach(btn => {
-                    btn.style.display = 'none';
-                    btn.disabled = true;
-                });
-                return;
-            }
-            // Assuming itemsCount is 2
-            desktopNavButtons.forEach(btn => {
-                const itemIndex = parseInt(btn.dataset.sliderItemIndex, 10);
-                btn.style.display = 'flex'; // Make them visible
-                btn.disabled = false;
-
-                if (itemIndex === 0) { // Button on the first slide
-                    btn.innerHTML = '&#10095;'; // Next arrow
-                    btn.setAttribute('aria-label', 'Next variant');
-                } else { // Button on the second slide (itemIndex === 1)
-                    btn.innerHTML = '&#10094;'; // Previous arrow
-                    btn.setAttribute('aria-label', 'Previous variant');
+        function updateDesktopButton() {
+            if (!desktopNavButton) return;
+            // itemsCount is at most 2 for a slider with variants.
+            // If itemsCount is 1, the initial check in setupSliderControls hides the button.
+            // This function now assumes itemsCount is 2 if the button is visible.
+            if (itemsCount <= 1) { // This case should ideally be caught by the initial setup
+                desktopNavButton.disabled = true;
+                desktopNavButton.style.display = 'none';
+            } else { // Assumes itemsCount is 2
+                desktopNavButton.style.display = 'flex';
+                desktopNavButton.disabled = false;
+                if (currentIndex === 0) {
+                    desktopNavButton.innerHTML = '&#10095;'; // → (Next)
+                    desktopNavButton.setAttribute('aria-label', 'Next item');
+                } else { // currentIndex must be 1
+                    desktopNavButton.innerHTML = '&#10094;'; // ← (Previous)
+                    desktopNavButton.setAttribute('aria-label', 'Previous item');
                 }
-            });
+            }
         }
-
 
         function updateMobileButtonsState() {
             // This function is called when a slider has 2 items (original + variant).
@@ -579,10 +551,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // No need to handle itemsCount > 2 as per new constraints.
         }
 
-        // Setup new desktop buttons
-        desktopNavButtons.forEach(btn => {
-            btn.onclick = () => {
-                // Toggle logic for 2 items
+
+        if (desktopNavButton) {
+            desktopNavButton.onclick = () => {
+                // With max 2 items, currentIndex can only be 0 or 1.
+                // itemsCount will be 2 if this button is active.
                 if (currentIndex === 0) {
                     currentIndex = 1;
                 } else {
@@ -590,12 +563,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
                 updateSlidePosition();
-                // updateDesktopButtonsUI(); // UI (arrow/label) doesn't change based on currentIndex for these new buttons, only initial setup.
-                                        // Visibility might change if we hide the button on the *active* slide, but requirement is for them to slide with content.
-                                        // The content of the button (arrow direction) is fixed based on its slide.
+                updateDesktopButton();
             };
-        });
-
+        }
 
         allMobilePrevButtons.forEach(btn => {
             btn.onclick = () => {
@@ -603,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentIndex--;
                     sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
                     updateSlidePosition();
-                    // updateDesktopButtonsUI(); // Desktop buttons don't need to react to mobile clicks this way.
+                    updateDesktopButton(); // Keep desktop button in sync
                     updateMobileButtonsState();
                 }
             };
@@ -611,11 +581,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         allMobileNextButtons.forEach(btn => {
             btn.onclick = () => {
-                if (currentIndex < itemsCount - 1) { // Should always be 1 for 2 items
+                if (currentIndex < itemsCount - 1) {
                     currentIndex++;
                     sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
                     updateSlidePosition();
-                    // updateDesktopButtonsUI(); // Desktop buttons don't need to react to mobile clicks this way.
+                    updateDesktopButton(); // Keep desktop button in sync
                     updateMobileButtonsState();
                 }
             };
@@ -623,7 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Initial setup
         updateSlidePosition();
-        updateDesktopButtonsUI(); // Set initial arrows and labels for new desktop buttons
+        updateDesktopButton();
         updateMobileButtonsState();
     }
 
