@@ -500,53 +500,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function updateDesktopButton() {
             if (!desktopNavButton) return;
-            if (itemsCount <= 1) {
+            // itemsCount is at most 2 for a slider with variants.
+            // If itemsCount is 1, the initial check in setupSliderControls hides the button.
+            // This function now assumes itemsCount is 2 if the button is visible.
+            if (itemsCount <= 1) { // This case should ideally be caught by the initial setup
                 desktopNavButton.disabled = true;
                 desktopNavButton.style.display = 'none';
-            } else {
+            } else { // Assumes itemsCount is 2
                 desktopNavButton.style.display = 'flex';
                 desktopNavButton.disabled = false;
-                if (currentIndex < itemsCount - 1) {
+                if (currentIndex === 0) {
                     desktopNavButton.innerHTML = '&#10095;'; // → (Next)
                     desktopNavButton.setAttribute('aria-label', 'Next item');
-                } else {
+                } else { // currentIndex must be 1
                     desktopNavButton.innerHTML = '&#10094;'; // ← (Previous)
-                    desktopNavButton.setAttribute('aria-label', 'Previous item (Cycles to start)');
+                    desktopNavButton.setAttribute('aria-label', 'Previous item');
                 }
             }
         }
 
         function updateMobileButtonsState() {
-            const sliderItems = contentStrip.children; // Get all .slider-item elements
+            // This function is called when a slider has 2 items (original + variant).
+            // The case for 1 item (no slider) is handled by the initial check in setupSliderControls,
+            // which hides all navigation buttons.
+            // itemsCount is guaranteed to be 2 if we reach here for a slider.
 
-            for (let i = 0; i < sliderItems.length; i++) {
-                const item = sliderItems[i];
+            const sliderItems = contentStrip.children; // Should be 2 items
+
+            if (sliderItems.length === 2) {
+                // First item (index 0)
+                const firstItemPrevBtn = sliderItems[0].querySelector('.slider-nav-mobile-prev');
+                const firstItemNextBtn = sliderItems[0].querySelector('.slider-nav-mobile-next');
+                if (firstItemPrevBtn) firstItemPrevBtn.style.display = 'none';    // Hide Prev on first
+                if (firstItemNextBtn) firstItemNextBtn.style.display = 'flex';   // Show Next on first
+
+                // Second item (index 1)
+                const secondItemPrevBtn = sliderItems[1].querySelector('.slider-nav-mobile-prev');
+                const secondItemNextBtn = sliderItems[1].querySelector('.slider-nav-mobile-next');
+                if (secondItemPrevBtn) secondItemPrevBtn.style.display = 'flex';  // Show Prev on second
+                if (secondItemNextBtn) secondItemNextBtn.style.display = 'none';   // Hide Next on second
+            } else if (sliderItems.length === 1) {
+                // This case should ideally be fully handled by the initial check in setupSliderControls
+                // which should hide all buttons. But as a fallback, ensure buttons are hidden.
+                const item = sliderItems[0];
                 const prevBtn = item.querySelector('.slider-nav-mobile-prev');
                 const nextBtn = item.querySelector('.slider-nav-mobile-next');
-
-                if (!prevBtn || !nextBtn) continue;
-
-                // Visibility depends only on the card's position in the sequence (i)
-                // and the total number of items (itemsCount).
-                // Not on whether i === currentIndex.
-
-                if (itemsCount <= 1) { // Should not be strictly necessary here if initial check in setupSliderControls works
-                    prevBtn.style.display = 'none';
-                    nextBtn.style.display = 'none';
-                } else {
-                    prevBtn.style.display = (i > 0) ? 'flex' : 'none';
-                    nextBtn.style.display = (i < itemsCount - 1) ? 'flex' : 'none';
-                }
+                if (prevBtn) prevBtn.style.display = 'none';
+                if (nextBtn) nextBtn.style.display = 'none';
             }
+            // No need to handle itemsCount > 2 as per new constraints.
         }
 
 
         if (desktopNavButton) {
             desktopNavButton.onclick = () => {
-                if (currentIndex < itemsCount - 1) {
-                    currentIndex++;
+                // With max 2 items, currentIndex can only be 0 or 1.
+                // itemsCount will be 2 if this button is active.
+                if (currentIndex === 0) {
+                    currentIndex = 1;
                 } else {
-                    currentIndex = 0; // Cycle back to start
+                    currentIndex = 0;
                 }
                 sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
                 updateSlidePosition();
