@@ -199,41 +199,43 @@ main {
     /* .game-entry styles will apply to the child div within .slider-item */
 }
 
-/* New styles for the single desktop slider navigation button */
-.slider-nav-button {
+/* Styles for the NEW desktop slider navigation buttons (within .info-container) */
+/* These buttons are identified by .slider-nav-button and .desktop-only */
+.info-container .slider-nav-button.desktop-only {
     position: absolute;
-    bottom: 15px;
-    right: 15px;
-    z-index: 15; /* Ensure it's above hero image, but below potential modals */
-    background-color: rgba(0, 0, 0, 0.6);
-    color: var(--accent-gold);
-    border: 1px solid var(--accent-gold);
-    border-radius: 50%; /* Circular button */
-    width: 44px;
-    height: 44px;
-    font-size: var(--font-size-xl); /* Arrow size */
+    top: 50%; /* Vertically center */
+    transform: translateY(-50%);
+    right: -20px; /* Overhang: adjust this value as needed, half of width approx */
+    width: 40px; /* Sleek rectangle width */
+    height: 50%; /* 50% of info-container height */
+    background-color: rgba(34, 34, 34, 0.7); /* Semi-transparent dark background */
+    color: var(--accent-gold); /* Arrow color */
+    border: none; /* Remove default border */
+    border-radius: 8px; /* Rounded corners */
     cursor: pointer;
-    transition: background-color 0.3s ease, opacity 0.3s ease-out, color 0.3s ease, border-color 0.3s ease;
+    z-index: 10; /* Ensure it's above info-content's background but below modals */
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1;
+    font-size: var(--font-size-xl); /* Arrow size */
+    line-height: 1; /* Ensure arrow is centered if it's text */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: background-color 0.3s ease, right 0.3s ease, box-shadow 0.3s ease; /* Added right for potential hover effect */
 }
 
-.slider-nav-button:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-    border-color: #fff;
+.info-container .slider-nav-button.desktop-only:hover {
+    background-color: rgba(34, 34, 34, 0.9); /* More opaque on hover */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    /* Optional: make it slightly more prominent on hover, e.g., by moving it less off-screen */
+    /* right: -18px; */
 }
 
-.slider-nav-button:disabled {
-    opacity: 0.4;
+.info-container .slider-nav-button.desktop-only:disabled {
+    opacity: 0.5;
     cursor: not-allowed;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-color: var(--text-secondary);
-    color: var(--text-secondary);
+    background-color: rgba(50, 50, 50, 0.4);
 }
 
-/* .slider-item .game-entry specific styling was removed as not needed */
 
 /* --- Initial Hiding of Mobile/Desktop Specific Elements --- */
 /* Mobile elements are hidden by default, shown in media query */
@@ -584,13 +586,13 @@ main {
 
     /* Base styles for Mobile Slider Navigation Buttons */
     .slider-nav-button-mobile { /* This will serve as the base class */
-        width: 40px;
-        height: 40px;
+        width: 35px; /* New width */
+        height: 100px; /* New height */
         background-color: rgba(0, 0, 0, 0.6);
         color: var(--accent-gold);
         border: 1px solid var(--accent-gold);
-        border-radius: 50%;
-        font-size: var(--font-size-lg); /* Arrow size */
+        /* border-radius will be set by specific classes */
+        font-size: var(--font-size-xl); /* Larger arrow for taller button */
         cursor: pointer;
         z-index: 10; /* Above header background, below potential popups */
         display: flex; /* Will be set to flex by JS when shown */
@@ -599,12 +601,13 @@ main {
         line-height: 1; /* Ensure icon is centered vertically */
         transition: background-color 0.3s ease, opacity 0.3s ease-out, color 0.3s ease, border-color 0.3s ease;
         position: absolute; /* Common positioning attribute */
-        bottom: 10px; /* Common positioning attribute */
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     .slider-nav-button-mobile:hover {
         background-color: rgba(0, 0, 0, 0.8);
-        border-color: #fff;
+        border-color: #fff; /* Keep accent on border for hover, or change if desired */
     }
 
     /* Though current JS doesn't explicitly disable them, :disabled styles are good practice */
@@ -616,14 +619,19 @@ main {
         color: var(--text-secondary);
     }
 
-    /* Specific positioning for Next button */
+    /* Specific positioning and D-shape styling for Next button */
     .slider-nav-mobile-next {
-        right: 10px;
+        right: 0; /* Flush to the right edge */
+        border-radius: 15px 0 0 15px; /* D-shape: top-left, bottom-left rounded */
+        /* Correction from plan: Next (right) button should be 0 15px 15px 0 */
+        /* User request: border-radius: 0 15px 15px 0; */
+        border-radius: 0 15px 15px 0; /* Corrected based on user request */
     }
 
-    /* Specific positioning for Previous button */
+    /* Specific positioning and D-shape styling for Previous button */
     .slider-nav-mobile-prev {
-        left: 10px;
+        left: 0; /* Flush to the left edge */
+        border-radius: 15px 0 0 15px; /* D-shape: top-left, bottom-left rounded */
     }
 
     /* Ensure mobile slider items are correctly displayed */
