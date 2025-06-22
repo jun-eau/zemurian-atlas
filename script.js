@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     bar.setAttribute('aria-expanded', !isExpanded);
                     if (chevron) {
                         chevron.classList.toggle('expanded', !isExpanded);
-                        chevron.textContent = isExpanded ? '▼' : '▲';
+                        // chevron.textContent = isExpanded ? '▼' : '▲'; // Removed this line
                     }
                 }
             }
