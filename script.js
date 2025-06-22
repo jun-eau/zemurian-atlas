@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createDesktopArtContainerHTML(game) {
         return `
             <div class="art-container desktop-only">
-                <img src="grid/${game.assetName}.jpg" alt="${game.englishTitle} Grid Art" class="game-grid-art">
+                <img src="grid/${game.assetName}.jpg" alt="${game.englishTitle} Grid Art" class="game-grid-art" loading="lazy">
             </div>`;
     }
 
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createDesktopInfoContainerHTML(game) {
         return `
             <div class="info-container desktop-only">
-                <div class="hero-background" style="background-image: url('hero/${game.assetName}.jpg');"></div>
+                <div class="hero-background" style="background-image: url('hero/${game.assetName}.jpg');" loading="lazy"></div>
                 <div class="info-content">
                     ${createDesktopMainInfoHTML(game)}
                     ${createDesktopExternalLinksHTML(game)}
@@ -142,25 +142,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
 
 
+        const cardId = `mobile-card-${game.assetName}-${Date.now()}`;
+        let mobileNavButtonsWithAriaHTML = '';
+        if (allVariantsData && allVariantsData.length > 1) {
+            // Assuming the slider's content strip ID will be accessible or passed down
+            // For now, let's assume a convention or find a way to get it.
+            // Placeholder for contentStripId - this needs to be resolved.
+            // Let's search for the parent slider-content-strip's ID when buttons are actually created/used.
+            // For now, we can't directly link aria-controls here without knowing the slider's ID.
+            // This will be handled in setupSliderControls for mobile buttons.
+            mobileNavButtonsWithAriaHTML = `
+                <button class="slider-nav-button-mobile slider-nav-mobile-prev" aria-label="Previous variant" style="display: none;">&#10094;</button>
+                <button class="slider-nav-button-mobile slider-nav-mobile-next" aria-label="Next variant" style="display: none;">&#10095;</button>
+            `;
+        }
+
         return `
-            <div class="game-entry-mobile-card mobile-only card-content-visible" ${mainGameAttr} data-asset-name="${game.assetName}">
+            <div class="game-entry-mobile-card mobile-only card-content-visible" id="${cardId}" ${mainGameAttr} data-asset-name="${game.assetName}" role="group" aria-label="${game.englishTitle} details">
                 <div class="mobile-unified-header">
-                    <div class="mobile-unified-header-bg" style="background-image: url('${heroImageUrl}');"></div>
+                    <div class="mobile-unified-header-bg" style="background-image: url('${heroImageUrl}');" loading="lazy"></div>
                     <div class="mobile-unified-header-content">
-                        <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="mobile-logo">
+                        <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="mobile-logo" loading="lazy">
                         <p class="japanese-title">
                             <span class="kanji-title">${game.japaneseTitleKanji}</span>
                             <span class="romaji-title">${game.japaneseTitleRomaji}</span>
                         </p>
                     </div>
-                    ${mobileNavButtonsHTML}
+                    ${mobileNavButtonsWithAriaHTML}
                 </div>
                 <div class="mobile-release-accordion">
-                    <div class="accordion-bar">
+                    <div class="accordion-bar" role="button" aria-expanded="false" aria-controls="accordion-content-${game.assetName}-${cardId}">
                         <span>Release Details</span>
-                        <span class="chevron">▼</span>
+                        <span class="chevron" aria-hidden="true">▼</span>
                     </div>
-                    <div class="accordion-content" style="display: none;">
+                    <div class="accordion-content" id="accordion-content-${game.assetName}-${cardId}" role="region" style="display: none;">
                         <div class="release-region">
                             <h4 class="release-header">Japanese Release</h4>
                             <div class="release-list">${createReleaseString(game.releasesJP)}</div>
@@ -276,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (content && content.classList.contains('accordion-content')) {
                     const isExpanded = content.style.display === 'block';
                     content.style.display = isExpanded ? 'none' : 'block';
+                    bar.setAttribute('aria-expanded', !isExpanded);
                     if (chevron) {
                         chevron.classList.toggle('expanded', !isExpanded);
                         chevron.textContent = isExpanded ? '▼' : '▲';
@@ -349,13 +365,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const gameEntrySlider = document.createElement('div');
                     gameEntrySlider.className = 'game-entry-slider';
+                    // Unique ID for the content strip for aria-controls
+                    const contentStripId = `slider-content-${game.assetName || 'strip'}-${Date.now()}`;
+
 
                     const sliderContentStrip = document.createElement('div');
                     sliderContentStrip.className = 'slider-content-strip';
+                    sliderContentStrip.id = contentStripId;
+                    sliderContentStrip.setAttribute('role', 'region');
+                    sliderContentStrip.setAttribute('aria-label', `${game.englishTitle} Variants`);
 
                     // Original game item
                     const originalGameItem = document.createElement('div');
                     originalGameItem.className = 'slider-item';
+                    originalGameItem.setAttribute('role', 'group');
+                    originalGameItem.setAttribute('aria-label', game.englishTitle);
                     const originalGameEntry = document.createElement('div');
                     originalGameEntry.className = 'game-entry';
                     // For the main game in a slider, pass its full variant data for the mobile card
@@ -368,6 +392,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     game.variants.forEach(variant => {
                         const variantGameItem = document.createElement('div');
                         variantGameItem.className = 'slider-item';
+                        variantGameItem.setAttribute('role', 'group');
+                        variantGameItem.setAttribute('aria-label', variant.englishTitle);
                         const variantGameEntry = document.createElement('div');
                         variantGameEntry.className = 'game-entry';
                         // Pass allVariantDataForMobile so the card knows it's part of a slider context
@@ -393,7 +419,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const navButton = document.createElement('button');
                     navButton.className = 'slider-nav-button desktop-only'; // Added desktop-only
-                    // Icon and onclick will be set by navigateSlider
+                    navButton.setAttribute('aria-controls', contentStripId);
+                    // Icon and onclick will be set by navigateSlider, aria-label will be set in setupSliderControls
                     sliderDisplayArea.appendChild(navButton);
                     sliderDisplayArea.navButton = navButton; // Store reference to the button
 
@@ -450,7 +477,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('CRITICAL ERROR fetching or processing game data:', error);
             const timelineContainer = document.getElementById('game-timeline-container');
             if (timelineContainer) {
-                timelineContainer.innerHTML = `<p style="color:red; text-align:center;">Error loading game data. Please check console.</p>`;
+                timelineContainer.innerHTML = `
+                    <div style="color: #ffdddd; background-color: #632020; border: 1px solid #ff7b7b; padding: 20px; margin: 20px auto; text-align: center; border-radius: 8px; max-width: 600px;">
+                        <h3 style="color: #ffacac; margin-top: 0;">Oops! Something went wrong.</h3>
+                        <p>We couldn't load the game data at this time.</p>
+                        <p>Please try refreshing the page. If the problem continues, please check your internet connection or try again later.</p>
+                    </div>`;
             }
         });
 
@@ -642,11 +674,17 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentIndex = parseInt(sliderDisplayAreaElement.getAttribute('data-current-index'), 10) || 0;
         sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
 
+        const contentStripId = contentStrip.id; // Get the ID from the content strip itself
 
         const desktopNavButton = sliderDisplayAreaElement.querySelector('.slider-nav-button.desktop-only');
         // Select all potential mobile nav buttons within this slider area
         const allMobilePrevButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .mobile-only .slider-nav-mobile-prev');
         const allMobileNextButtons = sliderDisplayAreaElement.querySelectorAll('.slider-item .mobile-only .slider-nav-mobile-next');
+
+        // Set aria-controls for mobile buttons
+        allMobilePrevButtons.forEach(btn => btn.setAttribute('aria-controls', contentStripId));
+        allMobileNextButtons.forEach(btn => btn.setAttribute('aria-controls', contentStripId));
+
 
         function updateSlidePosition() {
             // The 2rem gap is defined in CSS for .slider-content-strip gap
@@ -663,8 +701,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 desktopNavButton.disabled = false;
                 if (currentIndex < itemsCount - 1) {
                     desktopNavButton.innerHTML = '&#10095;'; // → (Next)
+                    desktopNavButton.setAttribute('aria-label', 'Next item');
                 } else {
                     desktopNavButton.innerHTML = '&#10094;'; // ← (Previous)
+                    desktopNavButton.setAttribute('aria-label', 'Previous item (Cycles to start)');
                 }
             }
         }
