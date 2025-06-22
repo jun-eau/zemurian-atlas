@@ -143,8 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function createMobileCardHTML(game, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
         const heroImageUrl = `hero/${game.assetName}.jpg`;
-        // Add mobile navigation buttons if this card is part of a slider
-        // mobileNavButtonsHTML was here, removed as unused.
 
         const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
 
@@ -235,45 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ${createGameEntryDesktopHTML(gameData, isSliderItemContext)}
             ${createMobileCardHTML(gameData, isVariant, allVariantsData, mainGameAssetName)}
         `;
-    }
-
-    // --- Lightbox Setup ---
-    /**
-     * Sets up the mobile lightbox functionality.
-     * Creates lightbox DOM elements if they don't exist and attaches event listeners.
-     */
-    function setupLightbox() {
-        if (document.getElementById('mobile-lightbox')) return; // Already created
-
-        const lightboxHTML = `
-            <div id="mobile-lightbox" class="mobile-lightbox-overlay" style="display:none;">
-                <span class="mobile-lightbox-close">&times;</span>
-                <img id="mobile-lightbox-image" src="" alt="Full screen hero image">
-            </div>`;
-        document.body.insertAdjacentHTML('beforeend', lightboxHTML);
-
-        const lightbox = document.getElementById('mobile-lightbox');
-        const lightboxImage = document.getElementById('mobile-lightbox-image');
-        const lightboxClose = lightbox.querySelector('.mobile-lightbox-close');
-
-        if (!lightbox || !lightboxImage || !lightboxClose) {
-            console.error("Lightbox elements not found after creation.");
-            return;
-        }
-
-        // Lightbox functionality for mobile hero images removed as per new requirements.
-        // The lightbox HTML and general close logic will remain in case it's used for other purposes later.
-
-        lightboxClose.addEventListener('click', () => {
-            lightbox.style.display = 'none';
-            lightboxImage.src = '';
-        });
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                lightbox.style.display = 'none';
-                lightboxImage.src = '';
-            }
-        });
     }
 
     // --- Accordion Setup ---
@@ -429,7 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Setup interactive elements for mobile cards
-            setupLightbox();
             setupAccordions();
 
             // Arc Navigation Active State Highlighting
@@ -460,7 +418,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Setup swipe functionality after all cards are in the DOM
-            // setupMobileVariantNavigation(); // Renamed from setupMobileVariantSwipes - REMOVED as per requirements
         })
         .catch(error => {
             console.error('CRITICAL ERROR fetching or processing game data:', error);
@@ -561,7 +518,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
                             updateSlidePosition();
                             // updateDesktopButtonState(); // Re-evaluating button states if needed, but content is fixed per button
-                            // updateMobileButtonsState(); // Keep mobile in sync
                         }
                     };
                 } else { // Button associated with the second item (index 1)
@@ -573,7 +529,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             sliderDisplayAreaElement.setAttribute('data-current-index', currentIndex.toString());
                             updateSlidePosition();
                             // updateDesktopButtonState();
-                            // updateMobileButtonsState();
                         }
                     };
                 }
