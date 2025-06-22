@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createDesktopArtContainerHTML(game) {
         return `
             <div class="art-container desktop-only">
-                <img src="grid/${game.assetName}.jpg" alt="${game.englishTitle} Grid Art" class="game-grid-art" loading="lazy">
+                <img src="assets/grid/${game.assetName}.jpg" alt="${game.englishTitle} Grid Art" class="game-grid-art" loading="lazy">
             </div>`;
     }
 
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createDesktopMainInfoHTML(game) {
         return `
             <div class="main-info">
-                <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="game-logo">
+                <img src="assets/logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="game-logo">
                 <p class="japanese-title">
                     <span class="kanji-title">${game.japaneseTitleKanji}</span>
                     <span class="romaji-title">${game.japaneseTitleRomaji}</span>
@@ -72,21 +72,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
             <div class="external-links">
                 <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
-                    <img src="logo/steam.png" alt="Steam Logo">
+                    <img src="assets/logo/steam.png" alt="Steam Logo">
                 </a>
                 ${game.playstationUrl ? `
                 <a href="${game.playstationUrl}" target="_blank" rel="noopener noreferrer" title="PlayStation Store Page">
-                    <img src="logo/playstation.png" alt="PlayStation Store Logo">
+                    <img src="assets/logo/playstation.png" alt="PlayStation Store Logo">
                 </a>` : ''}
                 ${game.nintendoUrl ? `
                 <a href="${game.nintendoUrl}" target="_blank" rel="noopener noreferrer" title="Nintendo eShop Page">
-                    <img src="logo/nintendo.png" alt="Nintendo eShop Logo">
+                    <img src="assets/logo/nintendo.png" alt="Nintendo eShop Logo">
                 </a>` : ''}
                 <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
-                    <img src="logo/wikipedia.png" alt="Wikipedia Logo">
+                    <img src="assets/logo/wikipedia.png" alt="Wikipedia Logo">
                 </a>
                 <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
-                    <img src="logo/fandom.png" alt="Fandom Logo">
+                    <img src="assets/logo/fandom.png" alt="Fandom Logo">
                 </a>
             </div>`;
     }
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return `
             <div class="info-container desktop-only">
-                <div class="hero-background" style="background-image: url('hero/${game.assetName}.jpg');" loading="lazy"></div>
+                <div class="hero-background" style="background-image: url('assets/hero/${game.assetName}.jpg');" loading="lazy"></div>
                 <div class="info-content">
                     ${createDesktopMainInfoHTML(game)}
                     ${createDesktopExternalLinksHTML(game)}
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {string} HTML string for the mobile game card.
      */
     function createMobileCardHTML(game, isVariant = false, allVariantsData = null, mainGameAssetName = null) {
-        const heroImageUrl = `hero/${game.assetName}.jpg`;
+        const heroImageUrl = `assets/hero/${game.assetName}.jpg`;
 
         const mainGameAttr = (mainGameAssetName && isVariant) ? `data-main-game-asset="${mainGameAssetName}"` : '';
 
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="mobile-unified-header">
                     <div class="mobile-unified-header-bg" style="background-image: url('${heroImageUrl}');" loading="lazy"></div>
                     <div class="mobile-unified-header-content">
-                        <img src="logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="mobile-logo" loading="lazy">
+                        <img src="assets/logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="mobile-logo" loading="lazy">
                         <p class="japanese-title">
                             <span class="kanji-title">${game.japaneseTitleKanji}</span>
                             <span class="romaji-title">${game.japaneseTitleRomaji}</span>
@@ -193,21 +193,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="mobile-external-links">
                     <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
-                        <img src="logo/steam.png" alt="Steam Logo">
+                        <img src="assets/logo/steam.png" alt="Steam Logo">
                     </a>
                     ${game.playstationUrl ? `
                     <a href="${game.playstationUrl}" target="_blank" rel="noopener noreferrer" title="PlayStation Store Page" class="playstation-link">
-                        <img src="logo/playstation.png" alt="PlayStation Store Logo">
+                        <img src="assets/logo/playstation.png" alt="PlayStation Store Logo">
                     </a>` : ''}
                     ${game.nintendoUrl ? `
                     <a href="${game.nintendoUrl}" target="_blank" rel="noopener noreferrer" title="Nintendo eShop Page" class="nintendo-link">
-                        <img src="logo/nintendo.png" alt="Nintendo eShop Logo">
+                        <img src="assets/logo/nintendo.png" alt="Nintendo eShop Logo">
                     </a>` : ''}
                     <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
-                        <img src="logo/wikipedia.png" alt="Wikipedia Logo">
+                        <img src="assets/logo/wikipedia.png" alt="Wikipedia Logo">
                     </a>
                     <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
-                        <img src="logo/fandom.png" alt="Fandom Logo">
+                        <img src="assets/logo/fandom.png" alt="Fandom Logo">
                     </a>
                 </div>
 
