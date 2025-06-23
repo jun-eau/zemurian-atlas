@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let minDate, maxDate;
 
     // --- DOM Elements ---
-    const colorKeyContainer = document.getElementById('game-color-key-container');
     const timeAxisContainer = document.getElementById('time-axis-container');
     const gameColumnsContainer = document.getElementById('game-columns-container');
     const liberlColumn = document.getElementById('liberl-arc-column').querySelector('.game-entries-area');
@@ -53,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             renderTimeAxis();
-            renderColorKey();
             renderGameEntries();
 
         } catch (error) {
@@ -160,31 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalTimelineHeight = yOffset;
         [timeAxisContainer, liberlColumn, crossbellColumn, ereboniaColumn, monthLinesOverlay].forEach(el => {
             if (el) el.style.height = `${totalTimelineHeight}px`;
-        });
-    }
-
-    function renderColorKey() {
-        if (!allGames || allGames.length === 0 || !colorKeyContainer) return;
-        colorKeyContainer.innerHTML = '';
-        const uniqueGamesForKey = [], titlesForKey = new Set();
-        allGames.forEach(game => {
-            if (!titlesForKey.has(game.englishTitle)) {
-                uniqueGamesForKey.push({ title: game.englishTitle, color: game.timelineColor });
-                titlesForKey.add(game.englishTitle);
-            }
-        });
-        uniqueGamesForKey.sort((a, b) => a.title.localeCompare(b.title));
-        uniqueGamesForKey.forEach(item => {
-            const keyItemDiv = document.createElement('div');
-            keyItemDiv.classList.add('color-key-item');
-            const swatchDiv = document.createElement('div');
-            swatchDiv.classList.add('color-key-swatch');
-            swatchDiv.style.backgroundColor = item.color;
-            const titleSpan = document.createElement('span');
-            titleSpan.textContent = item.title;
-            keyItemDiv.appendChild(swatchDiv);
-            keyItemDiv.appendChild(titleSpan);
-            colorKeyContainer.appendChild(keyItemDiv);
         });
     }
 
