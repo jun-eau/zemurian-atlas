@@ -4,6 +4,10 @@ This website provides a visual guide to the Trails series of video games, using 
 
 **Visit the live site: [https://jun-eau.github.io/trails-visual-guide/](https://jun-eau.github.io/trails-visual-guide/)**
 
+## Acknowledgements
+
+This project was heavily inspired by and uses some information from [trailsinthedatabase.com](https://trailsinthedatabase.com/).
+
 ## Disclaimer
 
 This project is not affiliated with Nihon Falcom, NIS America, XSEED, or GungHo.  
