@@ -26,24 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return { year, month, day: parts[2] ? parseInt(parts[2], 10) : undefined };
     }
 
-    function daysInMonth(year, month) {
-        // Day is 0-indexed for Date object, month is 1-indexed for our parsing
-        return new Date(year, month, 0).getDate();
-    }
-
-    function dateToTotalMonths(parsedDate, isEndDate = false) {
+    function dateToTotalMonths(parsedDate) {
         if (!parsedDate) return Infinity;
-        let dayProportion = 0;
-        if (parsedDate.day) {
-            const totalDays = daysInMonth(parsedDate.year, parsedDate.month);
-            // For start dates, proportion is (day - 1) / totalDays
-            // For end dates, proportion is day / totalDays to include the full day
-            dayProportion = isEndDate ? (parsedDate.day / totalDays) : ((parsedDate.day - 1) / totalDays);
-        } else {
-            // If no day, start dates are beginning of month (0), end dates are end of month (1)
-            dayProportion = isEndDate ? 1 : 0;
-        }
-        return parsedDate.year * 12 + (parsedDate.month -1) + dayProportion; // month is 0-indexed here for calculation
+        return parsedDate.year * 12 + parsedDate.month;
     }
 
     async function initializeTimeline() {
@@ -100,18 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (allGames.length === 0) return;
         let minMonths = Infinity, maxMonths = -Infinity;
         allGames.forEach(game => {
-            minMonths = Math.min(minMonths, dateToTotalMonths(game.timelineStartParsed, false));
-            maxMonths = Math.max(maxMonths, dateToTotalMonths(game.timelineEndParsed, true));
+            minMonths = Math.min(minMonths, dateToTotalMonths(game.timelineStartParsed));
+            maxMonths = Math.max(maxMonths, dateToTotalMonths(game.timelineEndParsed));
         });
         
-        // minMonths and maxMonths are now 0-indexed from year 0, month 0.
-        // For minDate, we want the beginning of the month that minMonths falls into.
-        minDate = { year: Math.floor(minMonths / 12), month: Math.floor(minMonths % 12) + 1 };
-        // For maxDate, we want the end of the month that maxMonths falls into.
-        // If maxMonths is, e.g., 1202.9 (end of Jan 1203), year is 1203, month is 1.
-        // So, year = floor(maxMonths / 12), month = floor(maxMonths % 12) + 1
-        maxDate = { year: Math.floor(maxMonths / 12), month: Math.floor(maxMonths % 12) + 1 };
-
+        minDate = { year: Math.floor((minMonths -1) / 12), month: (minMonths -1) % 12 + 1 };
+        maxDate = { year: Math.floor((maxMonths -1) / 12), month: (maxMonths -1) % 12 + 1 };
 
         let paddedMinMonth = minDate.month - 3;
         let paddedMinYear = minDate.year;
@@ -150,15 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 firstYearRendered = false;
             }
 
-            // Only add month label if it's not January (month 1) AND it's a labeled month,
-            // OR if it IS January but no year label was just placed (to avoid removing Jan if it's the very start of timeline with no year padding)
-            // Simplified: Don't show "Jan" if a year label is already shown for that line.
-            // A year label is shown if currentMonth === 1 (and it's not the firstYearRendered special case for the very first month)
-            // or if firstYearRendered is true (meaning we are at the start of a new year or the very first month of the timeline)
-
-            // Add month label (e.g., Apr, Jul, Oct) if it's a designated labeled month AND it's not January.
-            // January (month index 0) is always skipped.
-            if (labeledMonths.includes(currentMonth - 1) && (currentMonth - 1) !== 0) { // currentMonth is 1-indexed, monthNames is 0-indexed
+            if (labeledMonths.includes(currentMonth - 1)) {
                 const monthLabel = document.createElement('div');
                 monthLabel.classList.add('month-label');
                 monthLabel.textContent = monthNames[currentMonth - 1];
@@ -248,26 +219,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const startDate = game.timelineStartParsed, endDate = game.timelineEndParsed;
-            // Calculate start and end points in fractional months from the absolute beginning (year 0, month 0)
-            const gameStartTotalMonths = dateToTotalMonths(startDate, false);
-            const gameEndTotalMonths = dateToTotalMonths(endDate, true);
+            const startTotalMonths = dateToTotalMonths(startDate), minTotalMonths = dateToTotalMonths(minDate);
+            const topPosition = (startTotalMonths - minTotalMonths) * pixelsPerMonthVertical;
+            const durationInMonths = (dateToTotalMonths(endDate) - startTotalMonths + 1);
+            const entryHeight = durationInMonths * pixelsPerMonthVertical;
 
-            // Calculate minTotalMonths for the timeline's display start (0-indexed for month)
-            const minTimelineTotalMonths = minDate.year * 12 + (minDate.month - 1);
-
-            const topPosition = (gameStartTotalMonths - minTimelineTotalMonths) * pixelsPerMonthVertical;
-            // Duration is the difference between the precise end and start points
-            const durationInFractionalMonths = gameEndTotalMonths - gameStartTotalMonths;
-            const entryHeight = durationInFractionalMonths * pixelsPerMonthVertical;
-
-            // Add a check for negative duration if somehow end date is before start date after processing
-            if (durationInFractionalMonths < 0) {
-                 console.warn(`Calculated negative duration for ${game.englishTitle}. Start: ${gameStartTotalMonths}, End: ${gameEndTotalMonths}. Skipping.`);
-                 return;
-            }
-
-            if (topPosition < -0.001 || entryHeight <= 0.001) { // Allow for tiny floating point inaccuracies near zero
-                console.warn(`Invalid dimensions for ${game.englishTitle}. Top: ${topPosition.toFixed(2)}, Height: ${entryHeight.toFixed(2)}. Skipping.`);
+            if (topPosition < 0 || entryHeight <= 0) {
+                console.warn(`Invalid dimensions for ${game.englishTitle}. Top: ${topPosition}, Height: ${entryHeight}. Skipping.`);
                 return;
             }
 
