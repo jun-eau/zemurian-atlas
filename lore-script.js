@@ -195,23 +195,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function formatDisplayDate(parsedDate, game = null) { // Add game parameter
+    function formatDisplayDate(parsedDate, game = null) {
         if (!parsedDate) return "N/A";
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const monthName = monthNames[parsedDate.month - 1];
 
-        // Specific formatting for Liberl Arc and Crossbell Arc games
-        if (game && (game.arc === "Liberl Arc" || game.arc === "Crossbell Arc")) {
-            return `${monthName}, S${parsedDate.year}`;
+        let displayDay = parsedDate.day; // Start with the actual day from data
+
+        // Apply specific overrides to hide the day if necessary
+        if (game) {
+            // For Liberl and Crossbell Arcs, usually the overall game start/end dates are shown without specific days
+            // for a cleaner "Month Year" display, even if the raw data has a day (e.g., start of month).
+            if (game.arc === "Liberl Arc" || game.arc === "Crossbell Arc") {
+                // This rule might be too broad if some Liberl/Crossbell dates *should* show days.
+                // Assuming this override is for the main start/end of the game block.
+                // If this date is part of a game's general timelineStartParsed or timelineEndParsed, hide day.
+                if (JSON.stringify(parsedDate) === JSON.stringify(game.timelineStartParsed) ||
+                    JSON.stringify(parsedDate) === JSON.stringify(game.timelineEndParsed)) {
+                    displayDay = undefined;
+                }
+            }
+
+            // Specific formatting for the start date of Trails of Cold Steel
+            if (game.englishTitle === "Trails of Cold Steel" &&
+                parsedDate.year === 1204 && parsedDate.month === 3 && parsedDate.day === 1 &&
+                JSON.stringify(parsedDate) === JSON.stringify(game.timelineStartParsed)) {
+                displayDay = undefined; // Display as "March S1204"
+            }
         }
 
-        // Specific formatting for the first date of Trails of Cold Steel
-        if (game && game.englishTitle === "Trails of Cold Steel" && parsedDate.year === 1204 && parsedDate.month === 3 && parsedDate.day === 1) {
-            return `${monthName}, S${parsedDate.year}`;
+        // Format based on whether a day is to be displayed
+        if (displayDay) {
+            return `${monthName} ${displayDay}${getDayOrdinal(displayDay)}, S${parsedDate.year}`; // e.g., November 29th, S1204
+        } else {
+            return `${monthName} S${parsedDate.year}`; // e.g., January S1202 (no comma)
         }
-
-        // Default formatting
-        return parsedDate.day ? `${monthName} ${parsedDate.day}${getDayOrdinal(parsedDate.day)}, S${parsedDate.year}` : `${monthName}, S${parsedDate.year}`;
     }
 
     function getTextColorForBackground(hexColor) {
@@ -313,8 +331,18 @@ document.addEventListener('DOMContentLoaded', () => {
             titleEl.textContent = game.englishTitle;
             gameEntryDiv.appendChild(titleEl);
 
-            // Pass the game object to formatDisplayDate
-            const durationStr = `${formatDisplayDate(startDate, game)} - ${formatDisplayDate(endDate, game)}`;
+            let durationStr;
+            // startDate and endDate are already available from earlier in the function:
+            // const startDate = game.timelineStartParsed, endDate = game.timelineEndParsed;
+
+            if (game.englishTitle === "Trails in the Sky the 3rd" &&
+                startDate.year === endDate.year &&
+                startDate.month === endDate.month &&
+                !startDate.day && !endDate.day) {
+                durationStr = formatDisplayDate(startDate, game); // Show single month/year, e.g., "August S1203"
+            } else {
+                durationStr = `${formatDisplayDate(startDate, game)} - ${formatDisplayDate(endDate, game)}`;
+            }
 
             const isSpecialGame = gameEntryDiv.classList.contains('special-info-below');
 
