@@ -310,6 +310,31 @@ main {
     margin-bottom: 1.5rem;
 }
 
+#game-color-key-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 20px;
+    padding: 10px;
+    margin-bottom: 2rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.color-key-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-sm);
+}
+
+.color-key-swatch {
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+}
+
 #lore-timeline-main-container {
     display: flex;
     position: relative; /* For absolute positioning of month lines container */
