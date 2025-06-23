@@ -129,7 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 firstYearRendered = false;
             }
 
-            if (labeledMonths.includes(currentMonth - 1)) {
+            // Only render month label if it's one of the designated labeledMonths AND it's not January
+            if (labeledMonths.includes(currentMonth - 1) && monthNames[currentMonth - 1] !== "Jan") {
                 const monthLabel = document.createElement('div');
                 monthLabel.classList.add('month-label');
                 monthLabel.textContent = monthNames[currentMonth - 1];
