@@ -289,6 +289,60 @@ main {
     color: var(--text-secondary);
 }
 
+/* --- Lore Page Timeline Styles --- */
+#timeline-container {
+    position: relative; /* Establishes a positioning context for game bars */
+    width: 95%; /* Responsive width */
+    min-height: 300px; /* Minimum height to ensure visibility even if empty */
+    margin: 30px auto; /* Centering and vertical spacing */
+    padding: 20px 10px; /* Padding inside the container */
+    border: 1px solid var(--accent-gold); /* Themed border */
+    background-color: rgba(0, 0, 0, 0.2); /* Slight background tint */
+    border-radius: 8px;
+    overflow-x: auto; /* Allow horizontal scrolling if timeline is too wide */
+    overflow-y: hidden; /* Hide vertical scrollbar, manage height via content */
+    display: flex; /* Use flexbox to align items (game bars) */
+    flex-direction: column; /* Stack game bars vertically */
+    gap: 8px; /* Space between game bars */
+}
+
+.timeline-game {
+    /* position: relative; /* Already relative due to script setting left/width */
+    /* width is set by JS based on duration */
+    /* left is set by JS based on start date */
+    height: 35px; /* Fixed height for each game bar */
+    border-radius: 4px;
+    color: var(--text-primary); /* Text color for game titles */
+    display: flex;
+    align-items: center; /* Vertically center the title text */
+    padding: 0 10px; /* Horizontal padding for the title */
+    box-sizing: border-box;
+    font-size: var(--font-size-sm);
+    overflow: hidden; /* Prevent content from spilling */
+    text-overflow: ellipsis; /* Show ... for overflowed text */
+    white-space: nowrap; /* Keep title on one line */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Smooth hover effect */
+}
+
+.timeline-game:hover {
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.timeline-game-title {
+    /* Styling for the title text is mostly inherited from .timeline-game */
+    /* Specific overrides can go here if needed */
+    font-weight: 600; /* Make title a bit bolder */
+    pointer-events: none; /* Ensures the tooltip on .timeline-game shows up */
+}
+
+/* Fallback for placeholder text, can be removed if placeholder is removed from HTML */
+main div[style*="text-align: center"] p em {
+    color: var(--text-secondary);
+    font-style: normal; /* Assuming you want it to look like regular text */
+}
+
 /* --- Initial Hiding of Mobile/Desktop Specific Elements --- */
 /* Mobile elements are hidden by default, shown in media query */
 .mobile-only {
