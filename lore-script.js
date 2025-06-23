@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let monthLinesOverlay; // Will be created and appended to gameColumnsContainer
 
     // --- Utility Functions ---
+    function getDaysInMonth(year, month) { // month is 1-indexed
+        return new Date(year, month, 0).getDate();
+    }
+
     function parseTimelineDate(dateStr) {
         if (!dateStr || typeof dateStr !== 'string') return null;
         const parts = dateStr.split('-');
@@ -237,14 +241,55 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const startDate = game.timelineStartParsed, endDate = game.timelineEndParsed;
-            const startTotalMonths = dateToTotalMonths(startDate), minTotalMonths = dateToTotalMonths(minDate);
-            // Move game boxes up by 2.5 steps (revised from 3.5)
-            const topPosition = ((startTotalMonths - minTotalMonths) * pixelsPerMonthVertical) - (2.5 * pixelsPerMonthVertical);
-            const durationInMonths = (dateToTotalMonths(endDate) - startTotalMonths + 1);
-            const entryHeight = durationInMonths * pixelsPerMonthVertical;
+            const minTotalMonths = dateToTotalMonths(minDate);
 
-            if (topPosition < 0 || entryHeight <= 0) {
-                console.warn(`Invalid dimensions for ${game.englishTitle}. Top: ${topPosition}, Height: ${entryHeight}. Skipping.`);
+            // --- Calculate topPosition with day precision ---
+            let topPosition = ((dateToTotalMonths(startDate) - minTotalMonths) * pixelsPerMonthVertical) - (2.5 * pixelsPerMonthVertical);
+            if (startDate.day) {
+                const daysInStartMonth = getDaysInMonth(startDate.year, startDate.month);
+                const startDayProportion = (startDate.day - 1) / daysInStartMonth;
+                topPosition += startDayProportion * pixelsPerMonthVertical;
+            }
+
+            // --- Calculate entryHeight with day precision ---
+            let entryHeight;
+            const startYear = startDate.year, startMonth = startDate.month, startDay = startDate.day;
+            const endYear = endDate.year, endMonth = endDate.month, endDay = endDate.day;
+
+            if (startYear === endYear && startMonth === endMonth) {
+                // Game starts and ends within the same month
+                const daysInMonth = getDaysInMonth(startYear, startMonth);
+                const daySpan = (endDay ? endDay : daysInMonth) - (startDay ? startDay : 1) + 1;
+                entryHeight = (daySpan / daysInMonth) * pixelsPerMonthVertical;
+            } else {
+                // Game spans multiple months
+                let startMonthCoverage = 1.0; // Assume full month if no day
+                if (startDay) {
+                    const daysInStartMonth = getDaysInMonth(startYear, startMonth);
+                    startMonthCoverage = (daysInStartMonth - startDay + 1) / daysInStartMonth;
+                }
+
+                let endMonthCoverage = 1.0; // Assume full month if no day
+                if (endDay) {
+                    const daysInEndMonth = getDaysInMonth(endYear, endMonth);
+                    endMonthCoverage = endDay / daysInEndMonth;
+                }
+
+                const startTotalMonthsValue = startYear * 12 + startMonth;
+                const endTotalMonthsValue = endYear * 12 + endMonth;
+
+                let numberOfFullMiddleMonths = (endTotalMonthsValue - startTotalMonthsValue - 1);
+                numberOfFullMiddleMonths = Math.max(0, numberOfFullMiddleMonths); // Ensure it's not negative
+
+                const fractionalMonths = startMonthCoverage + endMonthCoverage + numberOfFullMiddleMonths;
+                entryHeight = fractionalMonths * pixelsPerMonthVertical;
+            }
+
+            // Ensure height is at least a small visible amount if it's very short, e.g. 1-day event
+            // entryHeight = Math.max(entryHeight, pixelsPerMonthVertical * 0.1); // Min height of 10% of a month row
+
+            if (entryHeight <= 0) { // topPosition can be negative if it starts before timeline minDate (padded)
+                console.warn(`Invalid height for ${game.englishTitle}. Calculated Height: ${entryHeight}. Skipping.`);
                 return;
             }
 
