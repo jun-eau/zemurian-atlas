@@ -300,7 +300,7 @@ main {
 /* --- Mobile Layout Styles (max-width: 900px) --- */
 @media (max-width: 900px) {
     main {
-        min-width: 0; /* Override desktop min-width */
+        min-width: 0 !important; /* Override desktop min-width */
         padding: 1rem 0.5rem; /* Reduce padding for smaller screens */
     }
 
