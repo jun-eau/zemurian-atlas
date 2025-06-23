@@ -126,7 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const yearLabel = document.createElement('div');
                     yearLabel.classList.add('year-label');
                     yearLabel.textContent = `S${currentYear}`;
-                    yearLabel.style.top = `${yOffset - (firstYearRendered ? 0 : 8)}px`;
+                    // Move year labels up by half a step
+                    yearLabel.style.top = `${yOffset - (firstYearRendered ? 0 : 8) - (0.5 * pixelsPerMonthVertical)}px`;
                     timeAxisContainer.appendChild(yearLabel);
                 }
                 firstYearRendered = false;
@@ -137,7 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const monthLabel = document.createElement('div');
                 monthLabel.classList.add('month-label');
                 monthLabel.textContent = monthNames[currentMonth - 1];
-                monthLabel.style.top = `${yOffset}px`;
+                // Move month labels up by half a step
+                monthLabel.style.top = `${yOffset - (0.5 * pixelsPerMonthVertical)}px`;
                 timeAxisContainer.appendChild(monthLabel);
             }
             
@@ -224,7 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const startDate = game.timelineStartParsed, endDate = game.timelineEndParsed;
             const startTotalMonths = dateToTotalMonths(startDate), minTotalMonths = dateToTotalMonths(minDate);
-            const topPosition = (startTotalMonths - minTotalMonths) * pixelsPerMonthVertical;
+            // Move game boxes up by 3.5 steps
+            const topPosition = ((startTotalMonths - minTotalMonths) * pixelsPerMonthVertical) - (3.5 * pixelsPerMonthVertical);
             const durationInMonths = (dateToTotalMonths(endDate) - startTotalMonths + 1);
             const entryHeight = durationInMonths * pixelsPerMonthVertical;
 
