@@ -625,114 +625,71 @@ main {
     border-radius: 3px;
 }
 
-/* --- Overall Arc Timelines Wrapper --- */
-#all-arc-timelines-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; /* Or space-around if padding is desired on sides */
-    gap: 1.5rem; /* Gap between arc columns */
-    margin-top: 1rem;
-}
-
-/* --- Arc Timeline Section Styles (Each Column) --- */
-.arc-timeline-section {
-    flex: 1; /* Each arc column takes equal width */
-    min-width: 300px; /* Minimum width for an arc column */
-    padding: 1rem;
-    background-color: rgba(0,0,0,0.05);
+#lore-timeline-container {
+    position: relative;
+    width: 90%; /* Adjust as needed */
+    max-width: 1000px; /* Adjust as needed */
+    margin: 0 auto;
+    padding-left: 100px; /* Space for the year/month axis */
+    min-height: 1500px; /* Default min height, JS will adjust */
+    background-color: rgba(0,0,0,0.1); /* Subtle background for the timeline area */
     border-radius: 8px;
-    border: 1px solid rgba(var(--accent-gold-rgb, 233, 213, 161), 0.2);
-    /* remove margin-bottom if it's now part of a flex row handled by gap */
+    padding-bottom: 50px; /* Space at the bottom */
 }
 
-.arc-timeline-section h2 {
-    text-align: center;
-    color: var(--accent-gold);
-    font-family: 'Playfair Display', serif;
-    font-size: var(--font-size-xl);
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(var(--accent-gold-rgb, 233, 213, 161), 0.3);
-    padding-bottom: 0.75rem;
-}
-
-.arc-timeline-content { /* Replaces #lore-timeline-container functionality per arc */
-    display: flex; /* Key for side-by-side axis and games area */
-    position: relative; /* For absolute positioning of game boxes and month lines within games-area */
-    /* min-height will be set by JS per arc based on its content */
-}
-
-.timeline-axis-area {
-    width: 80px; /* Fixed width for year/month labels */
-    flex-shrink: 0; /* Prevent shrinking */
-    position: relative; /* For positioning year/month labels within it */
-    padding-top: 10px; /* Small top padding */
+.timeline-axis {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 90px; /* Width of the axis labels area */
+    padding-top: 20px; /* Align with game box content */
     border-right: 2px solid var(--accent-gold);
 }
 
-.timeline-games-area {
-    flex-grow: 1; /* Takes remaining width */
-    position: relative; /* Crucial: game boxes and month lines are positioned relative to this */
-    padding-left: 10px; /* Small gap between axis line and start of game boxes/month lines */
-    /* min-height will be effectively determined by the axis area or JS calculation */
-}
-
-/* Styles for Year and Month labels - similar to before but within .timeline-axis-area */
 .timeline-year {
-    font-size: var(--font-size-md); /* Slightly smaller for compactness */
+    font-size: var(--font-size-lg);
     font-weight: bold;
     color: var(--accent-gold);
-    position: absolute;
-    transform: translateY(-50%);
-    right: 8px; /* Distance from the axis line */
+    position: absolute; /* Positioned by JS */
+    transform: translateY(-50%); /* Center vertically against its calculated top */
+    padding-right:10px; /* Space from the axis line */
+    right: 5px; /* Align to the right of the axis area */
     text-align: right;
-    width: calc(100% - 10px); /* Ensure it doesn't overflow into games area */
 }
 
-.timeline-month-label { /* Renamed from .timeline-month to avoid conflict if old class is cached/used */
+.timeline-month {
     font-size: var(--font-size-xs);
     color: var(--text-secondary);
-    position: absolute;
-    transform: translateY(-50%);
-    right: 5px; /* Distance from the axis line */
+    position: absolute; /* Positioned by JS */
+    transform: translateY(-50%); /* Center vertically */
+    padding-right:5px; /* Space from the axis line */
+    right: 0; /* Align to the right of the axis area */
     text-align: right;
-    width: calc(100% - 10px);
 }
 
-/* Horizontal Month Lines */
-.timeline-month-line {
-    position: absolute;
-    left: 0; /* Start from the very left of .timeline-games-area (respecting its padding) */
-    right: 0; /* Extend to the very right of .timeline-games-area */
-    height: 1px;
-    background-color: rgba(var(--text-secondary-rgb, 153, 153, 185), 0.2); /* Faint line */
-    z-index: 0; /* Behind game boxes */
-}
-
-/* Game Entry Styling for Vertical Timeline (within each arc column) */
 .timeline-game-entry {
-    position: absolute; /* Positioned by JS: top based on start month, left/width by overlap logic */
-    /* height is dynamic based on duration, set by JS */
+    position: absolute;
+    width: 120px; /* Default width, can be adjusted by JS for overlaps */
     min-height: 20px; /* Minimum height for very short duration games */
-    padding: 0.4rem; /* Reduced padding for compactness */
-    border-radius: 4px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    padding: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     overflow: hidden;
-    color: var(--text-primary);
-    font-size: var(--font-size-xs); /* Smaller font for more info in less space */
+    text-overflow: ellipsis;
+    color: var(--text-primary); /* Default text color, can be overridden if needed based on bg */
+    font-size: var(--font-size-sm);
     line-height: var(--line-height-tight);
-    text-align: center; /* Center text within the box */
-    cursor: default;
-    border: 1px solid rgba(255,255,255,0.25);
-    z-index: 1; /* Above month lines */
-    box-sizing: border-box;
-    display: flex; /* For centering content */
+    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Center text vertically */
+    align-items: center; /* Center text horizontally */
+    text-align: center;
+    cursor: default; /* Or pointer if we add interactivity */
+    border: 1px solid rgba(255,255,255,0.3); /* Add a subtle border */
 }
 
-.timeline-game-entry .game-title { /* For title within the box */
+.timeline-game-entry .game-title {
     font-weight: bold;
     margin-bottom: 0.25rem;
 }
