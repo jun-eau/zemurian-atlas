@@ -47,8 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="main-info">
                 <img src="assets/logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="game-logo">
                 <p class="japanese-title">
-                    <span class="kanji-title">${game.japaneseTitleKanji}</span>
                     <span class="romaji-title">${game.japaneseTitleRomaji}</span>
+                    <span class="kanji-title">${game.japaneseTitleKanji}</span>
                 </p>
                 <div class="release-details">
                     <div class="release-region">
@@ -169,8 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="mobile-unified-header-content">
                         <img src="assets/logo/${game.assetName}.png" alt="${game.englishTitle} Logo" class="mobile-logo" loading="lazy">
                         <p class="japanese-title">
-                            <span class="kanji-title">${game.japaneseTitleKanji}</span>
                             <span class="romaji-title">${game.japaneseTitleRomaji}</span>
+                            <span class="kanji-title">${game.japaneseTitleKanji}</span>
                         </p>
                     </div>
                     ${mobileNavButtonsWithAriaHTML}
