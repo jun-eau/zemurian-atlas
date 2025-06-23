@@ -363,7 +363,7 @@ main {
 
 
 .timeline-arc-column {
-    flex: 1 1 auto; /* Grow and shrink, starting from content's auto/intrinsic width */
+    flex: 1 1 0px; /* Equal width columns */
     padding: 0 15px;
     border-right: 1px dashed rgba(153, 153, 185, 0.3);
     box-sizing: border-box;
