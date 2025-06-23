@@ -211,33 +211,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     gameDiv.title = `${game.englishTitle}\n(${startDateStr} - ${endDateStr})`;
 
-                    // Robust color handling
-                    if (game.timelineColor && typeof game.timelineColor === 'string' && game.timelineColor.startsWith('#') && game.timelineColor.length === 7) {
-                        gameDiv.style.backgroundColor = game.timelineColor;
-                        try {
-                            const r = parseInt(game.timelineColor.slice(1, 3), 16);
-                            const g = parseInt(game.timelineColor.slice(3, 5), 16);
-                            const b = parseInt(game.timelineColor.slice(5, 7), 16);
-                            // Check if parsing was successful (they are numbers)
-                            if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
-                                const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-                                gameDiv.style.color = brightness < 128 ? '#f0f0f0' : '#1a1a1a';
-                                if (brightness > 230) gameDiv.style.borderColor = '#555555';
-                            } else {
-                                // Fallback if hex parsing failed unexpectedly
-                                gameDiv.style.color = '#1a1a1a';
-                                console.warn(`Failed to parse color components for ${game.englishTitle}: ${game.timelineColor}`);
-                            }
-                        } catch (e) {
-                            console.warn(`Error parsing timelineColor for ${game.englishTitle}: ${game.timelineColor}`, e);
-                            gameDiv.style.backgroundColor = '#CCCCCC'; // Default grey
-                            gameDiv.style.color = '#1a1a1a';
-                        }
-                    } else {
-                        console.warn(`Missing or invalid timelineColor for ${game.englishTitle}: '${game.timelineColor}'. Defaulting background.`);
-                        gameDiv.style.backgroundColor = '#CCCCCC'; // Default grey
-                        gameDiv.style.color = '#1a1a1a';
-                    }
+                    const r = parseInt(game.timelineColor.slice(1, 3), 16);
+                    const g = parseInt(game.timelineColor.slice(3, 5), 16);
+                    const b = parseInt(game.timelineColor.slice(5, 7), 16);
+                    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+                    gameDiv.style.color = brightness < 128 ? '#f0f0f0' : '#1a1a1a';
+                    if (brightness > 230) gameDiv.style.borderColor = '#555555';
 
                     targetColumn.appendChild(gameDiv);
                 });
