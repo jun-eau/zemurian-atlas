@@ -12,6 +12,7 @@
         "nintendoUrl": null,
         "timelineStart": "1202-01-01",
         "timelineEnd": "1202-08-31",
+        "timelineColor": "#3a8ece",
         "releasesJP": [
             { "date": "June 24, 2004", "platforms": "(PC)" },
             { "date": "June 28, 2006", "platforms": "(PSP)" },
@@ -55,6 +56,7 @@
         "nintendoUrl": null,
         "timelineStart": "1202-09-01",
         "timelineEnd": "1203-04-30",
+        "timelineColor": "#e07a3e",
         "releasesJP": [
             { "date": "March 9, 2006", "platforms": "(PC)" },
             { "date": "December 27, 2007", "platforms": "(PSP)" },
@@ -78,6 +80,7 @@
         "nintendoUrl": null,
         "timelineStart": "1203-12-01",
         "timelineEnd": "1203-12-07",
+        "timelineColor": "#7d50a1",
         "releasesJP": [
             { "date": "June 28, 2007", "platforms": "(PC)" },
             { "date": "July 24, 2008", "platforms": "(PSP)" },
@@ -101,6 +104,7 @@
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-from-zero-switch/",
         "timelineStart": "1204-01-01",
         "timelineEnd": "1204-05-31",
+        "timelineColor": "#00539c",
         "releasesJP": [
             { "date": "September 30, 2010", "platforms": "(PSP)" },
             { "date": "October 18, 2012", "platforms": "(PS Vita)" },
@@ -123,6 +127,7 @@
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-to-azure-switch/",
         "timelineStart": "1204-08-01",
         "timelineEnd": "1204-12-31",
+        "timelineColor": "#0097aa",
         "releasesJP": [
             { "date": "September 29, 2011", "platforms": "(PSP)" },
             { "date": "June 12, 2014", "platforms": "(PS Vita)" },
@@ -145,6 +150,7 @@
         "nintendoUrl": null,
         "timelineStart": "1204-03-01",
         "timelineEnd": "1204-10-30",
+        "timelineColor": "#ae2050",
         "releasesJP": [
             { "date": "September 26, 2013", "platforms": "(PS3, PS Vita)" },
             { "date": "March 8, 2018", "platforms": "(PS4)" }
@@ -169,6 +175,7 @@
         "nintendoUrl": null,
         "timelineStart": "1204-11-29",
         "timelineEnd": "1205-03-13",
+        "timelineColor": "#d61a28",
         "releasesJP": [
             { "date": "September 25, 2014", "platforms": "(PS3, PS Vita)" },
             { "date": "April 26, 2018", "platforms": "(PS4)" }
@@ -193,6 +200,7 @@
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iii-switch/",
         "timelineStart": "1206-04-15",
         "timelineEnd": "1206-07-18",
+        "timelineColor": "#4b5966",
         "releasesJP": [
             { "date": "September 28, 2017", "platforms": "(PS4)" }
         ],
@@ -215,6 +223,7 @@
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iv-switch/",
         "timelineStart": "1206-08-02",
         "timelineEnd": "1206-09-01",
+        "timelineColor": "#641207",
         "releasesJP": [
             { "date": "September 27, 2018", "platforms": "(PS4)" }
         ],
@@ -236,6 +245,7 @@
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-into-reverie-switch/",
         "timelineStart": "1207-02-14",
         "timelineEnd": "1207-03-22",
+        "timelineColor": "#f2f3f7",
         "releasesJP": [
             { "date": "August 27, 2020", "platforms": "(PS4)" },
             { "date": "August 26, 2021", "platforms": "(PC, Switch)" }
