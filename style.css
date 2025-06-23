@@ -307,13 +307,12 @@ main {
     font-family: 'Playfair Display', serif;
     font-size: var(--font-size-xxxl);
     color: var(--accent-gold);
-    margin-bottom: 2rem; /* Increased from 1.5rem to restore space from removed key */
+    margin-bottom: 1.5rem;
 }
 
 #lore-timeline-main-container {
     display: flex;
     position: relative; /* For absolute positioning of month lines container */
-    width: 100%; /* Ensure it uses available width within its parent */
 }
 
 #time-axis-container {
