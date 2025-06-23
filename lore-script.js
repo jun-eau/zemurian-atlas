@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const liberlColumn = document.getElementById('liberl-arc-column').querySelector('.game-entries-area');
     const crossbellColumn = document.getElementById('crossbell-arc-column').querySelector('.game-entries-area');
     const ereboniaColumn = document.getElementById('erebonia-arc-column').querySelector('.game-entries-area');
-
+    
     let monthLinesOverlay; // Will be created and appended to gameColumnsContainer
 
     // --- Utility Functions ---
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('games.json');
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const rawGames = await response.json();
-
+            
             allGames = processGameData(rawGames);
             if (allGames.length === 0) {
                 console.warn("No valid game data to display.");
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.warn(`Skipping game due to start date after end date: ${game.englishTitle}`);
                 return null;
             }
-
+            
             let timelineColor = game.timelineColor;
             if (!timelineColor || !/^#[0-9A-F]{6}$/i.test(timelineColor)) {
                 console.warn(`Invalid or missing timelineColor for ${game.englishTitle}. Using default.`);
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             minMonths = Math.min(minMonths, dateToTotalMonths(game.timelineStartParsed));
             maxMonths = Math.max(maxMonths, dateToTotalMonths(game.timelineEndParsed));
         });
-
+        
         minDate = { year: Math.floor((minMonths -1) / 12), month: (minMonths -1) % 12 + 1 };
         maxDate = { year: Math.floor((maxMonths -1) / 12), month: (maxMonths -1) % 12 + 1 };
 
@@ -106,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderTimeAxis() {
         if (!minDate || !maxDate || !timeAxisContainer || !gameColumnsContainer) return;
-        timeAxisContainer.innerHTML = '';
-
+        timeAxisContainer.innerHTML = ''; 
+        
         if (monthLinesOverlay) monthLinesOverlay.remove();
         monthLinesOverlay = document.createElement('div');
         monthLinesOverlay.id = 'month-lines-overlay';
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 monthLabel.style.top = `${yOffset}px`;
                 timeAxisContainer.appendChild(monthLabel);
             }
-
+            
             const monthLine = document.createElement('div');
             monthLine.classList.add('month-line');
             monthLine.style.top = `${yOffset}px`;
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentMonth++;
             if (currentMonth > 12) { currentMonth = 1; currentYear++; firstYearRendered = true; }
         }
-
+        
         const totalTimelineHeight = yOffset;
         [timeAxisContainer, liberlColumn, crossbellColumn, ereboniaColumn, monthLinesOverlay].forEach(el => {
             if (el) el.style.height = `${totalTimelineHeight}px`;
@@ -249,9 +249,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 durationEl.textContent = durationStr;
                 gameEntryDiv.appendChild(durationEl);
             } else if (entryHeight < (pixelsPerMonthVertical * 0.8)) {
-                titleEl.style.display = 'none';
+                titleEl.style.display = 'none'; 
             }
-
+            
             gameEntryDiv.setAttribute('title', `${game.englishTitle}\n${durationStr}`);
             targetColumn.appendChild(gameEntryDiv);
         });

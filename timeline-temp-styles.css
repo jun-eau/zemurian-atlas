@@ -1,0 +1,163 @@
+/* --- Lore Timeline Specific Styles --- */
+.timeline-section {
+    margin-top: 1rem;
+}
+
+.timeline-section h2 { /* Style for "Lore Timeline" title */
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: var(--font-size-xxxl);
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+}
+
+#game-color-key-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 20px;
+    padding: 10px;
+    margin-bottom: 2rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.color-key-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-sm);
+}
+
+.color-key-swatch {
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+}
+
+#lore-timeline-main-container {
+    display: flex;
+    position: relative; /* For absolute positioning of month lines container */
+}
+
+#time-axis-container {
+    flex: 0 0 80px; /* Fixed width for time axis */
+    padding-right: 10px;
+    border-right: 1px solid var(--text-secondary);
+    position: relative; /* For positioning year/month labels */
+    box-sizing: border-box;
+}
+
+.year-label, .month-label {
+    position: absolute;
+    right: 15px; /* Relative to time-axis-container */
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.month-label {
+    font-size: var(--font-size-xs);
+}
+
+#game-columns-container {
+    flex-grow: 1;
+    display: flex;
+    position: relative; /* To contain the month lines overlay */
+}
+
+/* Container for month lines, will be populated by JS */
+#month-lines-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Will be set by JS based on total timeline height */
+    z-index: 0; /* Behind game entries */
+    pointer-events: none; /* So it doesn't interfere with interactions */
+}
+
+.month-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: rgba(153, 153, 185, 0.15); /* text-secondary at low opacity */
+}
+
+
+.timeline-arc-column {
+    flex: 1 1 0px; /* Equal width columns */
+    padding: 0 15px;
+    border-right: 1px dashed rgba(153, 153, 185, 0.3);
+    box-sizing: border-box;
+}
+
+.timeline-arc-column:last-child {
+    border-right: none;
+}
+
+.timeline-arc-column h3 {
+    text-align: center;
+    font-size: var(--font-size-lg);
+    color: var(--accent-gold);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--accent-gold);
+}
+
+.game-entries-area {
+    position: relative; /* For absolute positioning of game-entry-box */
+    width: 100%;
+    height: auto; /* Will expand based on content / total timeline height */
+}
+
+.game-entry-box {
+    position: absolute;
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding: 8px 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.3); /* Subtle border for better definition */
+    color: var(--text-primary); /* Default text color, JS might override */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically if space allows */
+    align-items: center; /* Center content horizontally */
+    text-align: center;
+}
+
+.game-entry-title {
+    font-weight: bold;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-tight);
+    margin-bottom: 4px;
+}
+
+.game-entry-duration {
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-tight);
+    opacity: 0.85;
+}
+
+/* Tooltip (very basic, can be enhanced) */
+.game-entry-box[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 105%; /* Position above the element */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: var(--font-size-xs);
+    white-space: pre-line; /* Allows \n in title to create new lines */
+    z-index: 100; /* Above other elements */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    width: max-content; /* Adjust width to content */
+    max-width: 300px; /* Prevent excessively wide tooltips */
+}
