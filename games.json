@@ -10,6 +10,8 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky",
         "playstationUrl": null,
         "nintendoUrl": null,
+        "timelineStart": "1202-01-01",
+        "timelineEnd": "1202-08-31",
         "releasesJP": [
             { "date": "June 24, 2004", "platforms": "(PC)" },
             { "date": "June 28, 2006", "platforms": "(PSP)" },
@@ -51,6 +53,8 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_SC",
         "playstationUrl": null,
         "nintendoUrl": null,
+        "timelineStart": "1202-09-01",
+        "timelineEnd": "1203-04-30",
         "releasesJP": [
             { "date": "March 9, 2006", "platforms": "(PC)" },
             { "date": "December 27, 2007", "platforms": "(PSP)" },
@@ -72,6 +76,8 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_the_3rd",
         "playstationUrl": null,
         "nintendoUrl": null,
+        "timelineStart": "1203-12-01",
+        "timelineEnd": "1203-12-07",
         "releasesJP": [
             { "date": "June 28, 2007", "platforms": "(PC)" },
             { "date": "July 24, 2008", "platforms": "(PSP)" },
@@ -93,6 +99,8 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_from_Zero",
         "playstationUrl": "https://store.playstation.com/en-us/concept/10003242",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-from-zero-switch/",
+        "timelineStart": "1204-01-01",
+        "timelineEnd": "1204-05-31",
         "releasesJP": [
             { "date": "September 30, 2010", "platforms": "(PSP)" },
             { "date": "October 18, 2012", "platforms": "(PS Vita)" },
@@ -113,6 +121,8 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_to_Azure",
         "playstationUrl": "https://store.playstation.com/en-us/concept/10003337",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-to-azure-switch/",
+        "timelineStart": "1204-08-01",
+        "timelineEnd": "1204-12-31",
         "releasesJP": [
             { "date": "September 29, 2011", "platforms": "(PSP)" },
             { "date": "June 12, 2014", "platforms": "(PS Vita)" },
@@ -133,6 +143,8 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel",
         "playstationUrl": "https://store.playstation.com/en-us/concept/231981/",
         "nintendoUrl": null,
+        "timelineStart": "1204-03-01",
+        "timelineEnd": "1204-10-30",
         "releasesJP": [
             { "date": "September 26, 2013", "platforms": "(PS3, PS Vita)" },
             { "date": "March 8, 2018", "platforms": "(PS4)" }
@@ -155,6 +167,8 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_II",
         "playstationUrl": "https://store.playstation.com/en-us/product/UP1023-CUSA12566_00-EDSENNOKISEKI2ND",
         "nintendoUrl": null,
+        "timelineStart": "1204-11-29",
+        "timelineEnd": "1205-03-13",
         "releasesJP": [
             { "date": "September 25, 2014", "platforms": "(PS3, PS Vita)" },
             { "date": "April 26, 2018", "platforms": "(PS4)" }
@@ -177,6 +191,8 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_III",
         "playstationUrl": "https://store.playstation.com/en-us/product/UP1063-CUSA15119_00-FULLGAME00000000",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iii-switch/",
+        "timelineStart": "1206-04-15",
+        "timelineEnd": "1206-07-18",
         "releasesJP": [
             { "date": "September 28, 2017", "platforms": "(PS4)" }
         ],
@@ -197,6 +213,8 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_IV",
         "playstationUrl": "https://store.playstation.com/en-us/product/UP1063-CUSA19637_00-EDSENNOKISEKI4TH",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iv-switch/",
+        "timelineStart": "1206-08-02",
+        "timelineEnd": "1206-09-01",
         "releasesJP": [
             { "date": "September 27, 2018", "platforms": "(PS4)" }
         ],
@@ -216,6 +234,8 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_into_Reverie",
         "playstationUrl": "https://store.playstation.com/en-us/concept/10003228",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-into-reverie-switch/",
+        "timelineStart": "1207-02-14",
+        "timelineEnd": "1207-03-22",
         "releasesJP": [
             { "date": "August 27, 2020", "platforms": "(PS4)" },
             { "date": "August 26, 2021", "platforms": "(PC, Switch)" }
