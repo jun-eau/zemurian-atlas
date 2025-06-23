@@ -295,6 +295,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const gameEntryDiv = document.createElement('div');
             gameEntryDiv.className = 'game-entry-box'; // Use className for single class, or classList.add for multiple
+
+            // Apply special class for specific games
+            const specialGames = ["Trails in the Sky the 3rd", "Trails of Cold Steel IV", "Trails into Reverie"];
+            if (specialGames.includes(game.englishTitle)) {
+                gameEntryDiv.classList.add('special-info-below');
+            }
+
             Object.assign(gameEntryDiv.style, {
                 top: `${topPosition}px`, height: `${entryHeight}px`,
                 backgroundColor: game.timelineColor, color: getTextColorForBackground(game.timelineColor),
