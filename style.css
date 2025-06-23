@@ -600,170 +600,209 @@ main {
 
 }
 
-/* --- Lore Timeline Styles --- */
-#lore-timeline-key {
+/* --- Lore Timeline Specific Styles --- */
+.timeline-container {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.1); /* Subtle background for the whole timeline section */
+    border-radius: 8px;
+}
+
+.timeline-main-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: var(--font-size-xxl);
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+}
+
+/* Color Key */
+#game-color-key-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
-    padding: 1rem;
     margin-bottom: 2rem;
-    border-bottom: 1px solid var(--accent-gold);
+    padding: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
 }
 
-.key-item {
+.color-key-item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-size: var(--font-size-sm);
 }
 
-.key-color-swatch {
+.color-key-swatch {
     width: 20px;
     height: 20px;
-    border: 1px solid var(--text-secondary);
-    border-radius: 3px;
-    border-radius: 3px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* --- Unified Timeline Display --- */
-#unified-timeline-display {
+/* Timeline Display Area (Axis + Columns) */
+.timeline-display-area {
     display: flex;
-    flex-direction: row;
-    margin-top: 1.5rem;
-    position: relative; /* For month lines that span across game columns */
-    background-color: rgba(0,0,0,0.03); /* Light background for the whole timeline area */
-    border-radius: 8px;
-    padding: 1rem 0; /* Padding top/bottom, no side padding as axis/columns manage it */
+    position: relative; /* For month lines to span across */
 }
 
-/* Shared Axis Area Styling */
-.timeline-axis-area#shared-timeline-axis { /* Specific to the shared axis */
-    width: 75px; /* Slightly narrower */
-    flex-shrink: 0;
-    position: relative; /* For year/month labels */
-    padding-top: 20px; /* Align with game box content start */
-    border-right: 2px solid var(--accent-gold);
-    margin-left: 0.5rem; /* Small margin from edge of unified-timeline-display */
+#time-axis-container {
+    flex: 0 0 80px; /* Fixed width for time axis */
+    padding-right: 10px;
+    box-sizing: border-box;
+    position: relative; /* For positioning year/month labels */
+    border-right: 1px solid var(--text-secondary); /* Visual separator */
 }
 
-/* Wrapper for the three game columns */
-#game-columns-wrapper {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 1rem; /* Gap between individual arc game columns */
-    padding-left: 1.5rem; /* Space between axis and first game column */
-    padding-right: 1rem; /* Space on the far right */
-    position: relative; /* Needed for month lines to be positioned correctly if drawn inside this wrapper */
-}
-
-/* Individual Arc Game Column Styling */
-.arc-games-column {
-    flex: 1; /* Each column takes equal share of the space in the wrapper */
-    position: relative; /* For absolute positioning of game boxes within it */
-    /* min-height will be set by JS to match shared axis height */
-    padding-top: 20px; /* Match axis padding-top for alignment */
-    /* border-left: 1px dotted rgba(var(--text-secondary-rgb, 153, 153, 185), 0.3); /* Optional separator */
-}
-/* .arc-games-column:first-child { border-left: none; } */
-
-.arc-games-column h2 {
-    text-align: center;
-    color: var(--accent-gold);
-    font-family: 'Playfair Display', serif;
-    font-size: var(--font-size-lg); /* Slightly smaller */
-    margin-top: -15px; /* Pulls title slightly above the first month line */
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(var(--accent-gold-rgb, 233, 213, 161), 0.2);
-}
-
-
-/* Year and Month labels for Shared Axis */
-.timeline-year { /* Applied to labels in #shared-timeline-axis */
-    font-size: var(--font-size-md); /* Slightly smaller for compactness */
+.year-label {
     font-weight: bold;
+    font-size: var(--font-size-md);
     color: var(--accent-gold);
-    position: absolute;
-    transform: translateY(-50%);
-    right: 8px; /* Distance from the axis line */
-    text-align: right;
-    width: calc(100% - 10px);
+    position: absolute; /* Positioned by JS */
+    transform: translateY(-50%); /* Center vertically on its line */
+    white-space: nowrap;
 }
 
-.timeline-month-label { /* Applied to labels in #shared-timeline-axis */
+.month-label {
     font-size: var(--font-size-xs);
     color: var(--text-secondary);
-    position: absolute;
-    transform: translateY(-50%);
-    right: 5px;
-    text-align: right;
-    width: calc(100% - 10px);
+    position: absolute; /* Positioned by JS */
+    transform: translateY(-50%); /* Center vertically on its line */
+    white-space: nowrap;
 }
 
-/* Horizontal Month Lines - these will be appended by JS to #game-columns-wrapper or similar */
-.timeline-month-line {
+.month-line {
     position: absolute;
-    left: 0; /* Will span the full width of its container (e.g., #game-columns-wrapper) */
-    right: 0;
+    left: 80px; /* Start after the time-axis container */
+    right: 0; /* Span to the end of timeline-display-area */
     height: 1px;
-    background-color: rgba(var(--text-secondary-rgb, 153, 153, 185), 0.2);
-    z-index: 0;
+    background-color: rgba(153, 153, 185, 0.15); /* --text-secondary with low alpha */
+    z-index: 0; /* Behind game entries */
 }
 
-/* Game Entry Styling (within each .arc-games-column) */
-.timeline-game-entry {
-    position: absolute;
-    /* top, height, left, width will be set by JS */
-    /* width will be simpler now, e.g., 90% of its column */
-    min-height: 20px;
-    padding: 0.3rem 0.5rem; /* Slightly adjusted padding */
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    overflow: hidden;
-    color: var(--text-primary);
-    font-size: var(--font-size-xs);
-    line-height: var(--line-height-tight);
-    text-align: center;
-    cursor: default;
-    border: 1px solid rgba(255,255,255,0.2);
-    z-index: 1;
+
+.game-columns-container {
+    flex-grow: 1;
+    display: flex;
+    gap: 10px; /* Gap between columns */
+}
+
+.timeline-column {
+    flex: 1; /* Each column takes equal width */
+    padding: 0 10px;
     box-sizing: border-box;
+    position: relative; /* For absolute positioning of game entries within */
+}
+
+.timeline-column-title {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--accent-gold);
+}
+
+.game-entries-area {
+    position: relative; /* Crucial for game entry absolute positioning */
+    width: 100%;
+    height: 100%; /* Will be set by JS based on total timeline height */
+}
+
+.game-entry-box {
+    position: absolute;
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding: 8px 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between; /* Pushes title and duration apart if space allows */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border for all boxes */
 }
 
-.timeline-game-entry .game-title {
+.game-entry-box .title {
     font-weight: bold;
-    margin-bottom: 0.15rem; /* Reduced margin */
-    display: block; /* Ensure it takes its own space */
-}
-.timeline-game-entry .game-dates {
-    font-size: calc(var(--font-size-xs) * 0.85); /* Even smaller for dates */
-    opacity: 0.85;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-tight);
+    margin-bottom: 4px; /* Space between title and duration */
+    /* Text overflow handling if needed, but tooltip is primary for full info */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Max 2 lines for title before ellipsis */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.timeline-game-entry .game-duration {
+.game-entry-box .duration {
     font-size: var(--font-size-xs);
-    opacity: 0.8;
+    line-height: var(--line-height-tight);
+    opacity: 0.85;
+    /* Text overflow handling if needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Ensure game titles inside boxes with dark backgrounds are readable */
-/* This is a generic approach; specific overrides might be needed if contrast is an issue. */
-/* The JS now handles this dynamically based on brightness, so these specific CSS rules might be redundant */
-/* but can serve as a fallback or be removed if JS proves fully sufficient. */
-.timeline-game-entry[style*="background-color: #641207"], /* CS IV dark red */
-.timeline-game-entry[style*="background-color: #00539c"], /* Zero dark blue */
-.timeline-game-entry[style*="background-color: #4b5966"]  /* CS III dark grey/blue */
-{
-    color: #f0f0f0; /* Light text color for dark backgrounds */
+/* Tooltip (basic styling, can be enhanced) */
+.game-entry-box[title]:hover::after { /* Basic browser tooltip will be used based on title attr */
+    /* If custom tooltip is desired, more complex CSS/JS is needed */
 }
-.timeline-game-entry[style*="background-color: #f2f3f7"] /* Reverie light color */
-{
-    color: #1a1a1a; /* Dark text color for light backgrounds */
-    border: 1px solid #555; /* Darker border for light box */
+
+/* Adjust main container padding on mobile for lore page if timeline is too wide */
+@media (max-width: 900px) {
+    .timeline-container {
+        padding: 0.5rem;
+    }
+    #time-axis-container {
+        flex: 0 0 60px; /* Slightly smaller axis on mobile */
+        padding-right: 5px;
+    }
+    .month-line {
+        left: 60px; /* Adjust month line start for smaller axis */
+    }
+    .year-label {
+        font-size: var(--font-size-base); /* Smaller year labels */
+    }
+    .month-label {
+        font-size: 0.65rem; /* Smaller month labels */
+    }
+    .timeline-column-title {
+        font-size: var(--font-size-md);
+    }
+    .game-columns-container {
+        gap: 5px; /* Smaller gap between columns */
+    }
+    .timeline-column {
+        padding: 0 5px;
+    }
+    .game-entry-box {
+        padding: 6px 8px;
+    }
+    .game-entry-box .title {
+        font-size: 0.8rem; /* Slightly smaller title in box */
+         -webkit-line-clamp: 2;
+    }
+    .game-entry-box .duration {
+        font-size: 0.6rem; /* Smaller duration text */
+    }
+    #game-color-key-container {
+        gap: 0.5rem;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .color-key-item {
+        font-size: var(--font-size-xs);
+    }
+    .color-key-swatch {
+        width: 15px;
+        height: 15px;
+    }
 }

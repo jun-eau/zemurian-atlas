@@ -23,30 +23,39 @@
     </header>
 
     <main>
-        <div id="lore-timeline-key">
-            <!-- Game color key will be generated here by JavaScript -->
-        </div>
+        <div class="timeline-container">
+            <h2 class="timeline-main-title">Lore Timeline</h2>
 
-        <div id="unified-timeline-display">
-            <div class="timeline-axis-area" id="shared-timeline-axis">
-                <!-- Single shared axis (Years/Months) will be generated here -->
+            <div id="game-color-key-container">
+                <!-- Color key will be populated by JavaScript -->
             </div>
-            <div id="game-columns-wrapper">
-                <div class="arc-games-column" id="liberl-games-column">
-                    <h2>Liberl Arc</h2>
-                    <!-- Liberl Game Boxes will be generated here -->
-            </div>
-                <div class="arc-games-column" id="crossbell-games-column">
-                    <h2>Crossbell Arc</h2>
-                    <!-- Crossbell Game Boxes will be generated here -->
-            </div>
-                <div class="arc-games-column" id="erebonia-games-column">
-                    <h2>Erebonia Arc</h2>
-                    <!-- Erebonia Game Boxes (including Reverie) will be generated here -->
+
+            <div class="timeline-display-area">
+                <div id="time-axis-container">
+                    <!-- Time axis labels (years, months) will be populated by JavaScript -->
+                </div>
+                <div class="game-columns-container">
+                    <div class="timeline-column liberl-arc-column">
+                        <h3 class="timeline-column-title">Liberl Arc</h3>
+                        <div class="game-entries-area" id="liberl-arc-entries">
+                            <!-- Liberl Arc game entries will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="timeline-column crossbell-arc-column">
+                        <h3 class="timeline-column-title">Crossbell Arc</h3>
+                        <div class="game-entries-area" id="crossbell-arc-entries">
+                            <!-- Crossbell Arc game entries will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="timeline-column erebonia-arc-column">
+                        <h3 class="timeline-column-title">Erebonia Arc</h3>
+                        <div class="game-entries-area" id="erebonia-arc-entries">
+                            <!-- Erebonia Arc game entries (including Reverie) will be populated by JavaScript -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        </div> <!-- Close all-arc-timelines-wrapper -->
     </main>
 
     <footer>
