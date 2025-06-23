@@ -226,8 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const startDate = game.timelineStartParsed, endDate = game.timelineEndParsed;
             const startTotalMonths = dateToTotalMonths(startDate), minTotalMonths = dateToTotalMonths(minDate);
-            // Move game boxes up by 3.5 steps
-            const topPosition = ((startTotalMonths - minTotalMonths) * pixelsPerMonthVertical) - (3.5 * pixelsPerMonthVertical);
+            // Move game boxes up by 2.5 steps (revised from 3.5)
+            const topPosition = ((startTotalMonths - minTotalMonths) * pixelsPerMonthVertical) - (2.5 * pixelsPerMonthVertical);
             const durationInMonths = (dateToTotalMonths(endDate) - startTotalMonths + 1);
             const entryHeight = durationInMonths * pixelsPerMonthVertical;
 
