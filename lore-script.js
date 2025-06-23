@@ -332,16 +332,14 @@ document.addEventListener('DOMContentLoaded', () => {
             gameEntryDiv.appendChild(titleEl);
 
             let durationStr;
-            // startDate and endDate are already available from earlier in the function:
-            // const startDate = game.timelineStartParsed, endDate = game.timelineEndParsed;
-
-            if (game.englishTitle === "Trails in the Sky the 3rd" &&
-                startDate.year === endDate.year &&
-                startDate.month === endDate.month &&
-                !startDate.day && !endDate.day) {
-                durationStr = formatDisplayDate(startDate, game); // Show single month/year, e.g., "August S1203"
+            if (game.englishTitle === "Trails in the Sky the 3rd") {
+                // For "Trails in the Sky the 3rd", display only its single month/year.
+                // formatDisplayDate will correctly format this as "Month SYYYY".
+                // This assumes its timelineStartParsed accurately represents this single period.
+                durationStr = formatDisplayDate(game.timelineStartParsed, game);
             } else {
-                durationStr = `${formatDisplayDate(startDate, game)} - ${formatDisplayDate(endDate, game)}`;
+                // For all other games, display the range.
+                durationStr = `${formatDisplayDate(game.timelineStartParsed, game)} - ${formatDisplayDate(game.timelineEndParsed, game)}`;
             }
 
             const isSpecialGame = gameEntryDiv.classList.contains('special-info-below');
