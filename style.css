@@ -301,7 +301,12 @@ main {
 @media (max-width: 900px) {
     main {
         min-width: 0 !important; /* Override desktop min-width */
+        width: auto; /* Allow natural fill of parent container */
+        max-width: 100%; /* Ensure it doesn't exceed parent width */
         padding: 1rem 0.5rem; /* Reduce padding for smaller screens */
+        margin-left: 0; /* Override desktop margin: 0 auto if it interferes */
+        margin-right: 0; /* Override desktop margin: 0 auto if it interferes */
+        box-sizing: border-box; /* Ensure padding is included in width calculations */
     }
 
     /* header h1 font-size is now handled by clamp() in the main rule */
@@ -504,6 +509,7 @@ main {
     .game-entry {
         padding: 0;
         margin: 0;
+        display: block; /* Override desktop display:flex and its associated gap behavior */
     }
 
     /* Former .slider-arrow hiding rule removed as the class is no longer in use. */
