@@ -153,7 +153,7 @@ main {
 .game-logo { max-width: 80%; max-height: 140px; height: auto; margin-bottom: 0.25rem; /* Reduced margin */ filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.7)); }
 .japanese-title { color: var(--accent-gold); margin: 0.25rem 0 1rem 0; /* Reduced margins */ line-height: var(--line-height-tight); }
 .kanji-title, .romaji-title { display: block; }
-.romaji-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: var(--font-size-lg); opacity: 1; }
+.romaji-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: var(--font-size-xl); opacity: 1; }
 .kanji-title { font-weight: normal; font-size: var(--font-size-md); color: var(--text-secondary); }
 
 /* --- New Release Date Styling --- */
@@ -388,7 +388,7 @@ main {
     }
 
     .mobile-unified-header-content .romaji-title {
-        font-size: var(--font-size-md); /* Was kanji-title's size */
+        font-size: var(--font-size-lg); /* Increased from md, Was kanji-title's size */
         font-family: 'Playfair Display', serif;
         font-weight: 700;
         color: var(--accent-gold); /* Was kanji-title's color */
