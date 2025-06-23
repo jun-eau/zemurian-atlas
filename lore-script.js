@@ -191,11 +191,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function formatDisplayDate(parsedDate) {
+    function formatDisplayDate(parsedDate, game = null) { // Add game parameter
         if (!parsedDate) return "N/A";
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const monthName = monthNames[parsedDate.month - 1];
-        return parsedDate.day ? `${monthName} ${parsedDate.day}${getDayOrdinal(parsedDate.day)}, S${parsedDate.year}` : `${monthName} S${parsedDate.year}`;
+
+        // Specific formatting for Liberl Arc and Crossbell Arc games
+        if (game && (game.arc === "Liberl Arc" || game.arc === "Crossbell Arc")) {
+            return `${monthName}, S${parsedDate.year}`;
+        }
+
+        // Specific formatting for the first date of Trails of Cold Steel
+        if (game && game.englishTitle === "Trails of Cold Steel" && parsedDate.year === 1204 && parsedDate.month === 3 && parsedDate.day === 1) {
+            return `${monthName}, S${parsedDate.year}`;
+        }
+
+        // Default formatting
+        return parsedDate.day ? `${monthName} ${parsedDate.day}${getDayOrdinal(parsedDate.day)}, S${parsedDate.year}` : `${monthName}, S${parsedDate.year}`;
     }
 
     function getTextColorForBackground(hexColor) {
@@ -249,7 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
             titleEl.textContent = game.englishTitle;
             gameEntryDiv.appendChild(titleEl);
 
-            const durationStr = `${formatDisplayDate(startDate)} - ${formatDisplayDate(endDate)}`;
+            // Pass the game object to formatDisplayDate
+            const durationStr = `${formatDisplayDate(startDate, game)} - ${formatDisplayDate(endDate, game)}`;
             if (entryHeight >= (pixelsPerMonthVertical * 1.8)) {
                 const durationEl = document.createElement('div');
                 durationEl.className = 'game-entry-duration';
