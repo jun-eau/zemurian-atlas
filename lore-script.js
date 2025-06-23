@@ -95,13 +95,23 @@ document.addEventListener('DOMContentLoaded', () => {
         let paddedMinMonth = minDate.month - 3;
         let paddedMinYear = minDate.year;
         if (paddedMinMonth <= 0) { paddedMinMonth += 12; paddedMinYear--; }
+
+        // Ensure timeline starts no earlier than S1202, January
+        const timelineStartYearCap = 1202;
+        if (paddedMinYear < timelineStartYearCap) {
+            paddedMinYear = timelineStartYearCap;
+            paddedMinMonth = 1; // Start from January of the cap year
+        } else if (paddedMinYear === timelineStartYearCap && paddedMinMonth < 1) {
+            // This case should ideally not be hit if logic is sound, but as a safeguard
+            paddedMinMonth = 1;
+        }
         minDate = { year: paddedMinYear, month: paddedMinMonth };
 
         let paddedMaxMonth = maxDate.month + 3;
         let paddedMaxYear = maxDate.year;
         if (paddedMaxMonth > 12) { paddedMaxMonth -= 12; paddedMaxYear++; }
         maxDate = { year: paddedMaxYear, month: paddedMaxMonth };
-        console.log("Timeline Range (Padded):", minDate, "to", maxDate);
+        console.log("Timeline Range (Padded & Capped):", minDate, "to", maxDate);
     }
 
     function renderTimeAxis() {
