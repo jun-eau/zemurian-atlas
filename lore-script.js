@@ -315,12 +315,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Pass the game object to formatDisplayDate
             const durationStr = `${formatDisplayDate(startDate, game)} - ${formatDisplayDate(endDate, game)}`;
-            if (entryHeight >= (pixelsPerMonthVertical * 1.8)) {
+
+            const isSpecialGame = gameEntryDiv.classList.contains('special-info-below');
+
+            if (isSpecialGame || entryHeight >= (pixelsPerMonthVertical * 1.8)) {
                 const durationEl = document.createElement('div');
                 durationEl.className = 'game-entry-duration';
                 durationEl.textContent = durationStr;
                 gameEntryDiv.appendChild(durationEl);
-            } else if (entryHeight < (pixelsPerMonthVertical * 0.8)) {
+            } else if (!isSpecialGame && entryHeight < (pixelsPerMonthVertical * 0.8)) {
+                // Hide title only for non-special, very short entries
                 titleEl.style.display = 'none'; 
             }
             

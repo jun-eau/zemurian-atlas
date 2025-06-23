@@ -447,31 +447,25 @@ main {
     text-shadow: 1px 1px 3px rgba(0,0,0,0.8); /* Slightly softer, darker shadow for better blending */
     width: auto; /* Fit content */
     min-width: 150px; /* Prevent very narrow text block if title is short */
-    max-width: 200px; /* Allow some wrapping for longer titles/dates */
+    /* max-width: 200px; Let's allow it to be wider if needed, up to the column width. The game-entry-box width is 90% of the column. */
     text-align: center;
     /* These will not inherit the parent's text color by default if it was changed by JS based on background */
 }
 
 .game-entry-box.special-info-below .game-entry-title {
-    /* Positioned relative to the bottom of the .game-entry-box */
-    /* H is height of .game-entry-box. We want it below. */
-    /* 'bottom' positions relative to the padding edge of the container. */
-    /* Let's use 'top: 100%' to position it right below the box, then margin-top for spacing. */
     top: 100%;
     margin-top: 5px; /* Space between box and title */
     font-size: var(--font-size-sm);
-    font-weight: bold; /* Explicitly set as it might be reset */
+    font-weight: bold;
     line-height: var(--line-height-tight);
 }
 
 .game-entry-box.special-info-below .game-entry-duration {
-    /* This will be positioned relative to the title if we nest, or also absolutely */
-    /* For simplicity, also position it absolutely, below the title */
-    top: 100%; /* Start from below the box */
-    margin-top: 22px; /* Space for title (approx 15px height + 5px margin) + 2px gap */
+    top: 100%;
+    margin-top: 22px; /* Adjusted to make space for title: title font-size var(--font-size-sm) is 14px. line-height 1.2 is ~17px. Add margin-top 5px = 22px. */
     font-size: var(--font-size-xs);
     line-height: var(--line-height-tight);
-    opacity: 0.9; /* Slight opacity for duration */
+    opacity: 0.9;
 }
 
 /* Ensure the default title/duration styles don't conflict when text is inside */
