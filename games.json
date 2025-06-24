@@ -11,8 +11,7 @@
         "playstationUrl": null,
         "nintendoUrl": null,
         "timelineColor": "#3a8ece",
-        "timelineDisplayString": "March - September S.1202",
-        "timelinePeriods": [{ "start": "1202-03-01", "end": "1202-09-30" }],
+        "timelinePeriods": [{ "start": "1202-03-01", "end": "1202-09-30", "display": "March – September, S.1202" }],
         "releasesJP": [
             { "date": "June 24, 2004", "platforms": "(PC)" },
             { "date": "June 28, 2006", "platforms": "(PSP)" },
@@ -55,8 +54,7 @@
         "playstationUrl": null,
         "nintendoUrl": null,
         "timelineColor": "#F2C663",
-        "timelineDisplayString": "December S.1202 - March 7, S.1203",
-        "timelinePeriods": [{ "start": "1202-12-01", "end": "1203-03-07" }],
+        "timelinePeriods": [{ "start": "1202-12-01", "end": "1203-03-07", "display": "December, S.1202 – March 7, S.1203" }],
         "releasesJP": [
             { "date": "March 9, 2006", "platforms": "(PC)" },
             { "date": "December 27, 2007", "platforms": "(PSP)" },
@@ -79,10 +77,9 @@
         "playstationUrl": null,
         "nintendoUrl": null,
         "timelineColor": "#7d50a1",
-        "timelineDisplayString": "Late Oct & Late Nov S.1203",
         "timelinePeriods": [
-            { "start": "1203-10-27", "end": "1203-10-27", "label": "Prologue" },
-            { "start": "1203-11-29", "end": "1203-11-29", "label": "Phantasma" }
+            { "start": "1203-10-27", "end": "1203-10-27", "label": "Prologue", "display": "October 27, S.1203" },
+            { "start": "1203-11-29", "end": "1203-11-29", "label": "Phantasma", "display": "November 29, S.1203" }
         ],
         "releasesJP": [
             { "date": "June 28, 2007", "platforms": "(PC)" },
@@ -106,8 +103,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/concept/10003242",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-from-zero-switch/",
         "timelineColor": "#218FCA",
-        "timelineDisplayString": "January - May S.1204",
-        "timelinePeriods": [{ "start": "1204-01-01", "end": "1204-05-31" }],
+        "timelinePeriods": [{ "start": "1204-01-01", "end": "1204-05-31", "display": "January – May, S.1204" }],
         "releasesJP": [
             { "date": "September 30, 2010", "platforms": "(PSP)" },
             { "date": "October 18, 2012", "platforms": "(PS Vita)" },
@@ -129,8 +125,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/concept/10003337",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-to-azure-switch/",
         "timelineColor": "#0097aa",
-        "timelineDisplayString": "August 17 - December 30, S.1204",
-        "timelinePeriods": [{ "start": "1204-08-17", "end": "1204-12-30" }],
+        "timelinePeriods": [{ "start": "1204-08-17", "end": "1204-12-30", "display": "August 17 – December 30, S.1204" }],
         "releasesJP": [
             { "date": "September 29, 2011", "platforms": "(PSP)" },
             { "date": "June 12, 2014", "platforms": "(PS Vita)" },
@@ -152,8 +147,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/concept/231981/",
         "nintendoUrl": null,
         "timelineColor": "#ae2050",
-        "timelineDisplayString": "March 31 - October 30, S.1204",
-        "timelinePeriods": [{ "start": "1204-03-31", "end": "1204-10-30" }],
+        "timelinePeriods": [{ "start": "1204-03-31", "end": "1204-10-30", "display": "March 31 – October 30, S.1204" }],
         "releasesJP": [
             { "date": "September 26, 2013", "platforms": "(PS3, PS Vita)" },
             { "date": "March 8, 2018", "platforms": "(PS4)" }
@@ -177,10 +171,9 @@
         "playstationUrl": "https://store.playstation.com/en-us/product/UP1023-CUSA12566_00-EDSENNOKISEKI2ND",
         "nintendoUrl": null,
         "timelineColor": "#d61a28",
-        "timelineDisplayString": "Late Nov S.1204 - Mid March S.1205",
         "timelinePeriods": [
-            { "start": "1204-11-29", "end": "1204-12-31", "label": "Main Story" },
-            { "start": "1205-03-13", "end": "1205-03-13", "label": "Epilogue" }
+            { "start": "1204-11-29", "end": "1204-12-31", "label": "Main Story", "display": "November 29 – December 31, S.1204" },
+            { "start": "1205-03-13", "end": "1205-03-13", "label": "Epilogue", "display": "March 13, S.1205" }
         ],
         "releasesJP": [
             { "date": "September 25, 2014", "platforms": "(PS3, PS Vita)" },
@@ -205,8 +198,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/product/UP1063-CUSA15119_00-FULLGAME00000000",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iii-switch/",
         "timelineColor": "#4b5966",
-        "timelineDisplayString": "April 15 - July 18, S.1206",
-        "timelinePeriods": [{ "start": "1206-04-15", "end": "1206-07-18" }],
+        "timelinePeriods": [{ "start": "1206-04-15", "end": "1206-07-18", "display": "April 15 – July 18, S.1206" }],
         "releasesJP": [
             { "date": "September 28, 2017", "platforms": "(PS4)" }
         ],
@@ -228,8 +220,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/product/UP1063-CUSA19637_00-EDSENNOKISEKI4TH",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iv-switch/",
         "timelineColor": "#641207",
-        "timelineDisplayString": "August 2 - September 1, S.1206",
-        "timelinePeriods": [{ "start": "1206-08-02", "end": "1206-09-01" }],
+        "timelinePeriods": [{ "start": "1206-08-02", "end": "1206-09-01", "display": "August 2 – September 1, S.1206" }],
         "releasesJP": [
             { "date": "September 27, 2018", "platforms": "(PS4)" }
         ],
@@ -250,10 +241,9 @@
         "playstationUrl": "https://store.playstation.com/en-us/concept/10003228",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-into-reverie-switch/",
         "timelineColor": "#DFF8FC",
-        "timelineDisplayString": "Mid Feb & Mid March S.1207",
         "timelinePeriods": [
-            { "start": "1207-02-14", "end": "1207-02-14", "label": "Prologue" },
-            { "start": "1207-03-15", "end": "1207-03-22", "label": "Main Story" }
+            { "start": "1207-02-14", "end": "1207-02-14", "label": "Prologue", "display": "February 14, S.1207" },
+            { "start": "1207-03-15", "end": "1207-03-22", "label": "Main Story", "display": "March 15 – 22, S.1207" }
         ],
         "releasesJP": [
             { "date": "August 27, 2020", "platforms": "(PS4)" },
@@ -274,6 +264,7 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_through_Daybreak",
         "playstationUrl": "https://store.playstation.com/en-us/concept/10001886",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-through-daybreak-switch/",
+        "timelineColor": "#4a4a4a",
         "releasesJP": [
             { "date": "September 30, 2021", "platforms": "(PS4)" },
             { "date": "July 28, 2022", "platforms": "(PS5)" }
@@ -293,6 +284,7 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_through_Daybreak_II",
         "playstationUrl": "https://store.playstation.com/en-us/concept/10004596",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-through-daybreak-ii-switch/",
+        "timelineColor": "#a02c2c",
         "releasesJP": [
             { "date": "September 29, 2022", "platforms": "(PS4, PS5)" }
         ],
@@ -311,6 +303,7 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_beyond_the_Horizon",
         "playstationUrl": "https://store.playstation.com/en-us/concept/10012789",
         "nintendoUrl": null,
+        "timelineColor": "#b39ddb",
         "releasesJP": [
             { "date": "September 26, 2024", "platforms": "(PS4, PS5)" }
         ],
