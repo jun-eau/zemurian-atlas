@@ -221,11 +221,11 @@ main {
     /* This container should not have overflow:hidden if arrows are outside its visual box */
     /* It should naturally take up the width of its content (the .game-entry-slider) */
     /* min-width from here is removed as it's now handled by 'main' element */
-    padding-bottom: 20px; /* Added padding to prevent shadow clipping */
 }
 
 .game-entry-slider {
-    overflow: hidden; /* Crucial for hiding other slides */
+    overflow-x: hidden;  /* This continues to hide the other slides horizontally */
+    overflow-y: visible; /* This allows the vertical box-shadow to be displayed */
     position: relative; /* Optional: if it needs to be a positioning context for something else inside, though not strictly necessary for current setup */
     /* width: 100%; Ensure it takes the space of a normal game-entry.
        This might already be handled by its container or flex properties.
