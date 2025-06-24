@@ -390,12 +390,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 // potentially formatted differently from the main 'display' string if needed.
                 // For now, let's use the period's 'display' string for the main part of the tooltip for consistency,
                 // and add the label if it exists.
-                let tooltipText = `${game.englishTitle}`;
-                if (period.label) {
-                    tooltipText += ` (${period.label})`;
-                }
-                tooltipText += `\n${period.display}`; // Use the period's own display string for the tooltip.
-                gameEntryDiv.setAttribute('title', tooltipText);
+                // let tooltipText = `${game.englishTitle}`;
+                // if (period.label) {
+                //     tooltipText += ` (${period.label})`;
+                // }
+                // tooltipText += `\n${period.display}`; // Use the period's own display string for the tooltip.
+                // gameEntryDiv.setAttribute('title', tooltipText); // Removed to disable browser tooltips
 
                 targetColumn.appendChild(gameEntryDiv);
             }); // End of period loop

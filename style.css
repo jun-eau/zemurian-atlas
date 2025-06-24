@@ -480,23 +480,8 @@ main {
 }
 
 /* Tooltip (very basic, can be enhanced) */
-.game-entry-box[title]:hover::after {
-    content: attr(title);
-    position: absolute;
-    bottom: 105%; /* Position above the element */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #333;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: var(--font-size-xs);
-    white-space: pre-line; /* Allows \n in title to create new lines */
-    z-index: 100; /* Above other elements */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    width: max-content; /* Adjust width to content */
-    max-width: 300px; /* Prevent excessively wide tooltips */
-}
+/* .game-entry-box[title]:hover::after removed to disable default browser tooltip appearing on hover,
+   as custom text display solution is now implemented below boxes for specific cases or inside for others. */
 
 
 @media (max-width: 900px) {
