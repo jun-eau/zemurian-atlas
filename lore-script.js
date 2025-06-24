@@ -61,16 +61,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function processGameData(rawGames) {
         return rawGames.map(game => {
-            const timelineStart = parseTimelineDate(game.timelineStart);
-            const timelineEnd = parseTimelineDate(game.timelineEnd);
-
-            if (!timelineStart || !timelineEnd) {
-                console.warn(`Skipping game due to invalid start/end date: ${game.englishTitle}`);
-                return null;
+            if (!game.timelinePeriods || game.timelinePeriods.length === 0) {
+                // Games without timeline data (e.g. future releases) might not have these keys.
+                // Or, if they are explicitly empty, we can skip them for timeline rendering.
+                // We'll keep them in the allGames array for other potential uses, but they won't affect date range.
+                console.log(`Game "${game.englishTitle}" has no timelinePeriods. It will not be rendered on the timeline.`);
+                return { ...game, timelinePeriodsParsed: [] };
             }
-            if (dateToTotalMonths(timelineStart) > dateToTotalMonths(timelineEnd)) {
-                console.warn(`Skipping game due to start date after end date: ${game.englishTitle}`);
-                return null;
+
+            const parsedPeriods = game.timelinePeriods.map(period => {
+                const start = parseTimelineDate(period.start);
+                const end = parseTimelineDate(period.end);
+                if (!start || !end) {
+                    console.warn(`Invalid period date for ${game.englishTitle} (${period.label || 'N/A'}). Skipping this period.`);
+                    return null;
+                }
+                if (dateToTotalMonths(start) > dateToTotalMonths(end)) {
+                    console.warn(`Period start date after end date for ${game.englishTitle} (${period.label || 'N/A'}). Skipping this period.`);
+                    return null;
+                }
+                return { ...period, startParsed: start, endParsed: end };
+            }).filter(period => period !== null);
+
+            if (parsedPeriods.length === 0 && game.timelinePeriods.length > 0) {
+                console.warn(`Skipping game due to all periods having invalid dates: ${game.englishTitle}`);
+                return null; // Or return game with empty parsedPeriods if you want to keep it for non-timeline purposes
             }
             
             let timelineColor = game.timelineColor;
@@ -79,17 +94,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 timelineColor = '#808080'; // Default gray
             }
 
-            return { ...game, timelineStartParsed: timelineStart, timelineEndParsed: timelineEnd, timelineColor };
-        }).filter(game => game !== null);
+            return { ...game, timelinePeriodsParsed: parsedPeriods, timelineColor };
+        }).filter(game => game !== null && (game.timelinePeriodsParsed && game.timelinePeriodsParsed.length > 0 || !game.timelinePeriods || game.timelinePeriods.length === 0) );
+        // Keep games that have valid parsed periods OR had no timeline periods to begin with (for other data uses)
+        // Filter out games that *should* have had periods but all were invalid.
     }
 
     function calculateDateRange() {
         if (allGames.length === 0) return;
         let minMonths = Infinity, maxMonths = -Infinity;
+
         allGames.forEach(game => {
-            minMonths = Math.min(minMonths, dateToTotalMonths(game.timelineStartParsed));
-            maxMonths = Math.max(maxMonths, dateToTotalMonths(game.timelineEndParsed));
+            if (game.timelinePeriodsParsed && game.timelinePeriodsParsed.length > 0) {
+                game.timelinePeriodsParsed.forEach(period => {
+                    minMonths = Math.min(minMonths, dateToTotalMonths(period.startParsed));
+                    maxMonths = Math.max(maxMonths, dateToTotalMonths(period.endParsed));
+                });
+            }
         });
+
+        if (minMonths === Infinity || maxMonths === -Infinity) {
+            console.warn("No valid timeline data found across all games to calculate date range.");
+            // Set a default range or handle this case as appropriate
+            minDate = { year: 1200, month: 1 }; // Arbitrary default
+            maxDate = { year: 1210, month: 12 }; // Arbitrary default
+            return;
+        }
         
         minDate = { year: Math.floor((minMonths -1) / 12), month: (minMonths -1) % 12 + 1 };
         maxDate = { year: Math.floor((maxMonths -1) / 12), month: (maxMonths -1) % 12 + 1 };
@@ -158,50 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalTimelineHeight = yOffset;
         [timeAxisContainer, liberlColumn, crossbellColumn, ereboniaColumn, monthLinesOverlay].forEach(el => {
             if (el) el.style.height = `${totalTimelineHeight}px`;
-        });
-    }
-
-    function getDayOrdinal(day) {
-        if (day > 3 && day < 21) return 'th';
-        switch (day % 10) {
-            case 1: return "st"; case 2: return "nd"; case 3: return "rd"; default: return "th";
-        }
-    }
-
-    function formatDisplayDate(parsedDate, game = null) {
-        if (!parsedDate) return "N/A";
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const monthName = monthNames[parsedDate.month - 1];
-
-        let displayDay = parsedDate.day; // Start with the actual day from data
-
-        // Apply specific overrides to hide the day if necessary
-        if (game) {
-            // For Liberl and Crossbell Arcs, usually the overall game start/end dates are shown without specific days
-            // for a cleaner "Month Year" display, even if the raw data has a day (e.g., start of month).
-            if (game.arc === "Liberl Arc" || game.arc === "Crossbell Arc") {
-                // This rule might be too broad if some Liberl/Crossbell dates *should* show days.
-                // Assuming this override is for the main start/end of the game block.
-                // If this date is part of a game's general timelineStartParsed or timelineEndParsed, hide day.
-                if (JSON.stringify(parsedDate) === JSON.stringify(game.timelineStartParsed) ||
-                    JSON.stringify(parsedDate) === JSON.stringify(game.timelineEndParsed)) {
-                    displayDay = undefined;
-                }
-            }
-
-            // Specific formatting for the start date of Trails of Cold Steel
-            if (game.englishTitle === "Trails of Cold Steel" &&
-                parsedDate.year === 1204 && parsedDate.month === 3 && parsedDate.day === 1 &&
-                JSON.stringify(parsedDate) === JSON.stringify(game.timelineStartParsed)) {
-                displayDay = undefined; // Display as "March S1204"
-            }
-        }
-
-        // Format based on whether a day is to be displayed
-        if (displayDay) {
-            return `${monthName} ${displayDay}${getDayOrdinal(displayDay)}, S${parsedDate.year}`; // e.g., November 29th, S1204
-        } else {
-            return `${monthName} S${parsedDate.year}`; // e.g., January S1202 (no comma)
         }
     }
 
@@ -220,120 +206,133 @@ document.addEventListener('DOMContentLoaded', () => {
         [liberlColumn, crossbellColumn, ereboniaColumn].forEach(col => { if (col) col.innerHTML = ''; });
 
         allGames.forEach(game => {
+            if (!game.timelinePeriodsParsed || game.timelinePeriodsParsed.length === 0) {
+                return; // Skip games with no valid periods to render
+            }
+
             let targetColumn;
             if (game.arc === "Liberl Arc") targetColumn = liberlColumn;
             else if (game.arc === "Crossbell Arc") targetColumn = crossbellColumn;
             else if (game.arc === "Erebonia Arc" || game.englishTitle === "Trails into Reverie") targetColumn = ereboniaColumn;
             else { console.warn(`Game "${game.englishTitle}" arc "${game.arc}" unassigned. Skipping.`); return; }
 
-            if (!targetColumn) { // Should not happen if columns exist, but good check
+            if (!targetColumn) {
                 console.warn(`Target column not found for game "${game.englishTitle}". Skipping.`);
                 return;
             }
 
-            const startDate = game.timelineStartParsed, endDate = game.timelineEndParsed;
             const minTotalMonths = dateToTotalMonths(minDate);
 
-            // --- Calculate topPosition with day precision ---
-            let topPosition = ((dateToTotalMonths(startDate) - minTotalMonths) * pixelsPerMonthVertical) - (2.5 * pixelsPerMonthVertical);
-            if (startDate.day) {
-                const daysInStartMonth = getDaysInMonth(startDate.year, startDate.month);
-                const startDayProportion = (startDate.day - 1) / daysInStartMonth;
-                topPosition += startDayProportion * pixelsPerMonthVertical;
-            }
+            game.timelinePeriodsParsed.forEach((period, index) => {
+                const startDate = period.startParsed;
+                const endDate = period.endParsed;
 
-            // --- Calculate entryHeight with day precision ---
-            let entryHeight;
-            const startYear = startDate.year, startMonth = startDate.month, startDay = startDate.day;
-            const endYear = endDate.year, endMonth = endDate.month, endDay = endDate.day;
-
-            if (startYear === endYear && startMonth === endMonth) {
-                // Game starts and ends within the same month
-                const daysInMonth = getDaysInMonth(startYear, startMonth);
-                const daySpan = (endDay ? endDay : daysInMonth) - (startDay ? startDay : 1) + 1;
-                entryHeight = (daySpan / daysInMonth) * pixelsPerMonthVertical;
-            } else {
-                // Game spans multiple months
-                let startMonthCoverage = 1.0; // Assume full month if no day
-                if (startDay) {
-                    const daysInStartMonth = getDaysInMonth(startYear, startMonth);
-                    startMonthCoverage = (daysInStartMonth - startDay + 1) / daysInStartMonth;
+                let topPosition = ((dateToTotalMonths(startDate) - minTotalMonths) * pixelsPerMonthVertical) - (2.5 * pixelsPerMonthVertical);
+                if (startDate.day) {
+                    const daysInStartMonth = getDaysInMonth(startDate.year, startDate.month);
+                    const startDayProportion = (startDate.day - 1) / daysInStartMonth;
+                    topPosition += startDayProportion * pixelsPerMonthVertical;
                 }
 
-                let endMonthCoverage = 1.0; // Assume full month if no day
-                if (endDay) {
-                    const daysInEndMonth = getDaysInMonth(endYear, endMonth);
-                    endMonthCoverage = endDay / daysInEndMonth;
+                let entryHeight;
+                const startYear = startDate.year, startMonth = startDate.month, startDay = startDate.day;
+                const endYear = endDate.year, endMonth = endDate.month, endDay = endDate.day;
+
+                if (startYear === endYear && startMonth === endMonth) {
+                    const daysInMonth = getDaysInMonth(startYear, startMonth);
+                    const daySpan = (endDay ? endDay : daysInMonth) - (startDay ? startDay : 1) + 1;
+                    entryHeight = (daySpan / daysInMonth) * pixelsPerMonthVertical;
+                } else {
+                    let startMonthCoverage = 1.0;
+                    if (startDay) {
+                        const daysInStartMonth = getDaysInMonth(startYear, startMonth);
+                        startMonthCoverage = (daysInStartMonth - startDay + 1) / daysInStartMonth;
+                    }
+                    let endMonthCoverage = 1.0;
+                    if (endDay) {
+                        const daysInEndMonth = getDaysInMonth(endYear, endMonth);
+                        endMonthCoverage = endDay / daysInEndMonth;
+                    }
+                    const startTotalMonthsValue = startYear * 12 + startMonth;
+                    const endTotalMonthsValue = endYear * 12 + endMonth;
+                    let numberOfFullMiddleMonths = (endTotalMonthsValue - startTotalMonthsValue - 1);
+                    numberOfFullMiddleMonths = Math.max(0, numberOfFullMiddleMonths);
+                    const fractionalMonths = startMonthCoverage + endMonthCoverage + numberOfFullMiddleMonths;
+                    entryHeight = fractionalMonths * pixelsPerMonthVertical;
                 }
 
-                const startTotalMonthsValue = startYear * 12 + startMonth;
-                const endTotalMonthsValue = endYear * 12 + endMonth;
+                if (entryHeight > 0 && entryHeight < 1) entryHeight = 1;
+                if (entryHeight <= 0) {
+                    console.warn(`Invalid height for period of ${game.englishTitle} (${period.label || index}). Height: ${entryHeight}. Skipping period.`);
+                    return;
+                }
 
-                let numberOfFullMiddleMonths = (endTotalMonthsValue - startTotalMonthsValue - 1);
-                numberOfFullMiddleMonths = Math.max(0, numberOfFullMiddleMonths); // Ensure it's not negative
+                const gameEntryDiv = document.createElement('div');
+                gameEntryDiv.className = 'game-entry-box';
 
-                const fractionalMonths = startMonthCoverage + endMonthCoverage + numberOfFullMiddleMonths;
-                entryHeight = fractionalMonths * pixelsPerMonthVertical;
-            }
+                // Apply special class for specific games if it's the first block
+                // This class might need re-evaluation based on multi-block display
+                if (index === 0) {
+                    const specialGames = ["Trails in the Sky the 3rd", "Trails of Cold Steel IV", "Trails into Reverie"];
+                    if (specialGames.includes(game.englishTitle)) {
+                        gameEntryDiv.classList.add('special-info-below');
+                    }
+                }
 
-            // Ensure height is at least a small visible amount if it's very short, e.g. 1-day event
-            // entryHeight = Math.max(entryHeight, pixelsPerMonthVertical * 0.1); // Min height of 10% of a month row
+                Object.assign(gameEntryDiv.style, {
+                    top: `${topPosition - 1}px`, height: `${entryHeight}px`,
+                    backgroundColor: game.timelineColor, color: getTextColorForBackground(game.timelineColor),
+                    width: '90%', left: '5%'
+                });
 
-            // Ensure that any positive calculated height is at least 1px.
-            if (entryHeight > 0 && entryHeight < 1) {
-                entryHeight = 1;
-            }
+                let tooltipText = game.englishTitle;
+                if (period.label) {
+                    tooltipText += ` - ${period.label}`;
+                }
+                // Potentially add formatted date range for this specific period to tooltip later if desired
 
-            if (entryHeight <= 0) { // topPosition can be negative if it starts before timeline minDate (padded)
-                console.warn(`Invalid height for ${game.englishTitle}. Calculated Height: ${entryHeight}. Skipping.`);
-                return;
-            }
+                if (index === 0) { // Only for the first period block
+                    const titleEl = document.createElement('div');
+                    titleEl.className = 'game-entry-title';
+                    titleEl.textContent = game.englishTitle;
+                    gameEntryDiv.appendChild(titleEl);
 
-            const gameEntryDiv = document.createElement('div');
-            gameEntryDiv.className = 'game-entry-box'; // Use className for single class, or classList.add for multiple
+                    if (game.timelineDisplayString) {
+                        const isSpecialGame = gameEntryDiv.classList.contains('special-info-below');
+                        if (isSpecialGame || entryHeight >= (pixelsPerMonthVertical * 1.8)) {
+                            const durationEl = document.createElement('div');
+                            durationEl.className = 'game-entry-duration';
+                            durationEl.textContent = game.timelineDisplayString;
+                            gameEntryDiv.appendChild(durationEl);
+                        }
+                        tooltipText = `${game.englishTitle}\n${game.timelineDisplayString}`;
+                        if (period.label) tooltipText += `\n(${period.label})`;
 
-            // Apply special class for specific games
-            const specialGames = ["Trails in the Sky the 3rd", "Trails of Cold Steel IV", "Trails into Reverie"];
-            if (specialGames.includes(game.englishTitle)) {
-                gameEntryDiv.classList.add('special-info-below');
-            }
 
-            Object.assign(gameEntryDiv.style, {
-                top: `${topPosition - 1}px`, height: `${entryHeight}px`,
-                backgroundColor: game.timelineColor, color: getTextColorForBackground(game.timelineColor),
-                width: '90%', left: '5%'
+                    } else if (entryHeight < (pixelsPerMonthVertical * 0.8) && !isSpecialGame) {
+                         titleEl.style.display = 'none';
+                    }
+                } else {
+                    // For subsequent blocks, maybe a smaller label or just rely on tooltip
+                    if (period.label && entryHeight >= (pixelsPerMonthVertical * 0.5) ) { // Only if block is reasonably tall
+                        const periodLabelEl = document.createElement('div');
+                        periodLabelEl.className = 'game-entry-period-label'; // New class for styling these
+                        periodLabelEl.textContent = period.label;
+                        // Style this to be less prominent than the main title/duration
+                        Object.assign(periodLabelEl.style, {
+                            fontSize: '0.8em',
+                            opacity: 0.85,
+                            paddingTop: '3px', // Adjust as needed
+                        });
+                        gameEntryDiv.appendChild(periodLabelEl);
+                    }
+                     if (period.label) tooltipText = `${game.englishTitle} - ${period.label}`;
+                     else tooltipText = game.englishTitle;
+                }
+
+                gameEntryDiv.setAttribute('title', tooltipText);
+                targetColumn.appendChild(gameEntryDiv);
             });
-
-            const titleEl = document.createElement('div');
-            titleEl.className = 'game-entry-title';
-            titleEl.textContent = game.englishTitle;
-            gameEntryDiv.appendChild(titleEl);
-
-            let durationStr;
-            if (game.englishTitle === "Trails in the Sky the 3rd") {
-                // For "Trails in the Sky the 3rd", display only its single month/year.
-                // formatDisplayDate will correctly format this as "Month SYYYY".
-                // This assumes its timelineStartParsed accurately represents this single period.
-                durationStr = formatDisplayDate(game.timelineStartParsed, game);
-            } else {
-                // For all other games, display the range.
-                durationStr = `${formatDisplayDate(game.timelineStartParsed, game)} - ${formatDisplayDate(game.timelineEndParsed, game)}`;
-            }
-
-            const isSpecialGame = gameEntryDiv.classList.contains('special-info-below');
-
-            if (isSpecialGame || entryHeight >= (pixelsPerMonthVertical * 1.8)) {
-                const durationEl = document.createElement('div');
-                durationEl.className = 'game-entry-duration';
-                durationEl.textContent = durationStr;
-                gameEntryDiv.appendChild(durationEl);
-            } else if (!isSpecialGame && entryHeight < (pixelsPerMonthVertical * 0.8)) {
-                // Hide title only for non-special, very short entries
-                titleEl.style.display = 'none'; 
-            }
-            
-            gameEntryDiv.setAttribute('title', `${game.englishTitle}\n${durationStr}`);
-            targetColumn.appendChild(gameEntryDiv);
         });
     }
 
