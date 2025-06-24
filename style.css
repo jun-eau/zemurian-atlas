@@ -221,7 +221,7 @@ main {
     /* This container should not have overflow:hidden if arrows are outside its visual box */
     /* It should naturally take up the width of its content (the .game-entry-slider) */
     /* min-width from here is removed as it's now handled by 'main' element */
-    padding-bottom: 20px; /* Create space for the box-shadow of items within */
+    margin-bottom: -20px; /* Compensate for .slider-item's padding-bottom */
 }
 
 .game-entry-slider {
@@ -246,6 +246,7 @@ main {
     flex: 0 0 100%; /* Each item takes the full width of the slider viewport */
     box-sizing: border-box;
     overflow: visible; /* Allow box-shadow from child .game-entry to show */
+    padding-bottom: 20px; /* Add space for the shadow to render */
     /* .game-entry styles will apply to the child div within .slider-item */
 }
 
