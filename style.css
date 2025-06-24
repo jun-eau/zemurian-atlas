@@ -221,6 +221,7 @@ main {
     /* This container should not have overflow:hidden if arrows are outside its visual box */
     /* It should naturally take up the width of its content (the .game-entry-slider) */
     /* min-width from here is removed as it's now handled by 'main' element */
+    padding-bottom: 20px; /* Create space for the box-shadow of items within */
 }
 
 .game-entry-slider {
