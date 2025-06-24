@@ -351,8 +351,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     periodDetailEl.innerHTML = lineText;
                     periodTextContainer.appendChild(periodDetailEl);
 
-                    // Position this text container right below its corresponding box
-                    periodTextContainer.style.top = `${topPosition + entryHeight + 5}px`; // 5px spacing below the box
+                    // Adjust spacing based on whether it's a main display or not
+                    const spacing = period.isMain ? 5 : 2; // 5px for main, 2px for others
+                    periodTextContainer.style.top = `${topPosition + entryHeight + spacing}px`;
 
                     targetColumn.appendChild(periodTextContainer); // Add text container to the column
 
