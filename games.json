@@ -173,7 +173,7 @@
         "timelineColor": "#d61a28",
         "timelinePeriods": [
             { "start": "1204-11-29", "end": "1204-12-31", "label": "Main Story", "display": "November 29, S.1204 – December 31, S.1204" },
-            { "start": "1205-03-13", "end": "1205-03-13", "label": "Epilogue", "display": "March 13, S.1205" }
+            { "start": "1205-03-09", "end": "1205-03-13", "label": "Divertissement/Epilogue", "display": "March 9, S.1205 – March 13, S.1205" }
         ],
         "releasesJP": [
             { "date": "September 25, 2014", "platforms": "(PS3, PS Vita)" },
