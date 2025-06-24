@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             Object.assign(gameEntryDiv.style, {
-                top: `${topPosition}px`, height: `${entryHeight}px`,
+                top: `${topPosition - 1}px`, height: `${entryHeight}px`,
                 backgroundColor: game.timelineColor, color: getTextColorForBackground(game.timelineColor),
                 width: '90%', left: '5%'
             });

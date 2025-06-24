@@ -56,7 +56,7 @@
         "nintendoUrl": null,
         "timelineStart": "1202-09-01",
         "timelineEnd": "1203-04-30",
-        "timelineColor": "#e07a3e",
+        "timelineColor": "#FBD15B",
         "releasesJP": [
             { "date": "March 9, 2006", "platforms": "(PC)" },
             { "date": "December 27, 2007", "platforms": "(PSP)" },
@@ -104,7 +104,7 @@
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-from-zero-switch/",
         "timelineStart": "1204-01-01",
         "timelineEnd": "1204-05-31",
-        "timelineColor": "#00539c",
+        "timelineColor": "#218FCA",
         "releasesJP": [
             { "date": "September 30, 2010", "platforms": "(PSP)" },
             { "date": "October 18, 2012", "platforms": "(PS Vita)" },
@@ -245,7 +245,7 @@
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-into-reverie-switch/",
         "timelineStart": "1207-02-14",
         "timelineEnd": "1207-03-22",
-        "timelineColor": "#f2f3f7",
+        "timelineColor": "#DFF8FC",
         "releasesJP": [
             { "date": "August 27, 2020", "platforms": "(PS4)" },
             { "date": "August 26, 2021", "platforms": "(PC, Switch)" }
