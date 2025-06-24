@@ -304,7 +304,12 @@ main {
 /* --- Lore Timeline Specific Styles --- */
 .timeline-section {
     margin-top: 1rem;
+    /* overflow-x: auto; /* Removed from here */
+}
+
+#timeline-scroll-wrapper {
     overflow-x: auto;
+    width: 100%; /* Ensure it takes the available width of .timeline-section */
 }
 
 .timeline-section h2 { /* Style for "Lore Timeline" title */
