@@ -244,6 +244,7 @@ main {
 .slider-item {
     flex: 0 0 100%; /* Each item takes the full width of the slider viewport */
     box-sizing: border-box;
+    overflow: visible; /* Allow box-shadow from child .game-entry to show */
     /* .game-entry styles will apply to the child div within .slider-item */
 }
 
