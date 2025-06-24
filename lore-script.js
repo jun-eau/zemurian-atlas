@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     periodTextContainer.appendChild(periodDetailEl);
 
                     // Adjust spacing based on whether it's a main display or not
-                    const spacing = period.isMain ? 5 : 2; // 5px for main, 2px for others
+                    const spacing = period.isMain ? 5 : 1; // 5px for main, 1px for others
                     periodTextContainer.style.top = `${topPosition + entryHeight + spacing}px`;
 
                     targetColumn.appendChild(periodTextContainer); // Add text container to the column
