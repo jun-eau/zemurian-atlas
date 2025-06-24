@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalTimelineHeight = yOffset;
         [timeAxisContainer, liberlColumn, crossbellColumn, ereboniaColumn, monthLinesOverlay].forEach(el => {
             if (el) el.style.height = `${totalTimelineHeight}px`;
-        });
+        }
     }
 
     function getTextColorForBackground(hexColor) {
