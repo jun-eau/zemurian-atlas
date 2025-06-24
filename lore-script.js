@@ -61,65 +61,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function processGameData(rawGames) {
         return rawGames.map(game => {
-            // Validate timelinePeriods
-            if (!game.timelinePeriods || !Array.isArray(game.timelinePeriods) || game.timelinePeriods.length === 0) {
-                // If a game is not in the refactor list, it might not have timelinePeriods.
-                // We can choose to skip it or handle it differently. For now, skipping if it was expected.
-                // Check if timelineDisplayString exists, as that's part of the new schema for relevant games.
-                if (game.timelineDisplayString) {
-                    console.warn(`Skipping game due to missing or empty timelinePeriods: ${game.englishTitle}`);
-                    return null;
-                }
-                // If neither new nor old timeline data exists, it's likely a game not meant for the timeline.
-                if (!game.timelineStart && !game.timelineEnd) {
-                    return { ...game }; // Keep game data if it's not for the timeline
-                }
-                // If it has old data but not new, log a warning or decide on a migration path.
-                // For this refactor, we assume games meant for the timeline are updated.
-                // If old fields `timelineStart` and `timelineEnd` still exist, you might want to log that
-                // or handle them as a fallback, but the prompt implies they are replaced.
+            // Games not intended for the timeline might not have timelinePeriods.
+            // We only process periods if they exist.
+            if (!game.timelinePeriods || !Array.isArray(game.timelinePeriods)) {
+                // If it's a game that *should* have timeline data (e.g., it has a timelineColor)
+                // but is missing timelinePeriods, it's an issue.
+                // For now, we'll let it pass through and it simply won't render on the timeline.
+                // Alternatively, one could log a warning here for games expected on the timeline.
+                return { ...game }; // Keep game data, it just won't have parsed periods.
             }
 
-            let parsedPeriods = [];
-            if (game.timelinePeriods) {
-                parsedPeriods = game.timelinePeriods.map(period => {
-                    const periodStart = parseTimelineDate(period.start);
-                    const periodEnd = parseTimelineDate(period.end);
+            let parsedPeriods = game.timelinePeriods.map(period => {
+                const periodStart = parseTimelineDate(period.start);
+                const periodEnd = parseTimelineDate(period.end);
 
-                    if (!periodStart || !periodEnd) {
-                        console.warn(`Invalid period dates for ${game.englishTitle} (${period.label || 'period'}). Skipping period.`);
-                        return null;
-                    }
-                    if (dateToTotalMonths(periodStart) > dateToTotalMonths(periodEnd)) {
-                        console.warn(`Period start date after end date for ${game.englishTitle} (${period.label || 'period'}). Skipping period.`);
-                        return null;
-                    }
-                    return { ...period, startParsed: periodStart, endParsed: periodEnd };
-                }).filter(p => p !== null);
-
-                if (parsedPeriods.length === 0 && game.timelineDisplayString) {
-                     // If all periods were invalid but it was supposed to be a timeline game
-                    console.warn(`All periods invalid for ${game.englishTitle}. Skipping game.`);
+                if (!periodStart || !periodEnd) {
+                    console.warn(`Invalid period dates for ${game.englishTitle} (Label: ${period.label || 'N/A'}, Display: ${period.display}). Skipping period.`);
                     return null;
                 }
+                if (dateToTotalMonths(periodStart) > dateToTotalMonths(periodEnd)) {
+                    console.warn(`Period start date after end date for ${game.englishTitle} (Label: ${period.label || 'N/A'}, Display: ${period.display}). Skipping period.`);
+                    return null;
+                }
+                // The `display` key is crucial and should exist as per new schema.
+                if (typeof period.display !== 'string') {
+                    console.warn(`Missing or invalid 'display' string for period in ${game.englishTitle} (Label: ${period.label || 'N/A'}). Skipping period.`);
+                    return null;
+                }
+                return { ...period, startParsed: periodStart, endParsed: periodEnd };
+            }).filter(p => p !== null);
+
+            // If a game was intended for the timeline (had a timelinePeriods array)
+            // but all its periods were invalid, it effectively has no timeline data.
+            if (game.timelinePeriods.length > 0 && parsedPeriods.length === 0) {
+                console.warn(`All timeline periods for ${game.englishTitle} were invalid. Game will not be rendered on timeline.`);
             }
             
             let timelineColor = game.timelineColor;
-            if (game.timelinePeriods && (!timelineColor || !/^#[0-9A-F]{6}$/i.test(timelineColor))) {
-                console.warn(`Invalid or missing timelineColor for ${game.englishTitle}. Using default.`);
+            // Validate color only if there are valid periods to render
+            if (parsedPeriods.length > 0 && (!timelineColor || !/^#[0-9A-F]{6}$/i.test(timelineColor))) {
+                console.warn(`Invalid or missing timelineColor for ${game.englishTitle} with valid periods. Using default.`);
                 timelineColor = '#808080'; // Default gray
             }
 
-            // Return game with parsed periods, or original game if no timeline data
-            return game.timelinePeriods ? { ...game, timelinePeriodsParsed: parsedPeriods, timelineColor } : { ...game };
-        }).filter(game => game !== null); // Filter out games that were explicitly skipped (returned null)
+            return { ...game, timelinePeriodsParsed: parsedPeriods, timelineColor };
+        }).filter(game => game !== null); // Filter out any games that might have been explicitly nulled (though current logic doesn't do that at game level).
     }
 
     function calculateDateRange() {
+        // Filter games that have at least one valid, parsed timeline period.
         const gamesWithTimeline = allGames.filter(game => game.timelinePeriodsParsed && game.timelinePeriodsParsed.length > 0);
+
         if (gamesWithTimeline.length === 0) {
             console.warn("No games with valid timeline periods found to calculate date range.");
-            minDate = null; // Explicitly nullify if no data
+            minDate = null;
             maxDate = null;
             return;
         }
@@ -128,21 +123,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gamesWithTimeline.forEach(game => {
             game.timelinePeriodsParsed.forEach(period => {
-                minMonths = Math.min(minMonths, dateToTotalMonths(period.startParsed));
-                maxMonths = Math.max(maxMonths, dateToTotalMonths(period.endParsed));
+                // Ensure startParsed and endParsed exist on the period object
+                if (period.startParsed && period.endParsed) {
+                    minMonths = Math.min(minMonths, dateToTotalMonths(period.startParsed));
+                    maxMonths = Math.max(maxMonths, dateToTotalMonths(period.endParsed));
+                } else {
+                    // This should not happen if processGameData filters correctly, but good for safety.
+                    console.warn(`Period for ${game.englishTitle} (Label: ${period.label}) missing parsed dates during range calculation.`);
+                }
             });
         });
         
         if (minMonths === Infinity || maxMonths === -Infinity) {
-            console.warn("Could not determine min/max months from timeline periods.");
+            console.warn("Could not determine min/max months from timeline periods. This might happen if all periods had issues.");
             minDate = null;
             maxDate = null;
             return;
         }
 
-        minDate = { year: Math.floor((minMonths -1) / 12), month: (minMonths -1) % 12 + 1 };
-        maxDate = { year: Math.floor((maxMonths -1) / 12), month: (maxMonths -1) % 12 + 1 };
+        // Convert total months back to year/month objects
+        // Ensure calculation is correct for month (1-indexed)
+        minDate = { year: Math.floor((minMonths - 1) / 12), month: ((minMonths - 1) % 12) + 1 };
+        maxDate = { year: Math.floor((maxMonths - 1) / 12), month: ((maxMonths - 1) % 12) + 1 };
 
+
+        // Apply padding
         let paddedMinMonth = minDate.month - 3;
         let paddedMinYear = minDate.year;
         if (paddedMinMonth <= 0) { paddedMinMonth += 12; paddedMinYear--; }
@@ -208,43 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
         [timeAxisContainer, liberlColumn, crossbellColumn, ereboniaColumn, monthLinesOverlay].forEach(el => {
             if (el) el.style.height = `${totalTimelineHeight}px`;
         });
-    }
-
-    function getDayOrdinal(day) {
-        if (day > 3 && day < 21) return 'th';
-        switch (day % 10) {
-            case 1: return "st"; case 2: return "nd"; case 3: return "rd"; default: return "th";
-        }
-    }
-
-    function formatDisplayDate(parsedDate, game = null) {
-        if (!parsedDate) return "N/A";
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const monthName = monthNames[parsedDate.month - 1];
-
-        let displayDay = parsedDate.day; // Start with the actual day from data
-
-        // Apply specific overrides to hide the day if necessary
-        if (game) {
-            // For Liberl and Crossbell Arcs, usually the overall game start/end dates are shown without specific days
-            // for a cleaner "Month Year" display, even if the raw data has a day (e.g., start of month).
-            // The old logic for hiding days based on game.timelineStartParsed/EndParsed
-            // is no longer directly applicable as those top-level fields are removed for timeline games.
-            // The new `timelineDisplayString` handles the overall date range string.
-            // This function `formatDisplayDate` will now be more general or used for specific period dates
-            // where day display is desired.
-            // The decision to show/hide day for *period-specific* strings (e.g. in "below the box" text)
-            // might need new rules if the default "Month Day, SYYYY" is not always wanted.
-            // For now, let's assume `timelineDisplayString` is primary for the main display,
-            // and this function formats dates with days by default if a day is present.
-        }
-
-        // Format based on whether a day is to be displayed
-        if (displayDay) {
-            return `${monthName} ${displayDay}${getDayOrdinal(displayDay)}, S${parsedDate.year}`; // e.g., November 29th, S1204
-        } else {
-            return `${monthName} S${parsedDate.year}`; // e.g., January S1202 (no comma)
-        }
     }
 
     function getTextColorForBackground(hexColor) {
@@ -348,41 +316,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameEntryDiv.style.width = '90%';
                 gameEntryDiv.style.left = '5%';
                 // Add a data attribute to identify boxes for a game, useful for positioning "info-below" text
-                gameEntryDiv.dataset.gameTitle = game.englishTitle; // Crucial for identifying boxes later
+                gameEntryDiv.dataset.gameTitle = game.englishTitle;
+                gameEntryDiv.dataset.periodIndex = periodIndex; // Store period index for targeted text insertion
 
-                // Text Display Logic Implementation Starts Here
+                // --- Text Display Logic ---
                 const isCSII = game.englishTitle === "Trails of Cold Steel II";
-                const isSpecialPlacement = ["Trails in the Sky the 3rd", "Trails into Reverie", "Trails of Cold Steel IV"].includes(game.englishTitle);
+                const isSpecialPlacementGame = ["Trails in the Sky the 3rd", "Trails into Reverie", "Trails of Cold Steel IV"].includes(game.englishTitle);
 
-                if (isSpecialPlacement) {
+                if (isSpecialPlacementGame) {
                     gameEntryDiv.classList.add('special-info-below');
-                    // Text for these will be handled *after* all their period boxes are rendered.
-                }
-                // Default Placement (Inside the box)
-                else if (!isCSII) { // This condition implies !isSpecialPlacement as well due to structure
-                    if (periodIndex === 0) { // Only for the first period's box
-                        const titleEl = document.createElement('div');
-                        titleEl.className = 'game-entry-title';
-                        titleEl.textContent = game.englishTitle;
-                        gameEntryDiv.appendChild(titleEl);
-
-                        const dateDisplayEl = document.createElement('div');
-                        dateDisplayEl.className = 'game-entry-duration';
-                        dateDisplayEl.textContent = game.timelineDisplayString;
-                        gameEntryDiv.appendChild(dateDisplayEl);
-
-                        // Adjust text visibility based on box height
-                        if (entryHeight < (pixelsPerMonthVertical * 0.8)) {
-                            titleEl.style.display = 'none';
-                            dateDisplayEl.style.display = 'none';
-                        } else if (entryHeight < (pixelsPerMonthVertical * 1.8)) {
-                            dateDisplayEl.style.display = 'none';
-                        }
-                    }
-                    // Subsequent period boxes for default games remain blank internally.
-                }
-                // Exception Placement (CSII)
-                else if (isCSII) {
+                    // Text for these games is handled *after* all their period boxes are rendered (see below).
+                } else if (isCSII) {
+                    // Trails of Cold Steel II: Text in main story box, epilogue box empty.
                     if (period.label === "Main Story") {
                         const titleEl = document.createElement('div');
                         titleEl.className = 'game-entry-title';
@@ -391,10 +336,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         const dateDisplayEl = document.createElement('div');
                         dateDisplayEl.className = 'game-entry-duration';
-                        dateDisplayEl.textContent = game.timelineDisplayString;
+                        // For CSII, the main story's display string is the one from its period object.
+                        dateDisplayEl.textContent = period.display;
                         gameEntryDiv.appendChild(dateDisplayEl);
 
-                        // Adjust text visibility (similar to default)
                         if (entryHeight < (pixelsPerMonthVertical * 0.8)) {
                             titleEl.style.display = 'none';
                             dateDisplayEl.style.display = 'none';
@@ -402,77 +347,92 @@ document.addEventListener('DOMContentLoaded', () => {
                             dateDisplayEl.style.display = 'none';
                         }
                     }
-                    // The "Epilogue" box for CSII will remain blank internally, as required.
+                    // Epilogue box for CSII intentionally left empty.
+                } else {
+                    // Default behavior: Text (title + first period's display string) inside the first period's box.
+                    // Subsequent period boxes for these games remain empty.
+                    if (periodIndex === 0) {
+                        const titleEl = document.createElement('div');
+                        titleEl.className = 'game-entry-title';
+                        titleEl.textContent = game.englishTitle;
+                        gameEntryDiv.appendChild(titleEl);
+
+                        const dateDisplayEl = document.createElement('div');
+                        dateDisplayEl.className = 'game-entry-duration';
+                        // Use the 'display' string from the first period.
+                        dateDisplayEl.textContent = period.display;
+                        gameEntryDiv.appendChild(dateDisplayEl);
+
+                        if (entryHeight < (pixelsPerMonthVertical * 0.8)) {
+                            titleEl.style.display = 'none';
+                            dateDisplayEl.style.display = 'none';
+                        } else if (entryHeight < (pixelsPerMonthVertical * 1.8)) {
+                            dateDisplayEl.style.display = 'none';
+                        }
+                    }
                 }
 
-                // Tooltip for each period (remains for all boxes regardless of text content)
-                const periodDateStr = `${formatDisplayDate(startDate, game)} - ${formatDisplayDate(endDate, game)}`;
+                // Tooltip for ALL period boxes
+                // The tooltip should use the period's specific start/end for precision,
+                // potentially formatted differently from the main 'display' string if needed.
+                // For now, let's use the period's 'display' string for the main part of the tooltip for consistency,
+                // and add the label if it exists.
                 let tooltipText = `${game.englishTitle}`;
                 if (period.label) {
                     tooltipText += ` (${period.label})`;
                 }
-                tooltipText += `\n${periodDateStr}`;
+                tooltipText += `\n${period.display}`; // Use the period's own display string for the tooltip.
                 gameEntryDiv.setAttribute('title', tooltipText);
 
                 targetColumn.appendChild(gameEntryDiv);
             }); // End of period loop
 
-            // Special Placement (Below the box) - Text Rendering
+            // --- Special Placement Text Rendering (Below the Box) ---
             // This runs once per game *after* all its period boxes have been created and added to the DOM.
             if (["Trails in the Sky the 3rd", "Trails into Reverie", "Trails of Cold Steel IV"].includes(game.englishTitle)) {
                 const infoBelowContainer = document.createElement('div');
-                // Remove text-center class, apply textAlign directly
                 infoBelowContainer.className = 'game-info-below-text-container';
-                infoBelowContainer.style.color = '#FFFFFF'; // Set text color to white
-                infoBelowContainer.style.textAlign = 'center'; // Explicitly center text
+                infoBelowContainer.style.color = getTextColorForBackground(game.timelineColor); // Use contrasting color
+                infoBelowContainer.style.textAlign = 'center';
 
                 const titleEl = document.createElement('div');
-                titleEl.className = 'game-entry-title'; // Apply game-entry-title class for font style
+                titleEl.className = 'game-entry-title';
                 titleEl.textContent = game.englishTitle;
                 infoBelowContainer.appendChild(titleEl);
 
-                // REMOVED mainDateDisplayEl for timelineDisplayString
-
-                // Per prompt: "On subsequent lines, it should list the date ranges of each period."
-                // Format: [Game Title], then [Period 1], then [Period 2] etc. each on a new line.
+                // Add each period's information
                 game.timelinePeriodsParsed.forEach(p => {
                     const periodDetailEl = document.createElement('div');
-                    // Apply game-entry-duration class for font style for period lines
-                    periodDetailEl.className = 'game-entry-duration period-detail'; // Added game-entry-duration
-                    let text = "";
+                    periodDetailEl.className = 'game-entry-duration period-detail';
+
+                    let lineText = "";
                     if (p.label) {
-                        text += `${p.label}: `;
+                        lineText += `<strong>${p.label}:</strong> `;
                     }
-                    // Use formatDisplayDate to get consistent date formatting for periods
-                    text += `${formatDisplayDate(p.startParsed, game)} - ${formatDisplayDate(p.endParsed, game)}`;
-                    periodDetailEl.textContent = text;
+                    lineText += p.display; // Use the 'display' string from the period object
+                    periodDetailEl.innerHTML = lineText; // Use innerHTML to render <strong>
                     infoBelowContainer.appendChild(periodDetailEl);
                 });
 
-                // Position the infoBelowContainer below the lowest box of the current game.
-                let lowestBottom = 0;
-                // QuerySelectorAll is on targetColumn, which is correct.
-                // Using the data-game-title attribute for reliable selection.
+                // Position the infoBelowContainer below the *lowest* rendered box for this game.
+                let lowestBoxBottom = 0;
                 const gameBoxesInColumn = targetColumn.querySelectorAll(`.game-entry-box[data-game-title="${game.englishTitle}"]`);
 
                 if (gameBoxesInColumn.length > 0) {
                     gameBoxesInColumn.forEach(box => {
-                        // offsetTop is relative to the offsetParent (targetColumn if it's positioned).
-                        // offsetHeight is the height of the box.
-                        const boxBottomInColumn = box.offsetTop + box.offsetHeight;
-                        if (boxBottomInColumn > lowestBottom) {
-                            lowestBottom = boxBottomInColumn;
+                        const boxBottom = box.offsetTop + box.offsetHeight;
+                        if (boxBottom > lowestBoxBottom) {
+                            lowestBoxBottom = boxBottom;
                         }
                     });
-                    infoBelowContainer.style.position = 'absolute'; // Essential for top/left positioning within column
-                    infoBelowContainer.style.top = `${lowestBottom + 5}px`; // 5px spacing below the lowest box
-                    infoBelowContainer.style.left = '5%'; // Align with game entry boxes
-                    infoBelowContainer.style.width = '90%'; // Match width of game entry boxes
+                    infoBelowContainer.style.position = 'absolute';
+                    infoBelowContainer.style.top = `${lowestBoxBottom + 5}px`; // 5px spacing
+                    infoBelowContainer.style.left = '5%';
+                    infoBelowContainer.style.width = '90%';
                 } else {
-                     // This case should ideally not be reached if periods were rendered.
-                     console.warn(`No boxes found for game "${game.englishTitle}" to position its 'infoBelowContainer'. Appending at current flow.`);
+                     console.warn(`No boxes found for game "${game.englishTitle}" to position its 'infoBelowContainer'.`);
                 }
-                targetColumn.appendChild(infoBelowContainer); // Add the fully constructed text block to the column.
+                targetColumn.appendChild(infoBelowContainer);
             }
         }); // End of game loop
     }
