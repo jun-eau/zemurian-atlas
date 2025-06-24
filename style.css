@@ -437,9 +437,8 @@ main {
     font-size: var(--font-size-sm);
     font-weight: bold;
     line-height: var(--line-height-tight);
-    min-width: 150px; /* Minimum width for the title */
-    max-width: 280px; /* Max width before title wraps, can be adjusted */
-                       /* Game boxes are 90% of column. Columns are ~1/3 of ~1300px = ~430px. 90% of that is ~380px. So 280px is reasonable. */
+    white-space: nowrap; /* Prevent title from wrapping */
+                       /* Game boxes are 90% of column. Columns are ~1/3 of ~1300px = ~430px. 90% of that is ~380px. */
 }
 
 .game-entry-box.special-info-below .game-entry-duration {
