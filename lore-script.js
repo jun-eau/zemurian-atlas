@@ -421,8 +421,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // This runs once per game *after* all its period boxes have been created and added to the DOM.
             if (["Trails in the Sky the 3rd", "Trails into Reverie", "Trails of Cold Steel IV"].includes(game.englishTitle)) {
                 const infoBelowContainer = document.createElement('div');
-                infoBelowContainer.className = 'game-info-below-text-container';
-                // Text color for this container should be standard page text color, not box-dependent.
+                infoBelowContainer.className = 'game-info-below-text-container text-center'; // Added text-center class
+                // Text color for this container should be standard page text color.
                 infoBelowContainer.style.color = 'var(--text-color, #333)';
 
                 const titleEl = document.createElement('div');
@@ -430,14 +430,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 titleEl.textContent = game.englishTitle;
                 infoBelowContainer.appendChild(titleEl);
 
-                // Per prompt: "The title and date string should appear once..."
-                // referring to timelineDisplayString.
-                const mainDateDisplayEl = document.createElement('div');
-                mainDateDisplayEl.className = 'game-entry-duration'; // Consistent styling
-                mainDateDisplayEl.textContent = game.timelineDisplayString;
-                infoBelowContainer.appendChild(mainDateDisplayEl);
+                // REMOVED mainDateDisplayEl for timelineDisplayString from here as per new requirement.
 
                 // Per prompt: "On subsequent lines, it should list the date ranges of each period."
+                // Format: [Game Title], then [Period 1], then [Period 2] etc. each on a new line.
                 game.timelinePeriodsParsed.forEach(p => {
                     const periodDetailEl = document.createElement('div');
                     periodDetailEl.className = 'period-detail'; // For specific styling if needed
