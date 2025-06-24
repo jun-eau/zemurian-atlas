@@ -397,9 +397,9 @@ main {
 .game-entry-box {
     position: absolute;
     box-sizing: border-box;
-    border-radius: 6px;
-    padding: 8px 12px;
-    overflow: hidden;
+    border-radius: 2px; /* Tighter corners */
+    padding: 0; /* Remove padding to ensure height is exact */
+    overflow: hidden; /* Clip content for very short boxes */
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     border: 1px solid rgba(255,255,255,0.3); /* Subtle border for better definition */
     color: var(--text-primary); /* Default text color, JS might override */
@@ -408,14 +408,12 @@ main {
     justify-content: center; /* Center content vertically if space allows */
     align-items: center; /* Center content horizontally */
     text-align: center;
-    /* overflow: hidden; is the default here, which is good for standard boxes */
 }
 
 /* Styles for special game entries where info is displayed below the box */
 .game-entry-box.special-info-below {
     overflow: visible !important; /* Crucial: allow text to appear outside the box boundaries */
-    /* Reset padding as text is no longer inside affecting this */
-    padding: 0;
+    /* Padding is already 0 from the rule above, so no change needed here for that */
     /* The flex properties for centering text inside are not needed here as text is absolute */
 }
 
