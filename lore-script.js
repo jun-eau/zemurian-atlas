@@ -215,13 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function getTextColorForBackground(hexColor) {
-        if (!hexColor) return '#FFFFFF';
-        const r = parseInt(hexColor.slice(1, 3), 16), g = parseInt(hexColor.slice(3, 5), 16), b = parseInt(hexColor.slice(5, 7), 16);
-        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        return luminance > 0.5 ? '#000000' : '#FFFFFF';
-    }
-
     function renderGameEntries() {
         if (!allGames || allGames.length === 0 || !minDate) {
             console.warn("Cannot render game entries: missing data.");
@@ -310,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const gameEntryDiv = document.createElement('div');
                 gameEntryDiv.className = 'game-entry-box';
                 gameEntryDiv.style.backgroundColor = game.timelineColor;
-                gameEntryDiv.style.color = getTextColorForBackground(game.timelineColor);
+                gameEntryDiv.style.color = game.englishTitle === "Trails in the Sky SC" ? '#000000' : '#FFFFFF';
                 gameEntryDiv.style.top = `${topPosition -1}px`; // -1 for border adjustment
                 gameEntryDiv.style.height = `${entryHeight}px`;
                 gameEntryDiv.style.width = '90%';
@@ -392,7 +385,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (["Trails in the Sky the 3rd", "Trails into Reverie", "Trails of Cold Steel IV"].includes(game.englishTitle)) {
                 const infoBelowContainer = document.createElement('div');
                 infoBelowContainer.className = 'game-info-below-text-container';
-                infoBelowContainer.style.color = getTextColorForBackground(game.timelineColor); // Use contrasting color
+                // Set text color for special placement games
+                if (game.englishTitle === "Trails in the Sky SC") { // Should not happen based on current special placement games
+                    infoBelowContainer.style.color = '#000000';
+                } else {
+                    infoBelowContainer.style.color = '#FFFFFF';
+                }
                 infoBelowContainer.style.textAlign = 'center';
 
                 const titleEl = document.createElement('div');
