@@ -412,41 +412,53 @@ main {
 
 /* Styles for special game entries where info is displayed below the box */
 .game-entry-box.special-info-below {
-    overflow: visible !important; /* Crucial: allow text to appear outside the box boundaries */
-    /* Padding is already 0 from the rule above, so no change needed here for that */
-    /* The flex properties for centering text inside are not needed here as text is absolute */
+    /* This class is now primarily a marker for JS that text should NOT be inside the box.
+       The actual text containers (.game-info-below-text-container) will handle their own positioning.
+       We still want overflow:visible on the box itself in case any part of its style would clip,
+       though with no direct children being positioned outside, this is less critical than before. */
+    overflow: visible;
 }
 
-.game-entry-box.special-info-below .game-entry-title,
-.game-entry-box.special-info-below .game-entry-duration {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8); /* Slightly softer, darker shadow for better blending */
-    width: auto; /* Fit content by default */
+/* Styling for the text containers that are positioned below game boxes */
+.game-info-below-text-container {
+    position: absolute; /* Positioned relative to the .game-entries-area */
+    left: 5%; /* Aligns with game-entry-box horizontal positioning */
+    width: 90%; /* Matches game-entry-box width */
+    color: var(--text-primary); /* Default white text, can be overridden by JS if needed */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
     text-align: center;
-    /* These will not inherit the parent's text color by default if it was changed by JS based on background */
+    box-sizing: border-box;
+    /* 'top' will be set by JS */
 }
 
-.game-entry-box.special-info-below .game-entry-title {
-    top: 100%;
-    margin-top: 5px; /* Space between box and title */
+/* Specific styling for the title within these containers */
+.game-info-below-text-container .game-entry-title {
     font-size: var(--font-size-sm);
     font-weight: bold;
     line-height: var(--line-height-tight);
     white-space: nowrap; /* Prevent title from wrapping */
-                       /* Game boxes are 90% of column. Columns are ~1/3 of ~1300px = ~430px. 90% of that is ~380px. */
+    margin-bottom: 3px; /* Space between title and period display if both are present */
 }
 
-.game-entry-box.special-info-below .game-entry-duration {
-    top: 100%;
-    margin-top: 22px; /* Adjusted to make space for title: title font-size var(--font-size-sm) is 14px. line-height 1.2 is ~17px. Add margin-top 5px = 22px. */
+/* Specific styling for the duration/period display within these containers */
+.game-info-below-text-container .game-entry-duration {
     font-size: var(--font-size-xs);
     line-height: var(--line-height-tight);
     opacity: 0.9;
     white-space: nowrap; /* Prevent dates from wrapping */
 }
+
+/* Styling for individual period text (Sky3rd, CSII, Reverie) */
+.individual-period-text .game-entry-title {
+    /* Styles from .game-info-below-text-container .game-entry-title apply */
+}
+.individual-period-text .game-entry-duration {
+    /* Styles from .game-info-below-text-container .game-entry-duration apply */
+}
+.individual-period-text .game-entry-duration strong { /* For the "Label:" part */
+    font-weight: 600; /* Slightly less bold than main title, but distinct */
+}
+
 
 /* Ensure the default title/duration styles don't conflict when text is inside */
 .game-entry-title {

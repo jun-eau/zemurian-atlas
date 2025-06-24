@@ -79,7 +79,7 @@
         "timelineColor": "#7d50a1",
         "timelinePeriods": [
             { "start": "1203-10-27", "end": "1203-10-27", "label": "Prologue", "display": "October 27, S.1203" },
-            { "start": "1203-11-29", "end": "1203-11-29", "label": "Phantasma", "display": "November 29, S.1203" }
+            { "start": "1203-11-29", "end": "1203-11-29", "label": "Phantasma", "display": "November 29, S.1203", "isMain": true }
         ],
         "releasesJP": [
             { "date": "June 28, 2007", "platforms": "(PC)" },
@@ -172,7 +172,7 @@
         "nintendoUrl": null,
         "timelineColor": "#d61a28",
         "timelinePeriods": [
-            { "start": "1204-11-29", "end": "1204-12-31", "label": "Main Story", "display": "November 29, S.1204 – December 31, S.1204" },
+            { "start": "1204-11-29", "end": "1204-12-31", "label": "Main Story", "display": "November 29, S.1204 – December 31, S.1204", "isMain": true },
             { "start": "1205-03-09", "end": "1205-03-13", "label": "Divertissement/Epilogue", "display": "March 9, S.1205 – March 13, S.1205" }
         ],
         "releasesJP": [
@@ -243,7 +243,7 @@
         "timelineColor": "#DFF8FC",
         "timelinePeriods": [
             { "start": "1207-02-14", "end": "1207-02-14", "label": "Prologue", "display": "February 14, S.1207" },
-            { "start": "1207-03-15", "end": "1207-03-22", "label": "Main Story", "display": "March 15, S.1207 – March 22, S.1207" }
+            { "start": "1207-03-15", "end": "1207-03-22", "label": "Main Story", "display": "March 15, S.1207 – March 22, S.1207", "isMain": true }
         ],
         "releasesJP": [
             { "date": "August 27, 2020", "platforms": "(PS4)" },
