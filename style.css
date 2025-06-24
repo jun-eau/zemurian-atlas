@@ -304,6 +304,7 @@ main {
 /* --- Lore Timeline Specific Styles --- */
 .timeline-section {
     margin-top: 1rem;
+    /* overflow-x: auto; /* Removed from here */
 }
 
 #timeline-scroll-wrapper {
