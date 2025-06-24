@@ -421,8 +421,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // This runs once per game *after* all its period boxes have been created and added to the DOM.
             if (["Trails in the Sky the 3rd", "Trails into Reverie", "Trails of Cold Steel IV"].includes(game.englishTitle)) {
                 const infoBelowContainer = document.createElement('div');
-                infoBelowContainer.className = 'game-info-below-text-container text-center'; // text-center class remains
+                // Remove text-center class, apply textAlign directly
+                infoBelowContainer.className = 'game-info-below-text-container';
                 infoBelowContainer.style.color = '#FFFFFF'; // Set text color to white
+                infoBelowContainer.style.textAlign = 'center'; // Explicitly center text
 
                 const titleEl = document.createElement('div');
                 titleEl.className = 'game-entry-title'; // Apply game-entry-title class for font style
