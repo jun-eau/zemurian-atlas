@@ -302,17 +302,30 @@ main {
 
 
 /* --- Lore Timeline Specific Styles --- */
-.timeline-section {
-    margin-top: 1rem;
-    overflow-x: auto;
+.timeline-header-container {
+    position: sticky;
+    top: 96px; /* Adjusted to accommodate main header height (approx. h1(max 48px) + nav(18px font + 16px padding) + header padding (8px) + h1 margin (4px) + border (2px) = ~96px) */
+    background-color: var(--primary-bg); /* Ensure it has a background to not show content scrolling underneath */
+    z-index: 900; /* Below main header (1000) but above timeline content */
+    padding-top: 1rem; /* Add some padding to space it from the header */
+    padding-bottom: 0.5rem;
 }
 
-.timeline-section h2 { /* Style for "Lore Timeline" title */
+.timeline-header-container h2 { /* Style for "Lore Timeline" title */
     text-align: center;
     font-family: 'Playfair Display', serif;
     font-size: var(--font-size-xxxl);
     color: var(--accent-gold);
-    margin-bottom: 1.5rem;
+    margin-top: 0; /* Adjusted from original .timeline-section h2 */
+    margin-bottom: 0.5rem; /* Adjusted from original .timeline-section h2 */
+}
+
+/* The paragraph style is inline in the HTML, so no changes needed here unless we move it to CSS */
+
+.timeline-section {
+    /* margin-top: 1rem; */ /* Removed, as spacing is now handled by timeline-header-container padding and its own content */
+    overflow-x: auto;
+    padding-top: 1rem; /* Add padding to create space for the sticky header */
 }
 
 #lore-timeline-main-container {
