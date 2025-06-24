@@ -11,7 +11,7 @@
         "playstationUrl": null,
         "nintendoUrl": null,
         "timelineColor": "#3a8ece",
-        "timelinePeriods": [{ "start": "1202-03-01", "end": "1202-09-30", "display": "March – September, S.1202" }],
+        "timelinePeriods": [{ "start": "1202-03-01", "end": "1202-09-30", "display": "March S.1202 – September S.1202" }],
         "releasesJP": [
             { "date": "June 24, 2004", "platforms": "(PC)" },
             { "date": "June 28, 2006", "platforms": "(PSP)" },
@@ -54,7 +54,7 @@
         "playstationUrl": null,
         "nintendoUrl": null,
         "timelineColor": "#F2C663",
-        "timelinePeriods": [{ "start": "1202-12-01", "end": "1203-03-07", "display": "December, S.1202 – March 7, S.1203" }],
+        "timelinePeriods": [{ "start": "1202-12-01", "end": "1203-03-07", "display": "December S.1202 – March 7, S.1203" }],
         "releasesJP": [
             { "date": "March 9, 2006", "platforms": "(PC)" },
             { "date": "December 27, 2007", "platforms": "(PSP)" },
@@ -103,7 +103,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/concept/10003242",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-from-zero-switch/",
         "timelineColor": "#218FCA",
-        "timelinePeriods": [{ "start": "1204-01-01", "end": "1204-05-31", "display": "January – May, S.1204" }],
+        "timelinePeriods": [{ "start": "1204-01-01", "end": "1204-05-31", "display": "January S.1204 – May S.1204" }],
         "releasesJP": [
             { "date": "September 30, 2010", "platforms": "(PSP)" },
             { "date": "October 18, 2012", "platforms": "(PS Vita)" },
@@ -125,7 +125,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/concept/10003337",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-to-azure-switch/",
         "timelineColor": "#0097aa",
-        "timelinePeriods": [{ "start": "1204-08-17", "end": "1204-12-30", "display": "August 17 – December 30, S.1204" }],
+        "timelinePeriods": [{ "start": "1204-08-17", "end": "1204-12-30", "display": "August 17, S.1204 – December 30, S.1204" }],
         "releasesJP": [
             { "date": "September 29, 2011", "platforms": "(PSP)" },
             { "date": "June 12, 2014", "platforms": "(PS Vita)" },
@@ -147,7 +147,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/concept/231981/",
         "nintendoUrl": null,
         "timelineColor": "#ae2050",
-        "timelinePeriods": [{ "start": "1204-03-31", "end": "1204-10-30", "display": "March 31 – October 30, S.1204" }],
+        "timelinePeriods": [{ "start": "1204-03-31", "end": "1204-10-30", "display": "March 31, S.1204 – October 30, S.1204" }],
         "releasesJP": [
             { "date": "September 26, 2013", "platforms": "(PS3, PS Vita)" },
             { "date": "March 8, 2018", "platforms": "(PS4)" }
@@ -172,7 +172,7 @@
         "nintendoUrl": null,
         "timelineColor": "#d61a28",
         "timelinePeriods": [
-            { "start": "1204-11-29", "end": "1204-12-31", "label": "Main Story", "display": "November 29 – December 31, S.1204" },
+            { "start": "1204-11-29", "end": "1204-12-31", "label": "Main Story", "display": "November 29, S.1204 – December 31, S.1204" },
             { "start": "1205-03-13", "end": "1205-03-13", "label": "Epilogue", "display": "March 13, S.1205" }
         ],
         "releasesJP": [
@@ -198,7 +198,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/product/UP1063-CUSA15119_00-FULLGAME00000000",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iii-switch/",
         "timelineColor": "#4b5966",
-        "timelinePeriods": [{ "start": "1206-04-15", "end": "1206-07-18", "display": "April 15 – July 18, S.1206" }],
+        "timelinePeriods": [{ "start": "1206-04-15", "end": "1206-07-18", "display": "April 15, S.1206 – July 18, S.1206" }],
         "releasesJP": [
             { "date": "September 28, 2017", "platforms": "(PS4)" }
         ],
@@ -220,7 +220,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/product/UP1063-CUSA19637_00-EDSENNOKISEKI4TH",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iv-switch/",
         "timelineColor": "#641207",
-        "timelinePeriods": [{ "start": "1206-08-02", "end": "1206-09-01", "display": "August 2 – September 1, S.1206" }],
+        "timelinePeriods": [{ "start": "1206-08-02", "end": "1206-09-01", "display": "August 2, S.1206 – September 1, S.1206" }],
         "releasesJP": [
             { "date": "September 27, 2018", "platforms": "(PS4)" }
         ],
@@ -243,7 +243,7 @@
         "timelineColor": "#DFF8FC",
         "timelinePeriods": [
             { "start": "1207-02-14", "end": "1207-02-14", "label": "Prologue", "display": "February 14, S.1207" },
-            { "start": "1207-03-15", "end": "1207-03-22", "label": "Main Story", "display": "March 15 – 22, S.1207" }
+            { "start": "1207-03-15", "end": "1207-03-22", "label": "Main Story", "display": "March 15, S.1207 – March 22, S.1207" }
         ],
         "releasesJP": [
             { "date": "August 27, 2020", "platforms": "(PS4)" },
