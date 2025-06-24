@@ -421,22 +421,22 @@ document.addEventListener('DOMContentLoaded', () => {
             // This runs once per game *after* all its period boxes have been created and added to the DOM.
             if (["Trails in the Sky the 3rd", "Trails into Reverie", "Trails of Cold Steel IV"].includes(game.englishTitle)) {
                 const infoBelowContainer = document.createElement('div');
-                infoBelowContainer.className = 'game-info-below-text-container text-center'; // Added text-center class
-                // Text color for this container should be standard page text color.
-                infoBelowContainer.style.color = 'var(--text-color, #333)';
+                infoBelowContainer.className = 'game-info-below-text-container text-center'; // text-center class remains
+                infoBelowContainer.style.color = '#FFFFFF'; // Set text color to white
 
                 const titleEl = document.createElement('div');
-                titleEl.className = 'game-entry-title'; // Consistent styling
+                titleEl.className = 'game-entry-title'; // Apply game-entry-title class for font style
                 titleEl.textContent = game.englishTitle;
                 infoBelowContainer.appendChild(titleEl);
 
-                // REMOVED mainDateDisplayEl for timelineDisplayString from here as per new requirement.
+                // REMOVED mainDateDisplayEl for timelineDisplayString
 
                 // Per prompt: "On subsequent lines, it should list the date ranges of each period."
                 // Format: [Game Title], then [Period 1], then [Period 2] etc. each on a new line.
                 game.timelinePeriodsParsed.forEach(p => {
                     const periodDetailEl = document.createElement('div');
-                    periodDetailEl.className = 'period-detail'; // For specific styling if needed
+                    // Apply game-entry-duration class for font style for period lines
+                    periodDetailEl.className = 'game-entry-duration period-detail'; // Added game-entry-duration
                     let text = "";
                     if (p.label) {
                         text += `${p.label}: `;
