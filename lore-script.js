@@ -438,17 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     tooltipText += ` (${period.label})`;
                 }
                 // Use the new period.display string directly in the tooltip
-                // Simplified logic for clarity and to avoid potential parsing issues in complex template literal
-                let dateForTooltip;
-                if (period.display) {
-                    dateForTooltip = period.display;
-                } else {
-                    // Fallback if period.display is somehow not available (shouldn't happen with current games.json)
-                    const formattedStart = formatDisplayDate(startDate, game);
-                    const formattedEnd = formatDisplayDate(endDate, game);
-                    dateForTooltip = `${formattedStart} - ${formattedEnd}`;
-                }
-                tooltipText += `\n${dateForTooltip}`;
+                tooltipText += `\n${period.display ? period.display : formatDisplayDate(startDate, game) + " - " + formatDisplayDate(endDate, game)}`;
                 gameEntryDiv.setAttribute('title', tooltipText);
 
                 targetColumn.appendChild(gameEntryDiv);
