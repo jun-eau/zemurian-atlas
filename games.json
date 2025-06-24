@@ -1,42 +1,6 @@
 [
     {
         "arc": "Liberl Arc",
-        "englishTitle": "Test: Single Day",
-        "japaneseTitleKanji": "テスト一日",
-        "japaneseTitleRomaji": "Test Ichinichi",
-        "assetName": "test-single-day",
-        "timelineStart": "1201-05-15",
-        "timelineEnd": "1201-05-15",
-        "timelineColor": "#FF00FF",
-        "releasesJP": [],
-        "releasesEN": []
-    },
-    {
-        "arc": "Liberl Arc",
-        "englishTitle": "Test: Few Days",
-        "japaneseTitleKanji": "テスト数日",
-        "japaneseTitleRomaji": "Test Suujitsu",
-        "assetName": "test-few-days",
-        "timelineStart": "1201-06-10",
-        "timelineEnd": "1201-06-13",
-        "timelineColor": "#FF00FF",
-        "releasesJP": [],
-        "releasesEN": []
-    },
-    {
-        "arc": "Liberl Arc",
-        "englishTitle": "Test: One Week",
-        "japaneseTitleKanji": "テスト一週間",
-        "japaneseTitleRomaji": "Test Isshuukan",
-        "assetName": "test-one-week",
-        "timelineStart": "1201-07-01",
-        "timelineEnd": "1201-07-07",
-        "timelineColor": "#FF00FF",
-        "releasesJP": [],
-        "releasesEN": []
-    },
-    {
-        "arc": "Liberl Arc",
         "englishTitle": "Trails in the Sky",
         "japaneseTitleKanji": "英雄伝説 空の軌跡FC",
         "japaneseTitleRomaji": "Sora no Kiseki FC",
