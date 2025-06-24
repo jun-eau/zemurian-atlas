@@ -279,6 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Ensure height is at least a small visible amount if it's very short, e.g. 1-day event
             // entryHeight = Math.max(entryHeight, pixelsPerMonthVertical * 0.1); // Min height of 10% of a month row
 
+            // Ensure that any positive calculated height is at least 1px.
+            if (entryHeight > 0 && entryHeight < 1) {
+                entryHeight = 1;
+            }
+
             if (entryHeight <= 0) { // topPosition can be negative if it starts before timeline minDate (padded)
                 console.warn(`Invalid height for ${game.englishTitle}. Calculated Height: ${entryHeight}. Skipping.`);
                 return;
