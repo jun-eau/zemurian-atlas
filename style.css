@@ -39,6 +39,7 @@ body#home-page {
     background-size: cover;
     background-position: center center;
     background-attachment: fixed; /* This is crucial for ensuring the image stays put while the user might scroll on very tall/narrow screens */
+    background-color: transparent; /* Ensure body's own background doesn't hide the image */
 }
 
 .background-overlay {
