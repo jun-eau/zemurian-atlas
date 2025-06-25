@@ -411,6 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (game.englishTitle === "Trails of Cold Steel IV") {
                 const infoBelowContainer = document.createElement('div');
                 infoBelowContainer.className = 'game-info-below-text-container'; // Keep existing class for potential shared styles
+                infoBelowContainer.classList.add('is-main-period-text'); // Add class for spacing refinement
                 infoBelowContainer.style.color = '#FFFFFF'; // Default color
                 infoBelowContainer.style.textAlign = 'center';
 
@@ -449,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                     infoBelowContainer.style.position = 'absolute';
-                    infoBelowContainer.style.top = `${lowestBoxBottom + 5}px`; // 5px spacing
+                    infoBelowContainer.style.top = `${lowestBoxBottom + 2}px`; // Tightened spacing to 2px
                     infoBelowContainer.style.left = '5%';
                     infoBelowContainer.style.width = '90%';
                 } else {
