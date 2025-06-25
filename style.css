@@ -34,6 +34,19 @@ body {
     min-height: 100vh;
 }
 
+.site-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-image: url('assets/hero/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px);
+}
+
 /* --- Header & Footer --- */
 header, footer { text-align: center; padding: 0.5rem 1rem; }
 header {
@@ -87,7 +100,29 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     background-color: rgba(233, 213, 161, 0.15); /* Slightly more prominent active background */
 }
 
-/* --- Hero Section (Home Page) --- */
+/* --- Home Page Content Styling --- */
+.home-main {
+    /* display: flex, align-items: center, justify-content: center are inherited or managed by body */
+    /* flex-grow: 1 is inherited from main */
+    padding: 0; /* Remove padding to allow background to be edge-to-edge */
+    max-width: none; /* Override general main max-width */
+    min-width: 0; /* Override general main min-width */
+    display: flex; /* Added to center .home-content */
+    align-items: center; /* Added to center .home-content */
+    justify-content: center; /* Added to center .home-content */
+}
+
+.home-content {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-primary);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    /* Optional: Add a max-width for the text block itself if desired */
+    /* max-width: 800px; */
+}
+
+/* Old Hero Section Styles - Commented Out */
+/*
 .hero-section {
     position: relative; /* For pseudo-element overlay */
     min-height: 75vh;
@@ -137,7 +172,7 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
 .hero-actions {
     margin-bottom: 2rem;
 }
-
+*/
 .btn { /* General button styles, can be extended */
     text-decoration: none;
     display: inline-block;
@@ -148,7 +183,7 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     margin: 0 0.5rem;
 }
-
+/*
 .btn-hero {
     border: 2px solid var(--accent-gold);
     color: var(--accent-gold);
@@ -170,7 +205,7 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     opacity: 0.9; /* Slightly less prominent than tagline/buttons */
     text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
 }
-
+*/
 
 /* --- Arc Headers --- */
 .arc-header {
@@ -196,13 +231,15 @@ main {
 }
 
 /* Specific overrides for the main element on the home page */
+/* .main-home is now .home-main, specific styles are above with .home-content */
+/*
 .main-home {
     padding: 0;
     max-width: none;
     min-width: 0;
     /* flex-grow: 1; is inherited and correct */
 }
-
+*/
 #game-timeline-container { display: flex; flex-direction: column; gap: 3rem; }
 .game-entry {
     display: flex;
@@ -888,6 +925,7 @@ main {
     }
 
     /* --- Home Page Hero Section Responsiveness --- */
+    /*
     .hero-section { /* Adjustments for mobile */
         min-height: 60vh; /* Slightly reduce min-height */
         padding: 1rem; /* Reduce padding */
@@ -917,5 +955,5 @@ main {
         font-size: var(--font-size-sm); /* Slightly smaller intro text on mobile */
         max-width: 90%; /* Allow a bit wider on mobile relative to screen */
     }
-
+    */
 }
