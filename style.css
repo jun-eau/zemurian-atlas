@@ -196,48 +196,12 @@ main {
 }
 
 /* Specific overrides for the main element on the home page */
-.home-hero { /* Renamed from .main-home to match HTML */
+.main-home {
     padding: 0;
     max-width: none;
     min-width: 0;
-    flex-grow: 1; /* Takes up full available height in the body flex container */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative; /* Anchor for absolute positioned background */
-    overflow: hidden; /* Ensures blurred edges of background don't cause scrollbars */
+    /* flex-grow: 1; is inherited and correct */
 }
-
-.hero-background-image {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-image: url('assets/hero/trails-into-reverie.jpg'); /* Placeholder */
-    background-size: cover;
-    background-position: center;
-    filter: blur(4px) brightness(0.7); /* Blur and darken */
-    z-index: 1; /* Behind content */
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2; /* Above background */
-    text-align: center;
-    padding: 2rem; /* Add some padding around content */
-    color: var(--text-primary);
-    /* Styles from .hero-section, .hero-tagline, .hero-actions, .hero-intro will apply to children */
-    /* Add text shadow for readability if not already handled by children */
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.5); /* General text shadow for content */
-}
-
-/* Ensure child elements within .hero-content also have a higher z-index if they use absolute/relative positioning */
-.hero-content > * {
-    position: relative;
-    z-index: 3; /* Or just ensure they don't have a z-index that puts them behind .hero-background-image */
-}
-
 
 #game-timeline-container { display: flex; flex-direction: column; gap: 3rem; }
 .game-entry {
