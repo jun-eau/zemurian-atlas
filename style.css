@@ -34,6 +34,13 @@ body {
     min-height: 100vh;
 }
 
+body#home-page {
+    background-image: url('assets/hero/hero-bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed; /* This is crucial for ensuring the image stays put while the user might scroll on very tall/narrow screens */
+}
+
 /* --- Header & Footer --- */
 header, footer { text-align: center; padding: 0.5rem 1rem; }
 header {
@@ -95,9 +102,7 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url('assets/hero/home-bg.jpg');
-    background-size: cover;
-    background-position: center;
+    /* background-image, background-size, background-position removed */
     padding: 2rem; /* Add some padding for content */
     box-sizing: border-box;
     color: var(--text-primary); /* Default text color for hero content */
