@@ -432,6 +432,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Setup swipe functionality after all cards are in the DOM
+
+            // Main Navigation Active State Highlighting
+            const currentPageUrl = window.location.pathname.split('/').pop(); // Get the current HTML file name
+            const mainNavLinks = document.querySelectorAll('.main-navigation a');
+            mainNavLinks.forEach(link => {
+                const linkUrl = link.getAttribute('href').split('/').pop();
+                if (linkUrl === currentPageUrl || (currentPageUrl === '' && linkUrl === 'index.html')) { // Handle root path for index.html
+                    link.classList.add('active');
+                }
+            });
         })
         .catch(error => {
             console.error('CRITICAL ERROR fetching or processing game data:', error);
