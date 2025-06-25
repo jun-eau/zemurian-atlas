@@ -34,6 +34,24 @@ body {
     min-height: 100vh;
 }
 
+/* Apply background only to the home page's body */
+body.home-page {
+    background-image: url('assets/hero/home-bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+}
+
+/* Add the overlay and blur effect */
+body.home-page::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.75); /* Adjust opacity for darkness */
+    backdrop-filter: blur(8px); /* Adjust blur amount */
+    z-index: -1;
+}
+
 /* --- Header & Footer --- */
 header, footer { text-align: center; padding: 0.5rem 1rem; }
 header {
@@ -47,6 +65,17 @@ header {
 header h1 { margin: 0 0 0.25rem 0; font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 5vw, 3rem); font-weight: 700; color: var(--accent-gold); } /* Reduced bottom margin from 0.5rem to 0.25rem */
 /* header h2 removed as it's not used globally anymore */
 footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-size-sm); }
+
+/* Make header and footer on the home page transparent */
+.home-page footer {
+    background-color: transparent;
+}
+
+/* Improve footer text readability on the home page */
+.home-page footer {
+    color: var(--text-primary);
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+}
 
 /* --- Main Navigation Styling --- */
 .main-navigation {
