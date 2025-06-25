@@ -203,8 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
             monthLine.classList.add('month-line');
             if (currentMonth === 1) {
                 monthLine.classList.add('month-line-year');
-            } else if ([4, 7, 10].includes(currentMonth)) {
-                monthLine.classList.add('month-line-quarter');
             }
             monthLine.style.top = `${yOffset}px`;
             monthLinesOverlay.appendChild(monthLine);

@@ -371,14 +371,9 @@ main {
     background-color: rgba(153, 153, 185, 0.15); /* text-secondary at low opacity */
 }
 
-.month-line-quarter {
-    height: 2px;
-    background-color: rgba(153, 153, 185, 0.3); /* Darker quarter lines */
-}
-
 .month-line-year {
-    height: 3px;
-    background-color: rgba(153, 153, 185, 0.45); /* Even darker year lines */
+    height: 2px;
+    background-color: rgba(153, 153, 185, 0.3); /* Adjusted year lines */
 }
 
 
