@@ -600,9 +600,7 @@ main {
     opacity: 0.85;
 }
 
-/* Tooltip (very basic, can be enhanced) */
-/* .game-entry-box[title]:hover::after removed to disable default browser tooltip appearing on hover,
-   as custom text display solution is now implemented below boxes for specific cases or inside for others. */
+/* Tooltip styling removed as browser default tooltips are not used. */
 
 
 @media (max-width: 900px) {

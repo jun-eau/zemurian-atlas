@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Date(year, month, 0).getDate();
     }
 
+    // formatDisplayDate and getDayOrdinal are no longer needed as the 'display' string from games.json is used directly.
+
     function parseTimelineDate(dateStr) {
         if (!dateStr || typeof dateStr !== 'string') return null;
         const parts = dateStr.split('-');
@@ -157,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let paddedMaxYear = maxDate.year;
         if (paddedMaxMonth > 12) { paddedMaxMonth -= 12; paddedMaxYear++; }
         maxDate = { year: paddedMaxYear, month: paddedMaxMonth };
-        console.log("Timeline Range (Padded):", minDate, "to", maxDate);
+        // console.log("Timeline Range (Padded):", minDate, "to", maxDate); // Removed for production
     }
 
     function renderTimeAxis() {
@@ -392,14 +394,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Tooltip for ALL period boxes
                 // The tooltip should use the period's specific start/end for precision,
                 // potentially formatted differently from the main 'display' string if needed.
-                // For now, let's use the period's 'display' string for the main part of the tooltip for consistency,
-                // and add the label if it exists.
-                // let tooltipText = `${game.englishTitle}`;
-                // if (period.label) {
-                //     tooltipText += ` (${period.label})`;
-                // }
-                // tooltipText += `\n${period.display}`; // Use the period's own display string for the tooltip.
-                // gameEntryDiv.setAttribute('title', tooltipText); // Removed to disable browser tooltips
+                // Tooltip text construction for custom tooltips (if implemented later) or for clarity:
+                // The main display information now comes directly from period.display.
+                // Example: game.englishTitle + (period.label ? ` (${period.label})` : "") + "\n" + period.display
+                // gameEntryDiv.setAttribute('title', SomeTooltipText); // Browser default tooltips are disabled.
 
                 targetColumn.appendChild(gameEntryDiv);
             }); // End of period loop
