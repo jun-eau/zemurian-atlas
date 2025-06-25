@@ -95,7 +95,7 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url('../assets/hero/home-bg.jpg');
+    background-image: url('assets/hero/home-bg.jpg');
     background-size: cover;
     background-position: center;
     padding: 2rem; /* Add some padding for content */
