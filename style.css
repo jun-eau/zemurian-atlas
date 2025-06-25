@@ -110,9 +110,9 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent dark overlay */
+    background-color: rgba(0, 0, 0, 0.75); /* Semi-transparent dark overlay */
     backdrop-filter: blur(8px); /* Blur effect */
-    -webkit-backdrop-filter: blur(8px); /* For Safari */
+    -webkit-backdrop-filter: blur(6px); /* For Safari */
     z-index: 1; /* Ensure overlay is above background but below content */
 }
 
