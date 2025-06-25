@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <img src="assets/logo/wikipedia.png" alt="Wikipedia Logo">
                 </a>
                 <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
-                    <img src="assets/logo/fandom.png" alt="Fandom Logo">
+                    <img src="assets/logo/fandom.webp" alt="Fandom Logo">
                 </a>
             </div>`;
     }
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="assets/logo/wikipedia.png" alt="Wikipedia Logo">
                     </a>
                     <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
-                        <img src="assets/logo/fandom.png" alt="Fandom Logo">
+                        <img src="assets/logo/fandom.webp" alt="Fandom Logo">
                     </a>
                 </div>
 
