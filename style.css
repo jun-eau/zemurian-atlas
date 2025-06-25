@@ -469,6 +469,11 @@ main {
     font-weight: 600; /* Slightly less bold than main title, but distinct */
 }
 
+/* Specific adjustments for the main period text block */
+.game-info-below-text-container.is-main-period-text .game-entry-title {
+    margin-bottom: 1px; /* Tighten space between title and date */
+}
+
 
 /* Ensure the default title/duration styles don't conflict when text is inside */
 .game-entry-title {

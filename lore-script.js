@@ -337,6 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     let textContent = "";
                     if (period.isMain) {
+                        periodTextContainer.classList.add('is-main-period-text');
                         const titleEl = document.createElement('div');
                         titleEl.className = 'game-entry-title';
                         titleEl.textContent = game.englishTitle;
@@ -355,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     periodTextContainer.appendChild(periodDetailEl);
 
                     // Adjust spacing based on whether it's a main display or not
-                    const spacing = period.isMain ? 5 : 1; // 5px for main, 1px for others
+                    const spacing = period.isMain ? 2 : 1; // 2px for main (tightened), 1px for others
                     periodTextContainer.style.top = `${topPosition + entryHeight + spacing}px`;
 
                     targetColumn.appendChild(periodTextContainer); // Add text container to the column
