@@ -95,7 +95,7 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url('assets/hero/home-bg.jpg');
+    /* background-image: url('assets/hero/home-bg.jpg'); */ /* Removed background image */
     background-size: cover;
     background-position: center;
     padding: 2rem; /* Add some padding for content */
@@ -103,23 +103,12 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     color: var(--text-primary); /* Default text color for hero content */
 }
 
-.hero-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75); /* Semi-transparent dark overlay */
-    backdrop-filter: blur(8px); /* Blur effect */
-    -webkit-backdrop-filter: blur(6px); /* For Safari */
-    z-index: 1; /* Ensure overlay is above background but below content */
-}
+/* Removed ::before pseudo-element for overlay and blur */
 
 /* Ensure hero content is above the overlay */
 .hero-section > * {
     position: relative;
-    z-index: 2;
+    /* z-index: 2; */ /* No longer needed as there's no overlay */
     text-align: center; /* Center align all direct children text/content */
 }
 
