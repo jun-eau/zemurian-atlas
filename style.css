@@ -408,14 +408,14 @@ main {
     position: absolute;
     box-sizing: border-box;
     border-radius: 2px; /* Tighter corners */
-    padding: 0; /* Remove padding to ensure height is exact */
+    padding: 2px 0; /* Add small top/bottom padding, L/R remains 0 */
     overflow: hidden; /* Clip content for very short boxes */
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     border: 1px solid rgba(255,255,255,0.3); /* Subtle border for better definition */
     color: var(--text-primary); /* Default text color, JS might override */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center content vertically if space allows */
+    justify-content: flex-start; /* Align content to the top */
     align-items: center; /* Center content horizontally */
     text-align: center;
 }
@@ -475,7 +475,7 @@ main {
     font-weight: bold;
     font-size: var(--font-size-sm);
     line-height: var(--line-height-tight);
-    margin-bottom: 4px;
+    margin-bottom: 1px; /* Reduced margin */
 }
 
 .game-entry-duration {
