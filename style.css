@@ -87,6 +87,90 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     background-color: rgba(233, 213, 161, 0.15); /* Slightly more prominent active background */
 }
 
+/* --- Hero Section (Home Page) --- */
+.hero-section {
+    position: relative; /* For pseudo-element overlay */
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../assets/hero/home-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 2rem; /* Add some padding for content */
+    box-sizing: border-box;
+    color: var(--text-primary); /* Default text color for hero content */
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent dark overlay */
+    backdrop-filter: blur(8px); /* Blur effect */
+    -webkit-backdrop-filter: blur(8px); /* For Safari */
+    z-index: 1; /* Ensure overlay is above background but below content */
+}
+
+/* Ensure hero content is above the overlay */
+.hero-section > * {
+    position: relative;
+    z-index: 2;
+    text-align: center; /* Center align all direct children text/content */
+}
+
+.hero-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; /* Explicitly use the loaded italic variant */
+    font-size: clamp(2.5rem, 6vw, 4rem); /* Responsive font size */
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+    margin: 0 0 1.5rem 0; /* Bottom margin */
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
+.hero-actions {
+    margin-bottom: 2rem;
+}
+
+.btn { /* General button styles, can be extended */
+    text-decoration: none;
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: var(--font-size-md);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    margin: 0 0.5rem;
+}
+
+.btn-hero {
+    border: 2px solid var(--accent-gold);
+    color: var(--accent-gold);
+    background-color: transparent;
+}
+
+.btn-hero:hover {
+    background-color: var(--accent-gold);
+    color: var(--primary-bg); /* Or a dark color for text on gold bg */
+}
+
+.hero-intro {
+    font-family: 'Inter', sans-serif;
+    font-size: var(--font-size-md);
+    color: var(--text-primary); /* Ensuring it's clearly visible */
+    line-height: var(--line-height-relaxed);
+    max-width: 60ch;
+    margin: 0 auto; /* Center if max-width applies */
+    opacity: 0.9; /* Slightly less prominent than tagline/buttons */
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+}
+
 
 /* --- Arc Headers --- */
 .arc-header {
@@ -110,6 +194,15 @@ main {
     min-width: 600px; /* Ensure enough space for slider arrows + content */
     flex-grow: 1;
 }
+
+/* Specific overrides for the main element on the home page */
+.main-home {
+    padding: 0;
+    max-width: none;
+    min-width: 0;
+    /* flex-grow: 1; is inherited and correct */
+}
+
 #game-timeline-container { display: flex; flex-direction: column; gap: 3rem; }
 .game-entry {
     display: flex;
@@ -792,6 +885,37 @@ main {
     }
     .slider-display-area .game-entry-slider .slider-content-strip .slider-item .desktop-only {
         display: none !important;
+    }
+
+    /* --- Home Page Hero Section Responsiveness --- */
+    .hero-section { /* Adjustments for mobile */
+        min-height: 60vh; /* Slightly reduce min-height */
+        padding: 1rem; /* Reduce padding */
+    }
+
+    .hero-tagline {
+        /* font-size: clamp(2rem, 5vw, 3rem); /* Example: further reduce if needed, but current clamp might be okay */
+        margin-bottom: 1rem;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center buttons when stacked */
+        width: 100%; /* Allow buttons to take more width if desired */
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-actions .btn-hero {
+        margin: 0.5rem 0; /* Vertical spacing between stacked buttons */
+        width: 80%; /* Make buttons wider on mobile */
+        max-width: 300px; /* But not too wide */
+        text-align: center;
+    }
+
+    .hero-intro {
+        font-size: var(--font-size-sm); /* Slightly smaller intro text on mobile */
+        max-width: 90%; /* Allow a bit wider on mobile relative to screen */
     }
 
 }
