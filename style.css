@@ -71,10 +71,6 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     background-color: transparent;
 }
 
-.home-page header {
-    border-bottom: none;
-}
-
 /* Improve footer text readability on the home page */
 .home-page footer {
     color: var(--text-primary);
