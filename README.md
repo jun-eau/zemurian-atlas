@@ -2,7 +2,7 @@
 
 This website provides a visual guide to the Trails series of video games, using stylized official artwork to display the chronological order between the games and arcs. It is an unofficial fan-made project.
 
-**Visit the live site: [https://jun-eau.github.io/trails-visual-guide/](https://jun-eau.github.io/zemurian-atlas/)**
+**Visit the live site: [https://jun-eau.github.io/zemurian-atlas/](https://jun-eau.github.io/zemurian-atlas/)**
 
 ## Acknowledgements
 
