@@ -72,21 +72,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
             <div class="external-links">
                 <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
-                    <img src="assets/logo/steam.png" alt="Steam Logo">
+                    <img src="assets/logo/steam.png" alt="Steam Logo" title="">
                 </a>
                 ${game.playstationUrl ? `
                 <a href="${game.playstationUrl}" target="_blank" rel="noopener noreferrer" title="PlayStation Store Page">
-                    <img src="assets/logo/playstation.png" alt="PlayStation Store Logo">
+                    <img src="assets/logo/playstation.png" alt="PlayStation Store Logo" title="">
                 </a>` : ''}
                 ${game.nintendoUrl ? `
                 <a href="${game.nintendoUrl}" target="_blank" rel="noopener noreferrer" title="Nintendo eShop Page">
-                    <img src="assets/logo/nintendo.png" alt="Nintendo eShop Logo">
+                    <img src="assets/logo/nintendo.png" alt="Nintendo eShop Logo" title="">
                 </a>` : ''}
                 <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
-                    <img src="assets/logo/wikipedia.png" alt="Wikipedia Logo">
+                    <img src="assets/logo/wikipedia.png" alt="Wikipedia Logo" title="">
                 </a>
                 <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
-                    <img src="assets/logo/fandom.webp" alt="Fandom Logo">
+                    <img src="assets/logo/fandom.webp" alt="Fandom Logo" title="">
                 </a>
             </div>`;
     }
