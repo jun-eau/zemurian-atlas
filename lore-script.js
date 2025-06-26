@@ -184,8 +184,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const yearLabel = document.createElement('div');
                     yearLabel.classList.add('year-label');
                     yearLabel.textContent = `S${currentYear}`;
-                    // Move year labels up by half a step
-                    yearLabel.style.top = `${yOffset - (firstYearRendered ? 0 : 8) - (0.5 * pixelsPerMonthVertical)}px`;
+                    // Adjust year labels to be centered in their month slot
+                    yearLabel.style.top = `${yOffset - (firstYearRendered ? 0 : 8)}px`;
                     timeAxisContainer.appendChild(yearLabel);
                 }
                 firstYearRendered = false;
@@ -196,8 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const monthLabel = document.createElement('div');
                 monthLabel.classList.add('month-label');
                 monthLabel.textContent = monthNames[currentMonth - 1];
-                // Move month labels up by half a step
-                monthLabel.style.top = `${yOffset - (0.5 * pixelsPerMonthVertical)}px`;
+                // Adjust month labels to be centered in their month slot
+                monthLabel.style.top = `${yOffset}px`;
                 timeAxisContainer.appendChild(monthLabel);
             }
             
