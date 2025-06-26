@@ -18,4 +18,4 @@ This project also contains links to various sources of information for each game
 
 ## License
 
-This project is open source. See the `LICENSE` file for more details.
+This project is open source. See the `LICENSE` file for more details. 
