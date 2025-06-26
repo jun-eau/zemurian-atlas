@@ -198,7 +198,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/product/UP1063-CUSA15119_00-FULLGAME00000000",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iii-switch/",
         "timelineColor": "#4b5966",
-        "timelinePeriods": [{ "start": "1206-04-15", "end": "1206-07-18", "display": "April 15 – July 18, S.1206" }],
+        "timelinePeriods": [{ "start": "1206-04-01", "end": "1206-07-18", "display": "April 1 – July 18, S.1206" }],
         "releasesJP": [
             { "date": "September 28, 2017", "platforms": "(PS4)" }
         ],
@@ -220,7 +220,7 @@
         "playstationUrl": "https://store.playstation.com/en-us/product/UP1063-CUSA19637_00-EDSENNOKISEKI4TH",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iv-switch/",
         "timelineColor": "#641207",
-        "timelinePeriods": [{ "start": "1206-08-02", "end": "1206-09-01", "display": "August 2 – September 1, S.1206" }],
+        "timelinePeriods": [{ "start": "1206-08-01", "end": "1206-09-01", "display": "August 1 – September 1, S.1206" }],
         "releasesJP": [
             { "date": "September 27, 2018", "platforms": "(PS4)" }
         ],
