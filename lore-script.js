@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameColumnsContainer.insertBefore(monthLinesOverlay, gameColumnsContainer.firstChild);
 
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        const labeledMonths = [0, 3, 6, 9]; // Jan, Apr, Jul, Oct
+        const labeledMonths = [2, 5, 8]; // Mar, Jun, Sep
 
         let currentYear = minDate.year, currentMonth = minDate.month, yOffset = 0;
         let firstYearRendered = true;
@@ -191,8 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 firstYearRendered = false;
             }
 
-            // Only render month label if it's one of the designated labeledMonths AND it's not January
-            if (labeledMonths.includes(currentMonth - 1) && monthNames[currentMonth - 1] !== "Jan") {
+            // Only render month label if it's one of the designated labeledMonths
+            if (labeledMonths.includes(currentMonth - 1)) {
                 const monthLabel = document.createElement('div');
                 monthLabel.classList.add('month-label');
                 monthLabel.textContent = monthNames[currentMonth - 1];
