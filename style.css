@@ -71,11 +71,36 @@ footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-s
     background-color: transparent;
 }
 
+.home-page header {
+    border-bottom: none;
+}
+
 /* Improve footer text readability on the home page */
 .home-page footer {
     color: var(--text-primary);
     text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
 }
+
+footer a {
+    color: var(--text-secondary);
+    text-decoration: none; /* Remove default underline */
+    transition: color 0.3s ease-in-out, text-decoration 0.3s ease-in-out;
+}
+
+footer a:hover {
+    color: var(--accent-gold);
+    text-decoration: underline;
+}
+
+/* On home page, footer links should also be primary text color and inherit text shadow */
+.home-page footer a {
+    color: var(--text-primary);
+}
+
+.home-page footer a:hover {
+    color: var(--accent-gold); /* Keep hover color consistent */
+}
+
 
 /* --- Main Navigation Styling --- */
 .main-navigation {
