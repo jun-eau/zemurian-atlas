@@ -7,7 +7,7 @@
         "assetName": "trails-in-the-sky",
         "steamUrl": "https://store.steampowered.com/app/251150/",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky",
-        "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky",
+        "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_FC",
         "playstationUrl": null,
         "nintendoUrl": null,
         "timelineColor": "#007abd",
@@ -107,7 +107,9 @@
         "releasesJP": [
             { "date": "September 30, 2010", "platforms": "(PSP)" },
             { "date": "October 18, 2012", "platforms": "(PS Vita)" },
-            { "date": "May 1, 2020", "platforms": "(PS4)" }
+            { "date": "June 14, 2013", "platforms": "(PC)" },
+            { "date": "April 23, 2020", "platforms": "(PS4)" },
+            { "date": "August 31, 2023", "platforms": "(PS4)" }
         ],
         "releasesEN": [
             { "date": "September 27, 2022", "platforms": "(PC, PS4, Switch)" }
@@ -129,7 +131,8 @@
         "releasesJP": [
             { "date": "September 29, 2011", "platforms": "(PSP)" },
             { "date": "June 12, 2014", "platforms": "(PS Vita)" },
-            { "date": "May 28, 2020", "platforms": "(PS4)" }
+            { "date": "May 28, 2020", "platforms": "(PS4)" },
+            { "date": "August 31, 2023", "platforms": "(PS4)" }
         ],
         "releasesEN": [
             { "date": "March 14, 2023", "platforms": "(PC, PS4, Switch)" }
@@ -150,7 +153,9 @@
         "timelinePeriods": [{ "start": "1204-03-31", "end": "1204-10-30", "display": "March 31 – October 30, S.1204" }],
         "releasesJP": [
             { "date": "September 26, 2013", "platforms": "(PS3, PS Vita)" },
-            { "date": "March 8, 2018", "platforms": "(PS4)" }
+            { "date": "August 2, 2017", "platforms": "(PC)" },
+            { "date": "March 8, 2018", "platforms": "(PS4)" },
+            { "date": "July 8, 2021", "platforms": "(Switch)" }
         ],
         "releasesEN": [
             { "date": "December 22, 2015", "platforms": "(PS3, PS Vita)" },
@@ -176,7 +181,9 @@
         ],
         "releasesJP": [
             { "date": "September 25, 2014", "platforms": "(PS3, PS Vita)" },
-            { "date": "April 26, 2018", "platforms": "(PS4)" }
+            { "date": "February 14, 2018", "platforms": "(PC)" },
+            { "date": "April 26, 2018", "platforms": "(PS4)" },
+            { "date": "August 5, 2021", "platforms": "(Switch)" },
         ],
         "releasesEN": [
             { "date": "September 6, 2016", "platforms": "(PS3, PS Vita)" },
@@ -198,12 +205,16 @@
         "timelineColor": "#4b5966",
         "timelinePeriods": [{ "start": "1206-04-01", "end": "1206-07-18", "display": "April 1 – July 18, S.1206" }],
         "releasesJP": [
-            { "date": "September 28, 2017", "platforms": "(PS4)" }
+            { "date": "September 28, 2017", "platforms": "(PS4)" },
+            { "date": "March 19, 2020", "platforms": "(Switch)" },
+            { "date": "March 23, 2020", "platforms": "(PC)" },
+            { "date": "August 21, 2025", "platforms": "(PS5)" }
         ],
         "releasesEN": [
             { "date": "October 22, 2019", "platforms": "(PS4)" },
             { "date": "March 23, 2020", "platforms": "(PC)" },
-            { "date": "June 30, 2020", "platforms": "(Switch)" }
+            { "date": "June 30, 2020", "platforms": "(Switch)" },
+            { "date": "February 16, 2024", "platforms": "(PS5)" }
         ]
     },
     {
@@ -220,11 +231,16 @@
         "timelineColor": "#641207",
         "timelinePeriods": [{ "start": "1206-08-01", "end": "1206-09-01", "display": "August 1 – September 1, S.1206" }],
         "releasesJP": [
-            { "date": "September 27, 2018", "platforms": "(PS4)" }
+            { "date": "September 27, 2018", "platforms": "(PS4)" },
+            { "date": "March 18, 2021", "platforms": "(Switch)" },
+            { "date": "April 9, 2021", "platforms": "(PC)" },
+            { "date": "August 21, 2025", "platforms": "(PS5)" }
         ],
         "releasesEN": [
             { "date": "October 27, 2020", "platforms": "(PS4)" },
-            { "date": "April 9, 2021", "platforms": "(PC, Switch)" }
+            { "date": "April 9, 2021", "platforms": "(PC)" },
+            { "date": "April 9, 2021", "platforms": "(Switch)" },
+            { "date": "February 16, 2024", "platforms": "(PS5)" }
         ]
     },
     {
@@ -245,7 +261,8 @@
         ],
         "releasesJP": [
             { "date": "August 27, 2020", "platforms": "(PS4)" },
-            { "date": "August 26, 2021", "platforms": "(PC, Switch)" }
+            { "date": "August 26, 2021", "platforms": "(PC, Switch)" },
+            { "date": "August 21, 2025", "platforms": "(PS5)" }
         ],
         "releasesEN": [
             { "date": "July 7, 2023", "platforms": "(PC, PS4, PS5, Switch)" }
@@ -265,7 +282,9 @@
         "timelineColor": "#4a4a4a",
         "releasesJP": [
             { "date": "September 30, 2021", "platforms": "(PS4)" },
-            { "date": "July 28, 2022", "platforms": "(PS5)" }
+            { "date": "July 28, 2022", "platforms": "(PS5)" },
+            { "date": "March 1, 2023", "platforms": "(PC)" },
+            { "date": "February 15, 2024", "platforms": "(Switch)" }
         ],
         "releasesEN": [
             { "date": "July 5, 2024", "platforms": "(PC, PS4, PS5, Switch)" }
@@ -284,7 +303,8 @@
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-through-daybreak-ii-switch/",
         "timelineColor": "#a02c2c",
         "releasesJP": [
-            { "date": "September 29, 2022", "platforms": "(PS4, PS5)" }
+            { "date": "September 29, 2022", "platforms": "(PS4, PS5)" },
+            { "date": "January 26, 2023", "platforms": "(PC)" }
         ],
         "releasesEN": [
             { "date": "February 14, 2025", "platforms": "(PC, PS4, PS5, Switch)" }
@@ -306,7 +326,7 @@
             { "date": "September 26, 2024", "platforms": "(PS4, PS5)" }
         ],
         "releasesEN": [
-            { "date": "January 2026", "platforms": "(PC, PS4, PS5, Switch)" }
+            { "date": "January 2026", "platforms": "(PC, PS4, PS5, Switch, Switch 2)" }
         ]
     }
 ]
