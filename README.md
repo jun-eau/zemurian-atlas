@@ -1,4 +1,4 @@
-# ZEMURIAN ATLAS
+# Zemurian Atlas
 
 This website provides a visual guide to the Trails series of video games, using stylized official artwork to display the chronological order between the games and arcs. It is an unofficial fan-made project.
 
