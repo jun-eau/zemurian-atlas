@@ -18,8 +18,8 @@
     --font-size-xxxxl: 3rem; /* 48px */
 
     --line-height-tight: 1.2;
-    --line-height-normal: 1.4;
-    --line-height-relaxed: 1.6;
+    --line-height-normal: 1.3;
+    --line-height-relaxed: 1.4;
 }
 
 body {
@@ -53,7 +53,7 @@ body.home-page::before {
 }
 
 /* --- Header & Footer --- */
-header, footer { text-align: center; padding: 0.5rem 1rem; }
+header, footer { text-align: center; padding: 0.3rem 1rem; }
 header {
     border-bottom: 2px solid var(--accent-gold);
     position: sticky;
@@ -62,7 +62,7 @@ header {
     z-index: 1000;
     padding-bottom: 0; /* Adjust padding to accommodate new nav styling */
 }
-header h1 { margin: 0 0 0.25rem 0; font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 5vw, 3rem); font-weight: 700; color: var(--accent-gold); } /* Reduced bottom margin from 0.5rem to 0.25rem */
+header h1 { margin: 0; font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 5vw, 3rem); font-weight: 700; color: var(--accent-gold); } /* Reduced bottom margin from 0.5rem to 0.25rem */
 /* header h2 removed as it's not used globally anymore */
 footer { margin-top: 2rem; color: var(--text-secondary); font-size: var(--font-size-sm); }
 
