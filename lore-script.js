@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameEntryDiv.className = 'game-entry-box';
                 gameEntryDiv.style.backgroundColor = game.timelineColor;
                 gameEntryDiv.style.color = game.englishTitle === "Trails in the Sky SC" ? '#000000' : '#FFFFFF';
-                gameEntryDiv.style.top = `${topPosition -1}px`; // -1 for border adjustment
+                gameEntryDiv.style.top = `${topPosition + 2}px`; // -1 for border adjustment, +3 for shift
                 gameEntryDiv.style.height = `${entryHeight}px`;
                 gameEntryDiv.style.width = '90%';
                 gameEntryDiv.style.left = '5%';
@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Adjust spacing based on whether it's a main display or not
                     const spacing = period.isMain ? 2 : 1; // 2px for main (tightened), 1px for others
-                    periodTextContainer.style.top = `${topPosition + entryHeight + spacing}px`;
+                    periodTextContainer.style.top = `${topPosition + entryHeight + spacing + 3}px`;
 
                     targetColumn.appendChild(periodTextContainer); // Add text container to the column
 
