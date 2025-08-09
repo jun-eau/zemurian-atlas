@@ -682,9 +682,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         });
 
+                        // Store click coordinates for repositioning on resize
+                        infobox.dataset.lastClickX = e.clientX;
+                        infobox.dataset.lastClickY = e.clientY;
+
                         // Position and show infobox
                         infobox.style.display = 'block'; // Make it visible to calculate size
-                        positionInfobox(e.clientX, e.clientY);
+                        updateInfobox(); // This now handles both scaling and positioning
                         infobox.classList.add('active');
                     }
                 } else if (!infobox.contains(e.target)) {
@@ -705,37 +709,55 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            window.addEventListener('resize', () => {
+                if (infobox.classList.contains('active')) {
+                    updateInfobox();
+                }
+            });
+
             isMapInitialized = true;
         })
         .catch(error => {
             console.error("Error loading or processing map/game data:", error);
         });
 
-        function positionInfobox(x, y) {
-            const infoboxWidth = infobox.offsetWidth;
-            const infoboxHeight = infobox.offsetHeight;
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            const margin = 15; // Margin from the viewport edges
+        function updateInfobox() {
+            const referenceWidth = 1440;
+            const scale = Math.min(window.innerWidth / referenceWidth, 1);
+            infobox.style.transform = `scale(${scale})`;
 
-            let top = y + 20;
-            let left = x + 20;
+            // Position the infobox, taking the new scale into account.
+            if (infobox.dataset.lastClickX && infobox.dataset.lastClickY) {
+                const x = parseInt(infobox.dataset.lastClickX);
+                const y = parseInt(infobox.dataset.lastClickY);
 
-            // Adjust if it goes off-screen
-            if (left + infoboxWidth + margin > viewportWidth) {
-                left = x - infoboxWidth - 20;
+                const infoboxWidth = infobox.offsetWidth;
+                const infoboxHeight = infobox.offsetHeight;
+                const scaledWidth = infoboxWidth * scale;
+                const scaledHeight = infoboxHeight * scale;
+
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                const margin = 15; // Margin from the viewport edges
+
+                let top = y + 20;
+                let left = x + 20;
+
+                // Adjust if it goes off-screen
+                if (left + scaledWidth + margin > viewportWidth) {
+                    left = x - scaledWidth - 20;
+                }
+                if (top + scaledHeight + margin > viewportHeight) {
+                    top = y - scaledHeight - 20;
+                }
+
+                // Final check to ensure it's not off the top/left after adjustments
+                if (top < margin) top = margin;
+                if (left < margin) left = margin;
+
+                infobox.style.top = `${top}px`;
+                infobox.style.left = `${left}px`;
             }
-            if (top + infoboxHeight + margin > viewportHeight) {
-                top = y - infoboxHeight - 20;
-            }
-
-            // Final check to ensure it's not off the top/left after adjustments
-            if (top < margin) top = margin;
-            if (left < margin) left = margin;
-
-
-            infobox.style.top = `${top}px`;
-            infobox.style.left = `${left}px`;
         }
 
         function hideInfobox() {
