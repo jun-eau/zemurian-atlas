@@ -1064,20 +1064,19 @@ main {
     border-radius: 8px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
     color: var(--text-primary);
-    padding: 0.75rem 1.5rem;
-    width: 500px;
+    padding: 0.75rem 1.5rem; /* Reduced top/bottom padding */
+    transform-origin: top left;
+    width: max-content; /* Let content decide the width */
     max-width: 90vw;
     opacity: 0;
-    transform: scale(0.95);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Hidden by default, cannot be interacted with */
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack children vertically */
 }
 
 #map-infobox.active {
     opacity: 1;
-    transform: scale(1);
     pointer-events: auto; /* Becomes interactive when active */
 }
 
@@ -1161,16 +1160,14 @@ main {
 /* --- New Infobox Games Grid Styling --- */
 .infobox-games {
     display: flex;
-    flex-wrap: wrap;
     gap: 0.5rem;
     justify-content: center;
-    height: auto;
+    height: 220px;
     margin: 0;
 }
 
 .infobox-games img {
-    height: auto;
-    max-height: 180px;
+    height: 100%;
     width: auto;
     border-radius: 4px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.4);
@@ -1180,23 +1177,5 @@ main {
 @media (min-width: 1200px) {
     .infobox-header h2 {
         font-size: 2.5rem; /* Cap the font size */
-    }
-}
-
-/* --- Responsive Infobox for smaller screens --- */
-@media (max-width: 768px) {
-    #map-infobox {
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: 90vw; /* Take up more of the screen */
-    }
-
-    .infobox-header h2 {
-        font-size: 1.5rem; /* Reduce title font size */
-    }
-
-    #map-infobox.active {
-        transform: translate(-50%, -50%) scale(1); /* Adjust active transform */
     }
 }
