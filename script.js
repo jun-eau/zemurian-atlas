@@ -500,6 +500,15 @@ document.addEventListener('DOMContentLoaded', () => {
         function updateSlidePosition() {
             // The 2rem gap is defined in CSS for .slider-content-strip gap
             contentStrip.style.transform = `translateX(calc(-${currentIndex} * (100% + 2rem)))`;
+
+            // Fade out non-active items, fade in active item
+            const items = contentStrip.children;
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                // Set opacity to 1 for the current item, 0 for others.
+                // The transition is handled by CSS.
+                item.style.opacity = i === currentIndex ? '1' : '0';
+            }
         }
 
         function updateDesktopButtonState() {

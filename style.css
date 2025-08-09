@@ -357,7 +357,7 @@ main {
 }
 
 .game-entry-slider {
-    overflow-x: hidden;  /* This continues to hide the other slides horizontally */
+    overflow-x: visible; /* This allows box-shadows to appear */
     overflow-y: visible; /* This allows the vertical box-shadow to be displayed */
     position: relative; /* Optional: if it needs to be a positioning context for something else inside, though not strictly necessary for current setup */
     /* width: 100%; Ensure it takes the space of a normal game-entry.
@@ -379,6 +379,7 @@ main {
     box-sizing: border-box;
     overflow: visible; /* Allow box-shadow from child .game-entry to show */
     padding-bottom: 20px; /* Add space for the shadow to render */
+    transition: opacity 0.5s ease-in-out;
     /* .game-entry styles will apply to the child div within .slider-item */
 }
 
