@@ -553,6 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let regionsData = [];
         let gamesData = [];
+        let currentRegionId = null; // Track the currently displayed region
 
         /**
          * Converts a hex color string to an rgba string.
@@ -625,7 +626,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const path = e.target.closest('.region-path');
                 if (path && path.dataset.regionId) {
                     const regionId = path.dataset.regionId;
+
+                    // If clicking the same region that's already active, hide it.
+                    if (regionId === currentRegionId && infobox.classList.contains('active')) {
+                        hideInfobox();
+                        return; // Stop further execution
+                    }
+
+                    // A new region is clicked, so proceed with showing the infobox.
+                    currentRegionId = regionId;
                     const region = regionsData.find(r => r.id === regionId);
+
                     if (region) {
                         // --- Populate Header ---
                         infoboxHeader.innerHTML = ''; // Clear previous content
@@ -729,6 +740,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function hideInfobox() {
             infobox.classList.remove('active');
+            currentRegionId = null; // Reset the currently selected region ID
             // Listen for transition to end before setting display to none
             infobox.addEventListener('transitionend', function handler() {
                 if (!infobox.classList.contains('active')) {
