@@ -22,42 +22,54 @@
         </nav>
     </header>
 
+    <nav class="arc-navigation lore-tabs">
+        <a href="#" class="tab-link active" data-tab="timeline-view">Timeline</a>
+        <a href="#" class="tab-link" data-tab="map-view">Map</a>
+    </nav>
+
     <main>
-        <div class="timeline-section">
-            <h2>Lore Timeline</h2>
+        <div id="timeline-view" class="tab-content active">
+            <div class="timeline-section">
+                <h2>Lore Timeline</h2>
 
-            <p style="font-size: 0.9em; font-style: italic; text-align: center; margin-bottom: 15px;">
-                The timeline presented below is based on information sourced from in-game scripts and the <a href="https://kiseki.fandom.com/wiki/Timeline_of_Zemurian_history" target="_blank" rel="noopener noreferrer">Kiseki Wiki</a>.<br>Best viewed on desktop; small screens may require horizontal scrolling.
-            </p>
+                <p style="font-size: 0.9em; font-style: italic; text-align: center; margin-bottom: 15px;">
+                    The timeline presented below is based on information sourced from in-game scripts and the <a href="https://kiseki.fandom.com/wiki/Timeline_of_Zemurian_history" target="_blank" rel="noopener noreferrer">Kiseki Wiki</a>.<br>Best viewed on desktop; small screens may require horizontal scrolling.
+                </p>
 
-            <div class="lore-timeline-scroll-wrapper">
-                <div id="lore-timeline-main-container">
-                    <div id="time-axis-container">
-                        <!-- Time axis labels (years, months) will be populated by JavaScript -->
-                </div>
-                <div id="game-columns-container">
-                    <div class="timeline-arc-column" id="liberl-arc-column">
-                        <h3>Liberl Arc</h3>
-                        <div class="game-entries-area">
-                            <!-- Liberl Arc game entries will be populated by JavaScript -->
+                <div class="lore-timeline-scroll-wrapper">
+                    <div id="lore-timeline-main-container">
+                        <div id="time-axis-container">
+                            <!-- Time axis labels (years, months) will be populated by JavaScript -->
+                        </div>
+                        <div id="game-columns-container">
+                            <div class="timeline-arc-column" id="liberl-arc-column">
+                                <h3>Liberl Arc</h3>
+                                <div class="game-entries-area">
+                                    <!-- Liberl Arc game entries will be populated by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="timeline-arc-column" id="crossbell-arc-column">
+                                <h3>Crossbell Arc</h3>
+                                <div class="game-entries-area">
+                                    <!-- Crossbell Arc game entries will be populated by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="timeline-arc-column" id="erebonia-arc-column">
+                                <h3>Erebonia Arc</h3>
+                                <div class="game-entries-area">
+                                    <!-- Erebonia Arc game entries will be populated by JavaScript -->
+                                </div>
+                            </div>
+                            <!-- Horizontal month lines will be overlaid/drawn by JavaScript -->
                         </div>
                     </div>
-                    <div class="timeline-arc-column" id="crossbell-arc-column">
-                        <h3>Crossbell Arc</h3>
-                        <div class="game-entries-area">
-                            <!-- Crossbell Arc game entries will be populated by JavaScript -->
-                        </div>
-                    </div>
-                    <div class="timeline-arc-column" id="erebonia-arc-column">
-                        <h3>Erebonia Arc</h3>
-                        <div class="game-entries-area">
-                            <!-- Erebonia Arc game entries will be populated by JavaScript -->
-                        </div>
-                    </div>
-                    <!-- Horizontal month lines will be overlaid/drawn by JavaScript -->
                 </div>
             </div>
         </div>
+
+        <div id="map-view" class="tab-content">
+            <h2 style="text-align: center; margin-top: 50px;">Map Area</h2>
+            <p style="text-align: center;">This section is currently under construction. Please check back later for an interactive map of Zemuria.</p>
         </div>
     </main>
 
