@@ -211,6 +211,34 @@ footer a:hover {
 }
 
 
+/* Lore Page Tab Navigation */
+.lore-tabs {
+    /* The .arc-navigation class provides the base style. */
+    /* These rules adjust it for the Lore page context. */
+    border-top: none; /* The header's bottom border serves as the top line */
+    border-bottom: 1px solid rgba(233, 213, 161, 0.15); /* Add a bottom border to separate from main content */
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+/* Tab Content Styling */
+.tab-content {
+    display: none; /* Hidden by default */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* The 'active' class makes the container visible but still transparent */
+.tab-content.active {
+    display: block;
+}
+
+/* The 'show' class makes the content opaque, triggering the fade-in */
+.tab-content.show {
+    opacity: 1;
+}
+
+
 /* --- Arc Headers --- */
 .arc-header {
     text-align: center;
