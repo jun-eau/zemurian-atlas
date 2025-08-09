@@ -74,6 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
                     <img src="assets/logo/steam.png" alt="Steam Logo" title="">
                 </a>
+                ${game.gogUrl ? `
+                <a href="${game.gogUrl}" target="_blank" rel="noopener noreferrer" title="GOG Store Page">
+                    <img src="assets/logo/gog.webp" alt="GOG Logo" title="">
+                </a>` : ''}
                 ${game.playstationUrl ? `
                 <a href="${game.playstationUrl}" target="_blank" rel="noopener noreferrer" title="PlayStation Store Page">
                     <img src="assets/logo/playstation.png" alt="PlayStation Store Logo" title="">
@@ -195,6 +199,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <a href="${game.steamUrl}" target="_blank" rel="noopener noreferrer" title="Steam Store Page">
                         <img src="assets/logo/steam.png" alt="Steam Logo">
                     </a>
+                    ${game.gogUrl ? `
+                    <a href="${game.gogUrl}" target="_blank" rel="noopener noreferrer" title="GOG Store Page">
+                        <img src="assets/logo/gog.webp" alt="GOG Logo">
+                    </a>` : ''}
                     ${game.playstationUrl ? `
                     <a href="${game.playstationUrl}" target="_blank" rel="noopener noreferrer" title="PlayStation Store Page" class="playstation-link">
                         <img src="assets/logo/playstation.png" alt="PlayStation Store Logo">
