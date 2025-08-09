@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let isMapInitialized = false;
+
     // --- Tabbed Interface Logic ---
     const tabsContainer = document.querySelector('.lore-tabs');
     if (tabsContainer) {
@@ -27,6 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const targetTabContentId = clickedTab.dataset.tab;
+
+            // --- New Map Initialization Logic ---
+            if (targetTabContentId === 'map-view' && !isMapInitialized) {
+                initializeMap();
+            }
             const targetTabContent = document.getElementById(targetTabContentId);
 
             const currentActiveTab = tabsContainer.querySelector('.active');
@@ -528,4 +535,207 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initializeTimeline();
+
+    function initializeMap() {
+        if (isMapInitialized) return;
+
+        const svgNS = "http://www.w3.org/2000/svg";
+        const mapOverlay = document.getElementById('map-overlay');
+        const infobox = document.getElementById('map-infobox');
+        const infoboxHeader = infobox.querySelector('.infobox-header');
+        const infoboxGames = infobox.querySelector('.infobox-games');
+        const closeButton = infobox.querySelector('.close-btn');
+
+        if (!mapOverlay || !infobox || !infoboxHeader || !infoboxGames) {
+            console.error("Map overlay SVG or crucial infobox element not found!");
+            return;
+        }
+
+        let regionsData = [];
+        let gamesData = [];
+
+        /**
+         * Converts a hex color string to an rgba string.
+         * @param {string} hex The hex color code (e.g., "#RRGGBB").
+         * @param {number} alpha The alpha transparency value (0 to 1).
+         * @returns {string} The rgba color string.
+         */
+        function hexToRgba(hex, alpha = 1) {
+            // Remove the hash at the start if it's there
+            hex = hex.replace(/^#/, '');
+
+            // Parse the r, g, b values
+            let bigint = parseInt(hex, 16);
+            let r = (bigint >> 16) & 255;
+            let g = (bigint >> 8) & 255;
+            let b = bigint & 255;
+
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // Fetch both JSON files
+        Promise.all([
+            fetch('regions.json').then(res => {
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                return res.json();
+            }),
+            fetch('games.json').then(res => {
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                return res.json();
+            })
+        ])
+        .then(([regions, games]) => {
+            regionsData = regions;
+            gamesData = games;
+
+            const maskGroup = mapOverlay.querySelector('#regions-mask g');
+            if (!maskGroup) {
+                console.error("SVG mask group for regions not found!");
+                return;
+            }
+
+            const gamesById = gamesData.reduce((acc, game) => {
+                acc[game.id] = game;
+                return acc;
+            }, {});
+
+            regionsData.forEach(region => {
+                const path = document.createElementNS(svgNS, 'path');
+                path.setAttribute('d', region.svgPathData);
+                path.setAttribute('class', 'region-path');
+                path.setAttribute('id', `region-${region.id}`);
+                path.dataset.regionId = region.id; // Store region id
+
+                // Set the highlight color as a CSS variable from the region's base color
+                if (region.baseColor) {
+                    const highlightColor = hexToRgba(region.baseColor, 0.7); // 70% transparency
+                    path.style.setProperty('--region-highlight-color', highlightColor);
+                }
+
+                mapOverlay.appendChild(path);
+
+                // Create the second, identical path for the mask cutout
+                const maskPath = document.createElementNS(svgNS, 'path');
+                maskPath.setAttribute('d', region.svgPathData);
+                maskPath.setAttribute('fill', 'black');
+                maskGroup.appendChild(maskPath);
+            });
+
+            mapOverlay.addEventListener('click', (e) => {
+                const path = e.target.closest('.region-path');
+                if (path && path.dataset.regionId) {
+                    const regionId = path.dataset.regionId;
+                    const region = regionsData.find(r => r.id === regionId);
+                    if (region) {
+                        // --- Populate Header ---
+                        infoboxHeader.innerHTML = ''; // Clear previous content
+
+                        // 1. Emblem
+                        const emblem = document.createElement('img');
+                        emblem.src = `assets/logo/${region.emblemAsset}`;
+                        emblem.alt = `${region.name} Emblem`;
+                        emblem.className = 'infobox-emblem-img';
+                        infoboxHeader.appendChild(emblem);
+
+                        // 2. Nation Name
+                        const name = document.createElement('h2');
+                        name.textContent = region.name;
+                        infoboxHeader.appendChild(name);
+
+                        // 3. Stat Block
+                        const statBlock = document.createElement('div');
+                        statBlock.className = 'infobox-stat-block';
+                        if (region.government) {
+                            const p = document.createElement('p');
+                            p.innerHTML = `<strong>Government</strong><span>${region.government}</span>`;
+                            statBlock.appendChild(p);
+                        }
+                        if (region.capital) {
+                            const p = document.createElement('p');
+                            p.innerHTML = `<strong>Capital</strong><span>${region.capital}</span>`;
+                            statBlock.appendChild(p);
+                        }
+                        infoboxHeader.appendChild(statBlock);
+
+
+                        // --- Populate Game Art Grid ---
+                        infoboxGames.innerHTML = ''; // Clear previous art
+                        region.games.forEach(gameId => {
+                            const game = gamesById[gameId];
+                            if (game && game.art) {
+                                const img = document.createElement('img');
+                                img.src = game.art.grid;
+                                img.alt = game.englishTitle;
+                                img.title = game.englishTitle;
+                                infoboxGames.appendChild(img);
+                            }
+                        });
+
+                        // Position and show infobox
+                        infobox.style.display = 'block'; // Make it visible to calculate size
+                        positionInfobox(e.clientX, e.clientY);
+                        infobox.classList.add('active');
+                    }
+                } else if (!infobox.contains(e.target)) {
+                    // Hide infobox if clicking outside a region path and not inside the infobox
+                    hideInfobox();
+                }
+            });
+
+            closeButton.addEventListener('click', () => {
+                hideInfobox();
+            });
+
+            document.addEventListener('click', (e) => {
+                // If the click is outside the map container and the infobox, hide it.
+                const mapContainer = document.querySelector('.map-container');
+                if (!mapContainer.contains(e.target) && !infobox.contains(e.target) && infobox.classList.contains('active')) {
+                    hideInfobox();
+                }
+            });
+
+            isMapInitialized = true;
+        })
+        .catch(error => {
+            console.error("Error loading or processing map/game data:", error);
+        });
+
+        function positionInfobox(x, y) {
+            const infoboxWidth = infobox.offsetWidth;
+            const infoboxHeight = infobox.offsetHeight;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const margin = 15; // Margin from the viewport edges
+
+            let top = y + 20;
+            let left = x + 20;
+
+            // Adjust if it goes off-screen
+            if (left + infoboxWidth + margin > viewportWidth) {
+                left = x - infoboxWidth - 20;
+            }
+            if (top + infoboxHeight + margin > viewportHeight) {
+                top = y - infoboxHeight - 20;
+            }
+
+            // Final check to ensure it's not off the top/left after adjustments
+            if (top < margin) top = margin;
+            if (left < margin) left = margin;
+
+
+            infobox.style.top = `${top}px`;
+            infobox.style.left = `${left}px`;
+        }
+
+        function hideInfobox() {
+            infobox.classList.remove('active');
+            // Listen for transition to end before setting display to none
+            infobox.addEventListener('transitionend', function handler() {
+                if (!infobox.classList.contains('active')) {
+                    infobox.style.display = 'none';
+                }
+                infobox.removeEventListener('transitionend', handler);
+            });
+        }
+    }
 });

@@ -20,12 +20,11 @@
             <a href="games.html">Releases</a>
             <a href="lore.html" class="active">Lore</a>
         </nav>
+        <nav class="arc-navigation lore-tabs">
+            <a href="#" class="tab-link active" data-tab="timeline-view">Timeline</a>
+            <a href="#" class="tab-link" data-tab="map-view">Map</a>
+        </nav>
     </header>
-
-    <nav class="arc-navigation lore-tabs">
-        <a href="#" class="tab-link active" data-tab="timeline-view">Timeline</a>
-        <a href="#" class="tab-link" data-tab="map-view">Map</a>
-    </nav>
 
     <main>
         <div id="timeline-view" class="tab-content active">
@@ -68,8 +67,32 @@
         </div>
 
         <div id="map-view" class="tab-content">
-            <h2 style="text-align: center; margin-top: 50px;">Map Area</h2>
-            <p style="text-align: center;">This section is currently under construction. Please check back later for an interactive map of Zemuria.</p>
+            <div class="full-width-section">
+                <h2>Interactive Map</h2>
+                <p style="font-size: 0.9em; font-style: italic; text-align: center; margin-bottom: 15px;">
+                    Hover over a region to highlight it; click to see games set in that region.<br>Best viewed on desktop; functionality on small screens is not guaranteed.
+                </p>
+                <div class="map-container">
+                    <img src="assets/zemuria-map.webp" alt="Map of Zemuria" class="map-image">
+                    <svg id="map-overlay" class="map-overlay-svg" viewBox="0 0 2800 1744">
+                        <defs>
+                            <mask id="regions-mask" preserveAspectRatio="none">
+                                <rect x="0" y="0" width="2800" height="1744" fill="white"></rect>
+                                <g></g>
+                            </mask>
+                        </defs>
+                        <rect class="dimming-rect" x="0" y="0" width="2800" height="1744" fill="rgba(0, 0, 0, 0.6)" mask="url(#regions-mask)"></rect>
+                        <filter id="feather-effect" x="-50%" y="-50%" width="200%" height="200%">
+                            <feMorphology operator="dilate" radius="10" in="SourceAlpha" result="dilated"/>
+                            <feGaussianBlur in="dilated" stdDeviation="15" result="blurred"/>
+                            <feMerge>
+                                <feMergeNode in="blurred"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </svg>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -78,6 +101,17 @@
             Unofficial fan project. All trademarks and copyrights are property of their respective owners. Inspired by <a href="https://trailsinthedatabase.com/">trailsinthedatabase.com</a>. <a href="https://github.com/jun-eau/zemurian-atlas">View source on GitHub</a>.
         </p>
     </footer>
+
+    <!-- Infobox for the interactive map -->
+    <div id="map-infobox" style="display: none;">
+        <button class="close-btn">&times;</button>
+        <div class="infobox-header">
+            <!-- This will be populated by JS -->
+        </div>
+        <div class="infobox-games">
+            <!-- Game art will be populated by JS -->
+        </div>
+    </div>
 
 </body>
 </html>

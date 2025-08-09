@@ -1,10 +1,16 @@
 [
     {
+        "id": "trails-in-the-sky",
         "arc": "Liberl Arc",
         "englishTitle": "Trails in the Sky",
         "japaneseTitleKanji": "英雄伝説 空の軌跡FC",
         "japaneseTitleRomaji": "Sora no Kiseki FC",
         "assetName": "trails-in-the-sky",
+        "art": {
+            "hero": "assets/hero/trails-in-the-sky.jpg",
+            "grid": "assets/grid/trails-in-the-sky.jpg",
+            "logo": "assets/logo/trails-in-the-sky.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/251150/",
         "gogUrl": "https://www.gog.com/game/the_legend_of_heroes_trails_in_the_sky",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky",
@@ -25,10 +31,16 @@
         ],
         "variants": [
           {
+            "id": "trails-in-the-sky-1st-chapter",
             "englishTitle": "Trails in the Sky 1st Chapter",
             "japaneseTitleKanji": "空の軌跡 the 1st",
             "japaneseTitleRomaji": "Sora no Kiseki the 1st",
             "assetName": "trails-in-the-sky-1st-chapter",
+            "art": {
+                "hero": "assets/hero/trails-in-the-sky-1st-chapter.jpg",
+                "grid": "assets/grid/trails-in-the-sky-1st-chapter.jpg",
+                "logo": "assets/logo/trails-in-the-sky-1st-chapter.png"
+            },
             "steamUrl": "https://store.steampowered.com/app/3375780/",
             "gogUrl": null,
             "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky#Trails_in_the_Sky_1st_Chapter",
@@ -45,11 +57,17 @@
         ]
     },
     {
+        "id": "trails-in-the-sky-sc",
         "arc": "Liberl Arc",
         "englishTitle": "Trails in the Sky SC",
         "japaneseTitleKanji": "英雄伝説 空の軌跡SC",
         "japaneseTitleRomaji": "Sora no Kiseki SC",
         "assetName": "trails-in-the-sky-sc",
+        "art": {
+            "hero": "assets/hero/trails-in-the-sky-sc.jpg",
+            "grid": "assets/grid/trails-in-the-sky-sc.jpg",
+            "logo": "assets/logo/trails-in-the-sky-sc.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/251290/",
         "gogUrl": "https://www.gog.com/en/game/the_legend_of_heroes_trails_in_the_sky_sc",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_SC",
@@ -69,11 +87,17 @@
         ]
     },
     {
+        "id": "trails-in-the-sky-the-3rd",
         "arc": "Liberl Arc",
         "englishTitle": "Trails in the Sky the 3rd",
         "japaneseTitleKanji": "英雄伝説 空の軌跡 the 3rd",
         "japaneseTitleRomaji": "Sora no Kiseki the 3rd",
         "assetName": "trails-in-the-sky-the-3rd",
+        "art": {
+            "hero": "assets/hero/trails-in-the-sky-the-3rd.jpg",
+            "grid": "assets/grid/trails-in-the-sky-the-3rd.jpg",
+            "logo": "assets/logo/trails-in-the-sky-the-3rd.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/436670/",
         "gogUrl": "https://www.gog.com/en/game/the_legend_of_heroes_trails_in_the_sky_the_3rd",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_in_the_Sky_the_3rd",
@@ -96,11 +120,17 @@
         ]
     },
     {
+        "id": "trails-from-zero",
         "arc": "Crossbell Arc",
         "englishTitle": "Trails from Zero",
         "japaneseTitleKanji": "英雄伝説 零の軌跡",
         "japaneseTitleRomaji": "Zero no Kiseki",
         "assetName": "trails-from-zero",
+        "art": {
+            "hero": "assets/hero/trails-from-zero.jpg",
+            "grid": "assets/grid/trails-from-zero.jpg",
+            "logo": "assets/logo/trails-from-zero.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/1668510/",
         "gogUrl": "https://www.gog.com/en/game/the_legend_of_heroes_trails_from_zero",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_from_Zero",
@@ -121,11 +151,17 @@
         ]
     },
     {
+        "id": "trails-to-azure",
         "arc": "Crossbell Arc",
         "englishTitle": "Trails to Azure",
         "japaneseTitleKanji": "英雄伝説 碧の軌跡",
         "japaneseTitleRomaji": "Ao no Kiseki",
         "assetName": "trails-to-azure",
+        "art": {
+            "hero": "assets/hero/trails-to-azure.jpg",
+            "grid": "assets/grid/trails-to-azure.jpg",
+            "logo": "assets/logo/trails-to-azure.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/1668520/",
         "gogUrl": "https://www.gog.com/en/game/the_legend_of_heroes_trails_to_azure",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_to_Azure",
@@ -145,11 +181,17 @@
         ]
     },
     {
+        "id": "trails-of-cold-steel",
         "arc": "Erebonia Arc",
         "englishTitle": "Trails of Cold Steel",
         "japaneseTitleKanji": "英雄伝説 閃の軌跡",
         "japaneseTitleRomaji": "Sen no Kiseki",
         "assetName": "trails-of-cold-steel",
+        "art": {
+            "hero": "assets/hero/trails-of-cold-steel.jpg",
+            "grid": "assets/grid/trails-of-cold-steel.jpg",
+            "logo": "assets/logo/trails-of-cold-steel.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/538680/",
         "gogUrl": "https://www.gog.com/en/game/the_legend_of_heroes_trails_of_cold_steel",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel",
@@ -171,11 +213,17 @@
         ]
     },
     {
+        "id": "trails-of-cold-steel-ii",
         "arc": "Erebonia Arc",
         "englishTitle": "Trails of Cold Steel II",
         "japaneseTitleKanji": "英雄伝説 閃の軌跡II",
         "japaneseTitleRomaji": "Sen no Kiseki II",
         "assetName": "trails-of-cold-steel-ii",
+        "art": {
+            "hero": "assets/hero/trails-of-cold-steel-ii.jpg",
+            "grid": "assets/grid/trails-of-cold-steel-ii.jpg",
+            "logo": "assets/logo/trails-of-cold-steel-ii.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/748490/",
         "gogUrl": "https://www.gog.com/game/the_legend_of_heroes_trails_of_cold_steel_ii",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_II",
@@ -200,11 +248,17 @@
         ]
     },
     {
+        "id": "trails-of-cold-steel-iii",
         "arc": "Erebonia Arc",
         "englishTitle": "Trails of Cold Steel III",
         "japaneseTitleKanji": "英雄伝説 閃の軌跡III",
         "japaneseTitleRomaji": "Sen no Kiseki III",
         "assetName": "trails-of-cold-steel-iii",
+        "art": {
+            "hero": "assets/hero/trails-of-cold-steel-iii.jpg",
+            "grid": "assets/grid/trails-of-cold-steel-iii.jpg",
+            "logo": "assets/logo/trails-of-cold-steel-iii.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/991270/",
         "gogUrl": "https://www.gog.com/game/the_legend_of_heroes_trails_of_cold_steel_iii",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_III",
@@ -227,11 +281,17 @@
         ]
     },
     {
+        "id": "trails-of-cold-steel-iv",
         "arc": "Erebonia Arc",
         "englishTitle": "Trails of Cold Steel IV",
         "japaneseTitleKanji": "英雄伝説 閃の軌跡IV",
         "japaneseTitleRomaji": "Sen no Kiseki IV -THE END OF SAGA-",
         "assetName": "trails-of-cold-steel-iv",
+        "art": {
+            "hero": "assets/hero/trails-of-cold-steel-iv.jpg",
+            "grid": "assets/grid/trails-of-cold-steel-iv.jpg",
+            "logo": "assets/logo/trails-of-cold-steel-iv.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/1198090",
         "gogUrl": "https://www.gog.com/game/the_legend_of_heroes_trails_of_cold_steel_iv",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_of_Cold_Steel_IV",
@@ -254,11 +314,17 @@
         ]
     },
     {
+        "id": "trails-into-reverie",
         "arc": "Epilogue",
         "englishTitle": "Trails into Reverie",
         "japaneseTitleKanji": "英雄伝説 創の軌跡",
         "japaneseTitleRomaji": "Hajimari no Kiseki",
         "assetName": "trails-into-reverie",
+        "art": {
+            "hero": "assets/hero/trails-into-reverie.jpg",
+            "grid": "assets/grid/trails-into-reverie.jpg",
+            "logo": "assets/logo/trails-into-reverie.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/1668540/",
         "gogUrl": "https://www.gog.com/en/game/the_legend_of_heroes_trails_into_reverie",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_into_Reverie",
@@ -280,11 +346,17 @@
         ]
     },
     {
+        "id": "trails-through-daybreak",
         "arc": "Calvard Arc",
         "englishTitle": "Trails through Daybreak",
         "japaneseTitleKanji": "英雄伝説 黎の軌跡",
         "japaneseTitleRomaji": "Kuro no Kiseki",
         "assetName": "trails-through-daybreak",
+        "art": {
+            "hero": "assets/hero/trails-through-daybreak.jpg",
+            "grid": "assets/grid/trails-through-daybreak.jpg",
+            "logo": "assets/logo/trails-through-daybreak.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/2138610",
         "gogUrl": "https://www.gog.com/en/game/the_legend_of_heroes_trails_through_daybreak_standard_edition",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_through_Daybreak",
@@ -303,11 +375,17 @@
         ]
     },
     {
+        "id": "trails-through-daybreak-ii",
         "arc": "Calvard Arc",
         "englishTitle": "Trails through Daybreak II",
         "japaneseTitleKanji": "英雄伝説 黎の軌跡II",
         "japaneseTitleRomaji": "Kuro no Kiseki II -CRIMSON SiN-",
         "assetName": "trails-through-daybreak-ii",
+        "art": {
+            "hero": "assets/hero/trails-through-daybreak-ii.jpg",
+            "grid": "assets/grid/trails-through-daybreak-ii.jpg",
+            "logo": "assets/logo/trails-through-daybreak-ii.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/2668430",
         "gogUrl": "https://www.gog.com/en/game/the_legend_of_heroes_trails_through_daybreak_ii_standard_edition",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_Through_Daybreak_II",
@@ -324,11 +402,17 @@
         ]
     },
     {
+        "id": "trails-beyond-the-horizon",
         "arc": "Calvard Arc",
         "englishTitle": "Trails beyond the Horizon",
         "japaneseTitleKanji": "英雄伝説 界の軌跡",
         "japaneseTitleRomaji": "Kai no Kiseki -Farewell, O Zemuria-",
         "assetName": "trails-beyond-the-horizon",
+        "art": {
+            "hero": "assets/hero/trails-beyond-the-horizon.jpg",
+            "grid": "assets/grid/trails-beyond-the-horizon.jpg",
+            "logo": "assets/logo/trails-beyond-the-horizon.png"
+        },
         "steamUrl": "https://store.steampowered.com/app/3316940/",
         "gogUrl": "https://www.gog.com/en/game/the_legend_of_heroes_trails_beyond_the_horizon",
         "wikiUrl": "https://en.wikipedia.org/wiki/The_Legend_of_Heroes:_Trails_Beyond_the_Horizon",
