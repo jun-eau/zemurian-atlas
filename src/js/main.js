@@ -1,0 +1,31 @@
+/**
+ * @file main.js
+ * This is the main entry point for all JavaScript on the site.
+ * It handles routing to page-specific logic.
+ */
+
+import { highlightActiveNav } from './lib/shared.js';
+import { initReleasesPage } from './releases.js';
+import { initLorePage } from './lore.js';
+
+/**
+ * Determines the current page and runs the appropriate initialization functions.
+ */
+function route() {
+    // Run shared logic on all pages
+    highlightActiveNav();
+
+    // Get the current page filename
+    const currentPage = window.location.pathname.split('/').pop();
+
+    // Route to page-specific logic
+    if (currentPage === 'games.html') {
+        initReleasesPage();
+    } else if (currentPage === 'lore.html') {
+        initLorePage();
+    }
+    // No specific JS needed for index.html other than the shared nav logic
+}
+
+// Run the router once the DOM is loaded
+document.addEventListener('DOMContentLoaded', route);
