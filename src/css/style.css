@@ -91,7 +91,7 @@ footer a:hover {
 main {
     width: 100%;
     box-sizing: border-box;
-    padding: 0rem;
+    padding: 0 1rem;
     max-width: 1300px;
     margin: 0 auto;
     min-width: 600px; /* Ensure enough space for slider arrows + content */
@@ -807,6 +807,14 @@ body.home-page::before {
         margin-right: 0;
         box-sizing: border-box;
         overflow-x: hidden; /* Contain horizontal overflow from children like sliders */
+    }
+
+    /* Fix for mobile scroll and shadow clipping issues */
+    .slider-display-area {
+        margin-bottom: 0;
+    }
+    .slider-item {
+        padding-bottom: 0;
     }
     .desktop-only {
         display: none !important;
