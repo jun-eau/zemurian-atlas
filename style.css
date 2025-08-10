@@ -256,6 +256,8 @@ footer a:hover {
 
 /* --- Main Timeline Layout --- */
 main {
+    width: 100%;
+    box-sizing: border-box;
     padding: 0rem;
     max-width: 1300px;
     margin: 0 auto;
@@ -269,6 +271,11 @@ main {
     max-width: none;
     min-width: 0;
     /* flex-grow: 1; is inherited and correct */
+}
+
+/* On the lore page, allow the main container to expand to the timeline's full width */
+.main-lore {
+    max-width: 1600px;
 }
 
 #game-timeline-container { display: flex; flex-direction: column; gap: 3rem; }
