@@ -262,12 +262,9 @@ main {
     min-width: 600px; /* Ensure enough space for slider arrows + content */
     flex-grow: 1;
 }
-
-/* Specific overrides for the main element on the lore page on larger screens */
-@media (min-width: 1600px) {
-    .lore-page main {
-        max-width: 1700px;
-    }
+/* Specific overrides for the main element on the lore page */
+.lore-page main {
+    max-width: 1700px;
 }
 
 /* Specific overrides for the main element on the home page */
