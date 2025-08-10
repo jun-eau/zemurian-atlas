@@ -256,15 +256,11 @@ footer a:hover {
 
 /* --- Main Timeline Layout --- */
 main {
-    padding: 0rem;
+    padding: 0;
     max-width: 1300px;
     margin: 0 auto;
     min-width: 600px; /* Ensure enough space for slider arrows + content */
     flex-grow: 1;
-}
-/* Specific overrides for the main element on the lore page */
-.lore-page main {
-    max-width: 1700px;
 }
 
 /* Specific overrides for the main element on the home page */
@@ -473,8 +469,13 @@ main {
     /* overflow-x: auto; */ /* Moved to .lore-timeline-scroll-wrapper */
 }
 
+.timeline-section,
+.full-width-section {
+    padding: 2rem 1rem;
+}
+
 .lore-timeline-scroll-wrapper {
-    overflow-x: auto;
+    /* overflow-x: auto; */ /* Replaced by media query */
     width: 100%; /* Ensures the wrapper itself doesn't overflow the page layout if content is narrower */
 }
 
@@ -658,6 +659,11 @@ main {
 
 /* Tooltip styling removed as browser default tooltips are not used. */
 
+@media (max-width: 1700px) {
+    .lore-timeline-scroll-wrapper {
+        overflow-x: auto;
+    }
+}
 
 @media (max-width: 900px) {
     main {
