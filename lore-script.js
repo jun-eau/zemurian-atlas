@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const gameEntryDiv = document.createElement('div');
                 gameEntryDiv.className = 'game-entry-box';
                 gameEntryDiv.style.backgroundColor = game.timelineColor;
-                gameEntryDiv.style.color = game.englishTitle === "Trails in the Sky SC" ? '#000000' : '#FFFFFF';
+                gameEntryDiv.style.color = game.englishTitle === "Trails in the Sky SC" || game.englishTitle === "Trails through Daybreak" ? '#000000' : '#FFFFFF';
                 gameEntryDiv.style.top = `${topPosition + 2}px`; // -1 for border adjustment, +3 for shift
                 gameEntryDiv.style.height = `${entryHeight}px`;
                 gameEntryDiv.style.width = '90%';
