@@ -263,6 +263,11 @@ main {
     flex-grow: 1;
 }
 
+/* Specific overrides for the main element on the lore page */
+.lore-page main {
+    max-width: 1700px;
+}
+
 /* Specific overrides for the main element on the home page */
 .main-home {
     padding: 0;
