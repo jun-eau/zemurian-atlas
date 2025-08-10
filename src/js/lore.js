@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+export function initLorePage() {
     let isMapInitialized = false;
 
     // --- Tabbed Interface Logic ---
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function initializeTimeline() {
         try {
-            const response = await fetch('games.json');
+            const response = await fetch('src/data/games.json');
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const rawGames = await response.json();
             
@@ -564,11 +564,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Fetch both JSON files
         Promise.all([
-            fetch('regions.json').then(res => {
+            fetch('src/data/regions.json').then(res => {
                 if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
                 return res.json();
             }),
-            fetch('games.json').then(res => {
+            fetch('src/data/games.json').then(res => {
                 if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
                 return res.json();
             })
@@ -661,9 +661,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         infoboxGames.innerHTML = ''; // Clear previous art
                         region.games.forEach(gameId => {
                             const game = gamesById[gameId];
-                            if (game && game.art) {
+                            if (game) {
                                 const img = document.createElement('img');
-                                img.src = game.art.grid;
+                                img.src = `assets/grid/${game.assetName}.jpg`;
                                 img.alt = game.englishTitle;
                                 img.title = game.englishTitle;
                                 infoboxGames.appendChild(img);
@@ -760,4 +760,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-});
+}
