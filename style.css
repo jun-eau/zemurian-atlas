@@ -264,7 +264,7 @@ main {
 }
 
 /* Specific overrides for the main element on the lore page on larger screens */
-@media (min-width: 901px) {
+@media (min-width: 1600px) {
     .lore-page main {
         max-width: 1700px;
     }
