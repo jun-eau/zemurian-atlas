@@ -32,7 +32,11 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    overflow-x: hidden; /* Prevent horizontal scrollbars from slider overflow */
+}
+
+/* Prevent horizontal scrollbars from slider overflow */
+.releases-page {
+    overflow-x: hidden;
 }
 
 /* Apply background only to the home page's body */
