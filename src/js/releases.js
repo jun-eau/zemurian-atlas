@@ -396,12 +396,39 @@ export function initReleasesPage() {
 
                     gameWrapperElement = sliderDisplayArea;
                 } else {
-                    const standardEntry = document.createElement('div');
-                    standardEntry.className = 'game-entry';
-                    // false for isSliderItemContext because this is NOT the slider rendering path
-                    // No variants, so no allVariantData needed for mobile here
-                    standardEntry.innerHTML = createFullGameRenderHTML(game, false, false, null, null);
-                    gameWrapperElement = standardEntry;
+                    // Game without variants - wrap in a single-item slider structure for consistent styling
+                    const sliderDisplayArea = document.createElement('div');
+                    sliderDisplayArea.className = 'slider-display-area';
+                    sliderDisplayArea.setAttribute('data-current-index', '0');
+
+                    const gameEntrySlider = document.createElement('div');
+                    gameEntrySlider.className = 'game-entry-slider';
+
+                    const contentStripId = `slider-content-${game.assetName || 'strip'}-${Date.now()}`;
+                    const sliderContentStrip = document.createElement('div');
+                    sliderContentStrip.className = 'slider-content-strip';
+                    sliderContentStrip.id = contentStripId;
+                    sliderContentStrip.setAttribute('role', 'region');
+                    sliderContentStrip.setAttribute('aria-label', game.englishTitle);
+
+                    const gameItem = document.createElement('div');
+                    gameItem.className = 'slider-item';
+                    gameItem.setAttribute('role', 'group');
+                    gameItem.setAttribute('aria-label', game.englishTitle);
+
+                    const gameEntry = document.createElement('div');
+                    gameEntry.className = 'game-entry';
+
+                    // Although it's a single item, we render it as a "slider item" for structural consistency.
+                    // The setupSliderControls function will handle the single-item case by hiding nav buttons.
+                    gameEntry.innerHTML = createFullGameRenderHTML(game, true, false, [game], null);
+
+                    gameItem.appendChild(gameEntry);
+                    sliderContentStrip.appendChild(gameItem);
+                    gameEntrySlider.appendChild(sliderContentStrip);
+                    sliderDisplayArea.appendChild(gameEntrySlider);
+
+                    gameWrapperElement = sliderDisplayArea;
                 }
                 timelineContainer.appendChild(gameWrapperElement);
             });
