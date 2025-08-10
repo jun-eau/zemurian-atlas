@@ -263,6 +263,11 @@ main {
     flex-grow: 1;
 }
 /* Specific overrides for the main element on the lore page */
+body.lore-page main {
+    padding: 0;
+    min-width: 0;
+}
+
 .lore-page main {
     max-width: 1700px;
 }
@@ -470,6 +475,7 @@ main {
 /* --- Lore Timeline Specific Styles --- */
 .timeline-section {
     margin-top: 1rem;
+    padding: 2rem 1rem;
     /* overflow-x: auto; */ /* Moved to .lore-timeline-scroll-wrapper */
 }
 
@@ -1000,6 +1006,7 @@ main {
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
+    padding: 2rem 0;
 }
 
 /* Adjust map container when it's inside the full-width section */
