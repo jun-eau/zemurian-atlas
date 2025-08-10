@@ -773,7 +773,10 @@ body.home-page::before {
     display: flex;
     gap: 0.5rem;
     justify-content: center;
-    height: 220px;
+    align-items: flex-start; /* Better alignment for varying aspect ratios */
+    height: 28vh; /* Responsive height based on viewport */
+    min-height: 160px; /* Minimum height for smaller screens */
+    max-height: 220px; /* Maximum height to match original design on large screens */
     margin: 0;
 }
 .infobox-games img {
