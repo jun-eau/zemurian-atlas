@@ -4,71 +4,65 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Tabbed Interface Logic ---
     const tabsContainer = document.querySelector('.lore-tabs');
     if (tabsContainer) {
-        const tabLinks = tabsContainer.querySelectorAll('.tab-link');
-        const tabContents = document.querySelectorAll('.tab-content');
+        // Restore last selected tab from localStorage
+        const savedTabId = localStorage.getItem('loreLastTab');
+        if (savedTabId) {
+            // Clear default 'active' classes
+            const currentActiveTab = document.querySelector('.lore-tabs .active');
+            const currentActiveContent = document.querySelector('.tab-content.active');
+            if (currentActiveTab) currentActiveTab.classList.remove('active');
+            if (currentActiveContent) currentActiveContent.classList.remove('active');
 
-        // Immediately show the default active tab content on page load
+            // Apply 'active' to the saved tab and its content
+            const newActiveTab = document.querySelector(`.tab-link[data-tab="${savedTabId}"]`);
+            const newActiveContent = document.getElementById(savedTabId);
+            if (newActiveTab) newActiveTab.classList.add('active');
+            if (newActiveContent) newActiveContent.classList.add('active');
+        }
+
+        // Check if the map is the active tab on load (either default or from storage) and initialize it
         const initialActiveContent = document.querySelector('.tab-content.active');
         if (initialActiveContent) {
+            if (initialActiveContent.id === 'map-view' && !isMapInitialized) {
+                initializeMap();
+            }
             // Add 'show' class to make it visible with fade-in effect
-            // Use a timeout to ensure the transition is applied after initial render
-            setTimeout(() => {
-                initialActiveContent.classList.add('show');
-            }, 10);
+            setTimeout(() => initialActiveContent.classList.add('show'), 10);
         }
 
         tabsContainer.addEventListener('click', (e) => {
             const clickedTab = e.target.closest('.tab-link');
-            if (!clickedTab) return;
-
+            if (!clickedTab || clickedTab.classList.contains('active')) {
+                return; // Do nothing if not a tab link or if already active
+            }
             e.preventDefault();
 
-            // Do nothing if the clicked tab is already active
-            if (clickedTab.classList.contains('active')) {
-                return;
-            }
-
             const targetTabContentId = clickedTab.dataset.tab;
+            localStorage.setItem('loreLastTab', targetTabContentId); // Save selection
 
-            // --- New Map Initialization Logic ---
+            // Initialize map if it's being shown for the first time
             if (targetTabContentId === 'map-view' && !isMapInitialized) {
                 initializeMap();
             }
-            const targetTabContent = document.getElementById(targetTabContentId);
 
+            const targetTabContent = document.getElementById(targetTabContentId);
             const currentActiveTab = tabsContainer.querySelector('.active');
             const currentActiveContent = document.querySelector('.tab-content.active');
 
             // Switch active state on tabs
-            if (currentActiveTab) {
-                currentActiveTab.classList.remove('active');
-            }
+            if (currentActiveTab) currentActiveTab.classList.remove('active');
             clickedTab.classList.add('active');
 
             // Animate content transition
             if (currentActiveContent && targetTabContent) {
-                currentActiveContent.classList.remove('show'); // Start fade-out
-
-                // Listen for the fade-out to finish
+                currentActiveContent.classList.remove('show');
                 currentActiveContent.addEventListener('transitionend', function handler(event) {
-                    // Ensure we're listening for the opacity transition specifically
                     if (event.propertyName !== 'opacity') return;
-
-                    // Clean up the old content
                     currentActiveContent.classList.remove('active');
-
-                    // Show the new content
-                    targetTabContent.classList.add('active'); // Makes it display: block
-
-                    // Use a timeout to ensure the 'active' class is applied and rendered
-                    // before the 'show' class is added, triggering the fade-in transition.
-                    setTimeout(() => {
-                        targetTabContent.classList.add('show');
-                    }, 10); // A small delay is enough
-
-                    // Remove the event listener to prevent it from firing multiple times
+                    targetTabContent.classList.add('active');
+                    setTimeout(() => targetTabContent.classList.add('show'), 10);
                     currentActiveContent.removeEventListener('transitionend', handler);
-                });
+                }, { once: true }); // Use { once: true } for cleaner event handling
             }
         });
     }
