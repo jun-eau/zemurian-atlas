@@ -363,7 +363,7 @@
         "fandomUrl": "https://kiseki.fandom.com/wiki/The_Legend_of_Heroes:_Trails_through_Daybreak",
         "playstationUrl": "https://store.playstation.com/en-us/concept/10001886",
         "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-through-daybreak-switch/",
-        "timelineColor": "#4a4a4a",
+        "timelineColor": "#e4d39b",
         "timelinePeriods": [{ "start": "1208-08-26", "end": "1208-12-03", "display": "August 26 – December 3, S.1208" }],
         "releasesJP": [
             { "date": "September 30, 2021", "platforms": "(PS4)" },
