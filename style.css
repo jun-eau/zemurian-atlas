@@ -271,11 +271,6 @@ main {
     /* flex-grow: 1; is inherited and correct */
 }
 
-/* Specific overrides for the main element on the lore page */
-.main-lore {
-    max-width: none;
-}
-
 #game-timeline-container { display: flex; flex-direction: column; gap: 3rem; }
 .game-entry {
     display: flex;
