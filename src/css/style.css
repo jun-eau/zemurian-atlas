@@ -417,7 +417,6 @@ body.home-page::before {
 .slider-display-area {
     position: relative;
     margin-bottom: -20px;
-    overflow-x: hidden;
 }
 .game-entry-slider {
     overflow-x: visible;
@@ -807,6 +806,7 @@ body.home-page::before {
         margin-left: 0;
         margin-right: 0;
         box-sizing: border-box;
+        overflow-x: hidden; /* Contain horizontal overflow from children like sliders */
     }
     .desktop-only {
         display: none !important;
