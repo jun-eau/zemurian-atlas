@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const liberlColumn = document.getElementById('liberl-arc-column').querySelector('.game-entries-area');
     const crossbellColumn = document.getElementById('crossbell-arc-column').querySelector('.game-entries-area');
     const ereboniaColumn = document.getElementById('erebonia-arc-column').querySelector('.game-entries-area');
+    const calvardColumn = document.getElementById('calvard-arc-column').querySelector('.game-entries-area');
     
     let monthLinesOverlay; // Will be created and appended to gameColumnsContainer
 
@@ -290,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const totalTimelineHeight = yOffset;
-        [timeAxisContainer, liberlColumn, crossbellColumn, ereboniaColumn, monthLinesOverlay].forEach(el => {
+        [timeAxisContainer, liberlColumn, crossbellColumn, ereboniaColumn, calvardColumn, monthLinesOverlay].forEach(el => {
             if (el) el.style.height = `${totalTimelineHeight}px`;
         });
     }
@@ -300,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn("Cannot render game entries: missing data.");
             return;
         }
-        [liberlColumn, crossbellColumn, ereboniaColumn].forEach(col => { if (col) col.innerHTML = ''; });
+        [liberlColumn, crossbellColumn, ereboniaColumn, calvardColumn].forEach(col => { if (col) col.innerHTML = ''; });
 
         const minTotalMonths = dateToTotalMonths(minDate);
 
@@ -315,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (game.arc === "Liberl Arc") targetColumn = liberlColumn;
             else if (game.arc === "Crossbell Arc") targetColumn = crossbellColumn;
             else if (game.arc === "Erebonia Arc" || game.englishTitle === "Trails into Reverie") targetColumn = ereboniaColumn;
+            else if (game.arc === "Calvard Arc") targetColumn = calvardColumn;
             else {
                 console.warn(`Game "${game.englishTitle}" arc "${game.arc}" unassigned. Skipping rendering.`);
                 return;
