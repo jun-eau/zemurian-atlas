@@ -4,21 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Tabbed Interface Logic ---
     const tabsContainer = document.querySelector('.lore-tabs');
     if (tabsContainer) {
-        // Restore last selected tab from localStorage
-        const savedTabId = localStorage.getItem('loreLastTab');
-        if (savedTabId) {
-            // Clear default 'active' classes
-            const currentActiveTab = document.querySelector('.lore-tabs .active');
-            const currentActiveContent = document.querySelector('.tab-content.active');
-            if (currentActiveTab) currentActiveTab.classList.remove('active');
-            if (currentActiveContent) currentActiveContent.classList.remove('active');
+        // Determine the tab to show: saved tab or default to 'map-view'.
+        const tabIdToShow = localStorage.getItem('loreLastTab') || 'map-view';
 
-            // Apply 'active' to the saved tab and its content
-            const newActiveTab = document.querySelector(`.tab-link[data-tab="${savedTabId}"]`);
-            const newActiveContent = document.getElementById(savedTabId);
-            if (newActiveTab) newActiveTab.classList.add('active');
-            if (newActiveContent) newActiveContent.classList.add('active');
-        }
+        // Apply 'active' to the determined tab and its content.
+        const tabLinkToShow = document.querySelector(`.tab-link[data-tab="${tabIdToShow}"]`);
+        const contentToShow = document.getElementById(tabIdToShow);
+        if (tabLinkToShow) tabLinkToShow.classList.add('active');
+        if (contentToShow) contentToShow.classList.add('active');
 
         // Check if the map is the active tab on load (either default or from storage) and initialize it
         const initialActiveContent = document.querySelector('.tab-content.active');
@@ -61,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentActiveContent.classList.remove('active');
                     targetTabContent.classList.add('active');
                     setTimeout(() => targetTabContent.classList.add('show'), 10);
-                    currentActiveContent.removeEventListener('transitionend', handler);
                 }, { once: true }); // Use { once: true } for cleaner event handling
             }
         });
