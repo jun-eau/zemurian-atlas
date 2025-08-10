@@ -4,9 +4,9 @@ This website provides a visual guide to the Trails series of video games, using 
 
 ### **Features**
 
-*   🎮 **Release Timeline:** A complete, visual timeline of every game in the series, from *Trails in the Sky* to the most recent announcements, including remakes and all regional release dates.
-*   📅 **Lore Timeline:** A detailed, chronological timeline of in-game events for easy comparison of when different story arcs take place relative to one another.
 *   `NEW!` 🗺️ **Interactive Map of Zemuria:** A high-resolution, interactive map of the continent. Click on major nations like Erebonia and Liberl to get key information and see which games are set in that region.
+*   🎮 **Release Timeline:** A complete, visual timeline of every game in the series, from *Trails in the Sky* to the most recent announcements, including remakes and all regional release dates.
+*   📅 **Lore Timeline:** A detailed, chronological timeline of in-game events for easy comparison of when different story arcs take place relative to one another. (Now including *Trails through Daybreak*!)
 
 **Visit the Live Site → [https://jun-eau.github.io/zemurian-atlas](https://jun-eau.github.io/zemurian-atlas/)**
 
