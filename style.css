@@ -486,7 +486,8 @@ main {
 #lore-timeline-main-container {
     display: flex;
     position: relative; /* For absolute positioning of month lines container */
-    width: 1200px;
+    width: 100%;
+    min-width: 1600px;
 }
 
 #time-axis-container {
