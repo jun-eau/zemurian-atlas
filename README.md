@@ -4,9 +4,15 @@ This website provides a visual guide to the Trails series of video games, using 
 
 ### **Features**
 
-*   `NEW!` 🗺️ **Interactive Map of Zemuria:** A high-resolution, interactive map of the continent. Click on major nations like Erebonia and Liberl to get key information and see which games are set in that region.
+*   🗺️ **Interactive Map of Zemuria:** Explore a high-resolution, interactive map of the continent. Click on any region to learn more about it and see the games set there.
 *   🎮 **Release Timeline:** A complete, visual timeline of every game in the series, from *Trails in the Sky* to the most recent announcements, including remakes and all regional release dates.
-*   📅 **Lore Timeline:** A detailed, chronological timeline of in-game events for easy comparison of when different story arcs take place relative to one another. (Now including *Trails through Daybreak*!)
+*   📅 **Lore Timeline:** A detailed, chronological timeline of in-game events for easy comparison of when different story arcs take place relative to one another.
+
+### Latest Updates
+
+*   **Expanded Map:** The interactive map has been updated to include numerous minor regions, including North Ambria, Remiferia, Arteria, Jurai, Ored, Leman, Elsaim, and Valis.
+*   **Detailed Infoboxes:** The map's infoboxes are now richer with information. They display each region's emblem, capital, government, a brief history, and a list of games the region is featured in.
+*   **And More:** This update also includes various smaller enhancements, such as subtle hover effects on the map, UI consistency improvements, and fixes for the lore timeline.
 
 **Visit the Live Site → [https://jun-eau.github.io/zemurian-atlas](https://jun-eau.github.io/zemurian-atlas/)**
 
