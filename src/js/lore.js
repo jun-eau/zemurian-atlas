@@ -1,5 +1,8 @@
+import { calculateRegionAreaInSelge } from './lib/geometry.js';
+
 export function initLorePage() {
     let isMapInitialized = false;
+    let infobox1, infobox2, currentInfobox; // Variables for the two infobox elements and state tracking
 
     // --- Tabbed Interface Logic ---
     const tabsContainer = document.querySelector('.lore-tabs');
@@ -292,9 +295,7 @@ export function initLorePage() {
         const minTotalMonths = dateToTotalMonths(minDate);
 
         allGames.forEach(game => {
-            // Skip games that don't have timeline data (i.e., no parsed periods)
             if (!game.timelinePeriodsParsed || game.timelinePeriodsParsed.length === 0) {
-                // console.log(`Skipping rendering for game without timeline periods: ${game.englishTitle}`);
                 return;
             }
 
@@ -312,6 +313,9 @@ export function initLorePage() {
                 console.warn(`Target column not found for game "${game.englishTitle}". Skipping rendering.`);
                 return;
             }
+
+            // New variable to track the bottom position for CSIV without reading from DOM
+            let csivCalculatedLowestBottom = 0;
 
             // Loop through each period of the game
             game.timelinePeriodsParsed.forEach((period, periodIndex) => {
@@ -356,16 +360,22 @@ export function initLorePage() {
 
                 if (entryHeight > 0 && entryHeight < 1) entryHeight = 1; // Min 1px height
 
-                // Ensure height is at least a small visible amount for very short periods (e.g., 1-day)
-                // For example, 1/30th of a month's pixel height for a single day.
-                // This ensures even single day events are clickable/visible.
                 const minPixelHeightForDay = Math.max(1, pixelsPerMonthVertical / 30);
                 entryHeight = Math.max(entryHeight, minPixelHeightForDay);
-
 
                 if (entryHeight <= 0) {
                     console.warn(`Invalid height for ${game.englishTitle} - ${period.label || `Period ${periodIndex+1}`}. Calculated Height: ${entryHeight}. Skipping period.`);
                     return; // Skip this period
+                }
+
+                // For CSIV, calculate the lowest point among its periods using the calculated variables.
+                if (game.englishTitle === "Trails of Cold Steel IV") {
+                    // The box's visual bottom is its calculated top position + its calculated height.
+                    // The box's `top` style is `topPosition + 2`.
+                    const calculatedBoxBottom = topPosition + 2 + entryHeight;
+                    if (calculatedBoxBottom > csivCalculatedLowestBottom) {
+                        csivCalculatedLowestBottom = calculatedBoxBottom;
+                    }
                 }
 
                 const gameEntryDiv = document.createElement('div');
@@ -376,31 +386,28 @@ export function initLorePage() {
                 gameEntryDiv.style.height = `${entryHeight}px`;
                 gameEntryDiv.style.width = '90%';
                 gameEntryDiv.style.left = '5%';
-                // Add a data attribute to identify boxes for a game, useful for positioning "info-below" text
                 gameEntryDiv.dataset.gameTitle = game.englishTitle;
-                gameEntryDiv.dataset.periodIndex = periodIndex; // Store period index for targeted text insertion
+                gameEntryDiv.dataset.periodIndex = periodIndex;
 
                 // --- Text Display Logic ---
                 const isSky3rd = game.englishTitle === "Trails in the Sky the 3rd";
                 const isCSII = game.englishTitle === "Trails of Cold Steel II";
                 const isReverie = game.englishTitle === "Trails into Reverie";
-                const isCSIV = game.englishTitle === "Trails of Cold Steel IV"; // CSIV remains as is
+                const isCSIV = game.englishTitle === "Trails of Cold Steel IV";
 
                 const isMultiPeriodSpecial = isSky3rd || isCSII || isReverie;
 
                 if (isMultiPeriodSpecial) {
                     gameEntryDiv.classList.add('special-info-below'); // Ensures no text inside these boxes
 
-                    // Create text container for this specific period box, to be placed below it
                     const periodTextContainer = document.createElement('div');
                     periodTextContainer.className = 'game-info-below-text-container individual-period-text';
-                    periodTextContainer.style.color = '#FFFFFF'; // Assuming default, adjust if needed
+                    periodTextContainer.style.color = '#FFFFFF';
                     periodTextContainer.style.textAlign = 'center';
                     periodTextContainer.style.position = 'absolute';
-                    periodTextContainer.style.left = '5%'; // Match box alignment
-                    periodTextContainer.style.width = '90%'; // Match box width
+                    periodTextContainer.style.left = '5%';
+                    periodTextContainer.style.width = '90%';
 
-                    let textContent = "";
                     if (period.isMain) {
                         periodTextContainer.classList.add('is-main-period-text');
                         const titleEl = document.createElement('div');
@@ -410,7 +417,7 @@ export function initLorePage() {
                     }
 
                     const periodDetailEl = document.createElement('div');
-                    periodDetailEl.className = 'game-entry-duration'; // Use existing class for similar styling
+                    periodDetailEl.className = 'game-entry-duration';
 
                     let lineText = "";
                     if (period.label) {
@@ -420,21 +427,15 @@ export function initLorePage() {
                     periodDetailEl.innerHTML = lineText;
                     periodTextContainer.appendChild(periodDetailEl);
 
-                    // Adjust spacing based on whether it's a main display or not
-                    const spacing = period.isMain ? 2 : 1; // 2px for main (tightened), 1px for others
+                    const spacing = period.isMain ? 2 : 1;
                     periodTextContainer.style.top = `${topPosition + entryHeight + spacing + 3}px`;
 
-                    targetColumn.appendChild(periodTextContainer); // Add text container to the column
+                    targetColumn.appendChild(periodTextContainer);
 
                 } else if (isCSIV) {
-                    // CSIV: Existing special placement logic (single text block below all its boxes)
-                    // This will be handled after the loop by the existing CSIV logic block
                     gameEntryDiv.classList.add('special-info-below');
                 } else {
-                    // Default behavior for single-period games (or games not matching above conditions)
-                    // Text (title + first period's display string) inside the first period's box.
-                    // Subsequent period boxes for these games (if any, though typically not for default) remain empty.
-                    if (periodIndex === 0) { // Only for the first box of such games
+                    if (periodIndex === 0) {
                         const titleEl = document.createElement('div');
                         titleEl.className = 'game-entry-title';
                         titleEl.textContent = game.englishTitle;
@@ -442,7 +443,7 @@ export function initLorePage() {
 
                         const dateDisplayEl = document.createElement('div');
                         dateDisplayEl.className = 'game-entry-duration';
-                        dateDisplayEl.textContent = period.display; // Uses the period's display string
+                        dateDisplayEl.textContent = period.display;
                         gameEntryDiv.appendChild(dateDisplayEl);
 
                         if (entryHeight < (pixelsPerMonthVertical * 0.8)) {
@@ -453,27 +454,14 @@ export function initLorePage() {
                         }
                     }
                 }
-
-                // Tooltip for ALL period boxes
-                // The tooltip should use the period's specific start/end for precision,
-                // potentially formatted differently from the main 'display' string if needed.
-                // Tooltip text construction for custom tooltips (if implemented later) or for clarity:
-                // The main display information now comes directly from period.display.
-                // Example: game.englishTitle + (period.label ? ` (${period.label})` : "") + "\n" + period.display
-                // gameEntryDiv.setAttribute('title', SomeTooltipText); // Browser default tooltips are disabled.
-
                 targetColumn.appendChild(gameEntryDiv);
             }); // End of period loop
 
             // --- Special Placement Text Rendering (Below the Box) FOR CSIV ONLY ---
-            // This runs once per game *after* all its period boxes have been created and added to the DOM.
-            // This section is now ONLY for Trails of Cold Steel IV.
-            // Sky 3rd, CSII, and Reverie have their text rendered individually per period box.
             if (game.englishTitle === "Trails of Cold Steel IV") {
                 const infoBelowContainer = document.createElement('div');
-                infoBelowContainer.className = 'game-info-below-text-container'; // Keep existing class for potential shared styles
-                infoBelowContainer.classList.add('is-main-period-text'); // Add class for spacing refinement
-                infoBelowContainer.style.color = '#FFFFFF'; // Default color
+                infoBelowContainer.className = 'game-info-below-text-container is-main-period-text';
+                infoBelowContainer.style.color = '#FFFFFF';
                 infoBelowContainer.style.textAlign = 'center';
 
                 const titleEl = document.createElement('div');
@@ -481,41 +469,26 @@ export function initLorePage() {
                 titleEl.textContent = game.englishTitle;
                 infoBelowContainer.appendChild(titleEl);
 
-                // For CSIV, it's a single period game effectively for this display logic,
-                // so we just show its main display string.
-                // If CSIV were to have multiple periods needing listing here, this would need game.timelinePeriodsParsed.forEach
                 if (game.timelinePeriodsParsed.length > 0) {
                     const periodDetailEl = document.createElement('div');
-                    periodDetailEl.className = 'game-entry-duration'; // Re-use class
-                    // CSIV only has one period defined in games.json for timeline purposes.
-                    // If it had more, and we wanted all listed like old Sky3rd/Reverie, we'd loop.
-                    // For now, assuming first period's display is representative for CSIV's single block.
+                    periodDetailEl.className = 'game-entry-duration';
                     let lineText = game.timelinePeriodsParsed[0].display;
-                    if (game.timelinePeriodsParsed[0].label) { // Should not happen for CSIV as it's not multi-period in the data
+                    if (game.timelinePeriodsParsed[0].label) {
                         lineText = `<strong>${game.timelinePeriodsParsed[0].label}:</strong> ${lineText}`;
                     }
                     periodDetailEl.innerHTML = lineText;
                     infoBelowContainer.appendChild(periodDetailEl);
                 }
 
-
-                // Position the infoBelowContainer below the *lowest* rendered box for this game (CSIV).
-                let lowestBoxBottom = 0;
-                const gameBoxesInColumn = targetColumn.querySelectorAll(`.game-entry-box[data-game-title="${game.englishTitle}"]`);
-
-                if (gameBoxesInColumn.length > 0) {
-                    gameBoxesInColumn.forEach(box => { // Should only be one box for CSIV currently
-                        const boxBottom = box.offsetTop + box.offsetHeight;
-                        if (boxBottom > lowestBoxBottom) {
-                            lowestBoxBottom = boxBottom;
-                        }
-                    });
+                // Use the calculated bottom position instead of reading from the DOM
+                if (csivCalculatedLowestBottom > 0) {
                     infoBelowContainer.style.position = 'absolute';
-                    infoBelowContainer.style.top = `${lowestBoxBottom + 2}px`; // Tightened spacing to 2px
+                    infoBelowContainer.style.top = `${csivCalculatedLowestBottom + 2}px`; // Add 2px spacing below the box
                     infoBelowContainer.style.left = '5%';
                     infoBelowContainer.style.width = '90%';
                 } else {
-                     console.warn(`No boxes found for game "${game.englishTitle}" to position its 'infoBelowContainer'.`);
+                     // This case should ideally not be hit if CSIV has periods, but keep for safety.
+                     console.warn(`Could not calculate a bottom position for game "${game.englishTitle}" to position its 'infoBelowContainer'.`);
                 }
                 targetColumn.appendChild(infoBelowContainer);
             }
@@ -524,240 +497,294 @@ export function initLorePage() {
 
     initializeTimeline();
 
+    // --- Map Logic & Data ---
+    let mapRegionsData = [];
+    let mapGamesData = [];
+
+    let dataReadyPromise = null;
+
     function initializeMap() {
         if (isMapInitialized) return;
+        isMapInitialized = true;
 
         const svgNS = "http://www.w3.org/2000/svg";
+        const mapContainer = document.querySelector('.map-container');
         const mapOverlay = document.getElementById('map-overlay');
-        const infobox = document.getElementById('map-infobox');
-        const infoboxHeader = infobox.querySelector('.infobox-header');
-        const infoboxGames = infobox.querySelector('.infobox-games');
-        const closeButton = infobox.querySelector('.close-btn');
+        // Assign to the variables declared in the higher scope
+        infobox1 = document.getElementById('map-infobox-1');
+        infobox2 = document.getElementById('map-infobox-2');
+        currentInfobox = infobox1;
 
-        if (!mapOverlay || !infobox || !infoboxHeader || !infoboxGames) {
-            console.error("Map overlay SVG or crucial infobox element not found!");
+        if (!mapContainer || !mapOverlay || !infobox1 || !infobox2) {
+            console.error("Required map elements not found!");
             return;
         }
 
-        let regionsData = [];
-        let gamesData = [];
-        let currentRegionId = null; // Track the currently displayed region
+        mapContainer.classList.add('is-loading');
 
-        /**
-         * Converts a hex color string to an rgba string.
-         * @param {string} hex The hex color code (e.g., "#RRGGBB").
-         * @param {number} alpha The alpha transparency value (0 to 1).
-         * @returns {string} The rgba color string.
-         */
         function hexToRgba(hex, alpha = 1) {
-            // Remove the hash at the start if it's there
             hex = hex.replace(/^#/, '');
-
-            // Parse the r, g, b values
             let bigint = parseInt(hex, 16);
             let r = (bigint >> 16) & 255;
             let g = (bigint >> 8) & 255;
             let b = bigint & 255;
-
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
 
-        // Fetch both JSON files
         Promise.all([
-            fetch('src/data/regions.json').then(res => {
-                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-                return res.json();
-            }),
-            fetch('src/data/games.json').then(res => {
-                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-                return res.json();
-            })
+            fetch('src/data/regions.json').then(res => res.ok ? res.json() : Promise.reject(res.status)),
+            fetch('src/data/games.json').then(res => res.ok ? res.json() : Promise.reject(res.status))
         ])
         .then(([regions, games]) => {
-            regionsData = regions;
-            gamesData = games;
+            // Now that data is loaded, assign it and calculate areas
+            mapGamesData = games;
+            mapRegionsData = regions.map(region => ({
+                ...region,
+                formattedArea: calculateRegionAreaInSelge(region)
+            }));
 
+            // Create the SVG paths for regions and the mask
             const maskGroup = mapOverlay.querySelector('#regions-mask g');
-            if (!maskGroup) {
-                console.error("SVG mask group for regions not found!");
-                return;
-            }
+            if (!maskGroup) return;
 
-            const gamesById = gamesData.reduce((acc, game) => {
-                acc[game.id] = game;
-                return acc;
-            }, {});
-
-            regionsData.forEach(region => {
+            mapRegionsData.forEach(region => {
                 const path = document.createElementNS(svgNS, 'path');
                 path.setAttribute('d', region.svgPathData);
                 path.setAttribute('class', 'region-path');
-                path.setAttribute('id', `region-${region.id}`);
-                path.dataset.regionId = region.id; // Store region id
-
-                // Set the highlight color as a CSS variable from the region's base color
+                path.id = `region-${region.id}`;
+                path.dataset.regionId = region.id;
                 if (region.baseColor) {
-                    const highlightColor = hexToRgba(region.baseColor, 0.7); // 70% transparency
-                    path.style.setProperty('--region-highlight-color', highlightColor);
+                    path.style.setProperty('--region-highlight-color', hexToRgba(region.baseColor, 0.4));
                 }
-
                 mapOverlay.appendChild(path);
 
-                // Create the second, identical path for the mask cutout
                 const maskPath = document.createElementNS(svgNS, 'path');
                 maskPath.setAttribute('d', region.svgPathData);
                 maskPath.setAttribute('fill', 'black');
                 maskGroup.appendChild(maskPath);
             });
 
+            // ATTACH THE EVENT LISTENER - only after data is ready and paths are drawn
             mapOverlay.addEventListener('click', (e) => {
-                const path = e.target.closest('.region-path');
-                if (path && path.dataset.regionId) {
-                    const regionId = path.dataset.regionId;
-
-                    // If clicking the same region that's already active, hide it.
-                    if (regionId === currentRegionId && infobox.classList.contains('active')) {
-                        hideInfobox();
-                        return; // Stop further execution
-                    }
-
-                    // A new region is clicked, so proceed with showing the infobox.
-                    currentRegionId = regionId;
-                    const region = regionsData.find(r => r.id === regionId);
-
-                    if (region) {
-                        // --- Populate Header ---
-                        infoboxHeader.innerHTML = ''; // Clear previous content
-
-                        // 1. Emblem
-                        const emblem = document.createElement('img');
-                        emblem.src = `assets/logo/${region.emblemAsset}`;
-                        emblem.alt = `${region.name} Emblem`;
-                        emblem.className = 'infobox-emblem-img';
-                        infoboxHeader.appendChild(emblem);
-
-                        // 2. Nation Name
-                        const name = document.createElement('h2');
-                        name.textContent = region.name;
-                        infoboxHeader.appendChild(name);
-
-                        // 3. Stat Block
-                        const statBlock = document.createElement('div');
-                        statBlock.className = 'infobox-stat-block';
-                        if (region.government) {
-                            const p = document.createElement('p');
-                            p.innerHTML = `<strong>Government</strong><span>${region.government}</span>`;
-                            statBlock.appendChild(p);
-                        }
-                        if (region.capital) {
-                            const p = document.createElement('p');
-                            p.innerHTML = `<strong>Capital</strong><span>${region.capital}</span>`;
-                            statBlock.appendChild(p);
-                        }
-                        infoboxHeader.appendChild(statBlock);
-
-
-                        // --- Populate Game Art Grid ---
-                        infoboxGames.innerHTML = ''; // Clear previous art
-                        region.games.forEach(gameId => {
-                            const game = gamesById[gameId];
-                            if (game) {
-                                const img = document.createElement('img');
-                                img.src = `assets/grid/${game.assetName}.jpg`;
-                                img.alt = game.englishTitle;
-                                img.title = game.englishTitle;
-                                infoboxGames.appendChild(img);
-                            }
-                        });
-
-                        // Store click coordinates for repositioning on resize
-                        infobox.dataset.lastClickX = e.clientX;
-                        infobox.dataset.lastClickY = e.clientY;
-
-                        // Position and show infobox
-                        infobox.style.display = 'block'; // Make it visible to calculate size
-                        updateInfobox(); // This now handles both scaling and positioning
-                        infobox.classList.add('active');
-                    }
-                } else if (!infobox.contains(e.target)) {
-                    // Hide infobox if clicking outside a region path and not inside the infobox
-                    hideInfobox();
-                }
+                const clickedPath = e.target.closest('.region-path');
+                const clickedRegionId = clickedPath ? clickedPath.dataset.regionId : null;
+                
+                handleMapClick(clickedRegionId, e.clientX, e.clientY);
             });
 
-            closeButton.addEventListener('click', () => {
-                hideInfobox();
-            });
-
-            document.addEventListener('click', (e) => {
-                // If the click is outside the map container and the infobox, hide it.
-                const mapContainer = document.querySelector('.map-container');
-                if (!mapContainer.contains(e.target) && !infobox.contains(e.target) && infobox.classList.contains('active')) {
-                    hideInfobox();
-                }
-            });
-
-            window.addEventListener('resize', () => {
-                if (infobox.classList.contains('active')) {
-                    updateInfobox();
-                }
-            });
-
-            isMapInitialized = true;
+            // Remove the loading state
+            mapContainer.classList.remove('is-loading');
         })
         .catch(error => {
-            console.error("Error loading or processing map/game data:", error);
+            console.error("Error loading map/game data:", error);
+            mapContainer.classList.remove('is-loading');
+        });
+    }
+
+    /**
+     * Handles clicks on the map overlay. Assumes mapRegionsData and mapGamesData are populated.
+     * @param {string|null} clickedRegionId The ID of the clicked region, or null.
+     * @param {number} clickX The clientX of the click event.
+     * @param {number} clickY The clientY of the click event.
+     */
+    function handleMapClick(clickedRegionId, clickX, clickY) {
+        const outgoingBox = currentInfobox;
+        const isInfoboxActive = outgoingBox.classList.contains('active');
+        const currentRegionId = outgoingBox.dataset.regionId;
+
+        // Case 1: Close the active infobox if clicking outside or on the same region
+        if (!clickedRegionId || (isInfoboxActive && clickedRegionId === currentRegionId)) {
+            if (isInfoboxActive) {
+                outgoingBox.classList.remove('active');
+                outgoingBox.dataset.regionId = '';
+            }
+            return;
+        }
+
+        const region = mapRegionsData.find(r => r.id === clickedRegionId);
+        if (!region) return;
+
+        // Determine which box will be the new one
+        const incomingBox = (outgoingBox.id === 'map-infobox-1') ? infobox2 : infobox1;
+
+        // Make sure the incoming box is ready to be displayed (it might be display:none from a previous close)
+        incomingBox.style.display = 'block';
+
+        // Populate the incoming box with new content
+        updateInfoboxContents(region, incomingBox);
+
+        // Prepare the incoming box (size and position it), and once it's ready, trigger the animation
+        prepareAndPositionInfobox(region, incomingBox, clickX, clickY).then(() => {
+            // Now, trigger the cross-fade
+            outgoingBox.classList.remove('active');
+            incomingBox.classList.add('active');
+
+            // Update the state to track the new active box
+            currentInfobox = incomingBox;
+        });
+    }
+
+    /**
+     * Populates the infobox with content for a given region.
+     * @param {object} region The region data object.
+     * @param {HTMLElement} infoboxEl The main infobox element.
+     */
+    function updateInfoboxContents(region, infoboxEl) {
+        const headerEl = infoboxEl.querySelector('.map-infobox-header');
+        const gamesViewEl = infoboxEl.querySelector('.infobox-games-view');
+        const loreViewEl = infoboxEl.querySelector('.infobox-lore-view');
+        const footerEl = infoboxEl.querySelector('.map-infobox-footer');
+        const bodyEl = infoboxEl.querySelector('.infobox-body');
+
+        // Populate Header
+        const hasEmblem = region.emblemAsset;
+        if (hasEmblem) {
+            headerEl.style.gridTemplateColumns = '40px 1fr auto';
+        } else {
+            headerEl.style.gridTemplateColumns = '1fr auto';
+        }
+
+        let headerHTML = '';
+        if (hasEmblem) {
+            headerHTML += `<img src="assets/logo/${region.emblemAsset}" alt="${region.name} Emblem" class="map-infobox-emblem">`;
+        }
+        headerHTML += `
+            <div class="map-infobox-title-section">
+                <h3>${region.name}</h3>
+                <p>${region.government}</p>
+            </div>
+            <div class="map-infobox-links">
+                <a href="${region.wikiLink}" target="_blank" rel="noopener noreferrer" title="View on Kiseki Wiki">
+                    <img src="assets/logo/fandom.webp" alt="Fandom Wiki">
+                </a>
+            </div>
+        `;
+        headerEl.innerHTML = headerHTML;
+
+        // Populate Games View
+        const gamesInRegion = mapGamesData.filter(game => (region.games || []).includes(game.id));
+        gamesViewEl.innerHTML = gamesInRegion.length > 0
+            ? `<div class="map-infobox-games-grid">${gamesInRegion.map(game => `
+                <img src="assets/grid/${game.assetName}.jpg" alt="${game.englishTitle}" title="${game.englishTitle}" class="map-infobox-game-art">
+              `).join('')}</div>`
+            : '<p style="font-size: 0.8em; color: #999;">No specific games are primarily set in this region.</p>';
+        
+        // Populate Lore View
+        const featuredInGames = mapGamesData.filter(game => (region.featuredIn || []).includes(game.id));
+        let featuredInHtml = featuredInGames.length > 0 ? `
+            <div class="map-infobox-lore-section">
+                <h4 style="color: ${region.baseColor}; border-bottom-color: ${region.baseColor};">${region.regionType === 'major' ? "Also Featured In" : "Featured In"}</h4>
+                <ul>${featuredInGames.map(game => `<li>${game.englishTitle}</li>`).join('')}</ul>
+            </div>` : '';
+        loreViewEl.innerHTML = `
+            <div class="map-infobox-lore-section">
+                <h4 style="color: ${region.baseColor}; border-bottom-color: ${region.baseColor};">Region Details</h4>
+                <p><strong>Capital:</strong> ${region.capital}</p>
+                ${region.formattedArea ? `<p><strong>Area:</strong> ${region.formattedArea}</p>` : ''}
+            </div>
+            <div class="map-infobox-lore-section">
+                <h4 style="color: ${region.baseColor}; border-bottom-color: ${region.baseColor};">Description</h4>
+                <p>${region.description}</p>
+            </div>
+            <div class="map-infobox-lore-section">
+                <h4 style="color: ${region.baseColor}; border-bottom-color: ${region.baseColor};">History</h4>
+                <p>${region.history}</p>
+            </div>
+            ${featuredInHtml}
+        `;
+
+        // Set initial view state first, so the button text is correct.
+        const showLoreInitially = region.regionType !== 'major';
+        infoboxEl.classList.toggle('show-lore-view', showLoreInitially);
+
+        // Populate Footer & Set Up Toggle
+        footerEl.innerHTML = '';
+        if (region.regionType === 'major') {
+            footerEl.style.display = 'block';
+            const toggleButton = document.createElement('button');
+            toggleButton.className = 'map-infobox-toggle-btn';
+            
+            const updateButtonText = () => {
+                toggleButton.textContent = infoboxEl.classList.contains('show-lore-view') ? 'Show Game Art' : 'View Lore Details';
+            };
+            toggleButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                infoboxEl.classList.toggle('show-lore-view');
+                updateButtonText();
+                const targetView = infoboxEl.classList.contains('show-lore-view') ? loreViewEl : gamesViewEl;
+                bodyEl.style.height = `${targetView.scrollHeight}px`;
+            });
+            
+            footerEl.appendChild(toggleButton);
+            updateButtonText(); // Now this will be correct.
+        } else {
+            footerEl.style.display = 'none';
+        }
+    }
+
+    /**
+     * Sizes, positions, and prepares the infobox, returning a promise that resolves when ready.
+     * @param {object} region The region data object.
+     * @param {HTMLElement} infoboxEl The main infobox element.
+     * @param {number} clickX The clientX of the click event.
+     * @param {number} clickY The clientY of the click event.
+     * @returns {Promise} A promise that resolves when the infobox is sized and positioned.
+     */
+    function prepareAndPositionInfobox(region, infoboxEl, clickX, clickY) {
+        const bodyEl = infoboxEl.querySelector('.infobox-body');
+        const gamesViewEl = infoboxEl.querySelector('.infobox-games-view');
+        const loreViewEl = infoboxEl.querySelector('.infobox-lore-view');
+        const gamesInRegion = mapGamesData.filter(game => (region.games || []).includes(game.id));
+
+        // Set width before calculating height
+        if (region.regionType === 'major' && gamesInRegion.length > 0) {
+            const gridWidth = (gamesInRegion.length * 80) + ((gamesInRegion.length - 1) * 8);
+            infoboxEl.style.width = `${gridWidth + 24}px`;
+        } else {
+            infoboxEl.style.width = '320px';
+        }
+
+        // --- Image and Font Loading Fix ---
+        const images = gamesViewEl.querySelectorAll('img');
+        const imageLoadPromises = [...images].map(img => {
+            if (img.complete) return Promise.resolve();
+            return new Promise((resolve) => {
+                img.onload = resolve;
+                img.onerror = resolve; // Resolve on error too so it doesn't hang forever
+            });
         });
 
-        function updateInfobox() {
-            const referenceWidth = 1440;
-            const scale = Math.min(window.innerWidth / referenceWidth, 1);
-            infobox.style.transform = `scale(${scale})`;
+        return Promise.all([document.fonts.ready, ...imageLoadPromises]).then(() => {
+            // The 'show-lore-view' class is now set in updateInfoboxContents.
+            // We just need to read it here to determine the initial view for height calculation.
+            const initialView = infoboxEl.classList.contains('show-lore-view') ? loreViewEl : gamesViewEl;
 
-            // Position the infobox, taking the new scale into account.
-            if (infobox.dataset.lastClickX && infobox.dataset.lastClickY) {
-                const x = parseInt(infobox.dataset.lastClickX);
-                const y = parseInt(infobox.dataset.lastClickY);
+            // --- Height Calculation & Transition Fix ---
+            // 1. Add a class to disable transitions on the body.
+            bodyEl.classList.add('no-transition');
+            // 2. Set the height instantaneously.
+            bodyEl.style.height = `${initialView.scrollHeight}px`;
 
-                const infoboxWidth = infobox.offsetWidth;
-                const infoboxHeight = infobox.offsetHeight;
-                const scaledWidth = infoboxWidth * scale;
-                const scaledHeight = infoboxHeight * scale;
+            // 3. Force a reflow. Accessing offsetHeight is a common way to do this.
+            // This ensures the browser applies the height change before we re-enable transitions.
+            void bodyEl.offsetHeight;
 
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-                const margin = 15; // Margin from the viewport edges
+            // 4. Remove the no-transition class so future toggles are animated.
+            bodyEl.classList.remove('no-transition');
 
-                let top = y + 20;
-                let left = x + 20;
 
-                // Adjust if it goes off-screen
-                if (left + scaledWidth + margin > viewportWidth) {
-                    left = x - scaledWidth - 20;
-                }
-                if (top + scaledHeight + margin > viewportHeight) {
-                    top = y - scaledHeight - 20;
-                }
+            // Position the infobox
+            const rect = infoboxEl.getBoundingClientRect();
+            const offsetX = 20, offsetY = 20;
+            let top = clickY + offsetY;
+            let left = clickX + offsetX;
+            if (left + rect.width > window.innerWidth) left = clickX - rect.width - offsetX;
+            if (top + rect.height > window.innerHeight) top = clickY - rect.height - offsetY;
+            infoboxEl.style.left = `${Math.max(5, left)}px`;
+            infoboxEl.style.top = `${Math.max(5, top)}px`;
 
-                // Final check to ensure it's not off the top/left after adjustments
-                if (top < margin) top = margin;
-                if (left < margin) left = margin;
-
-                infobox.style.top = `${top}px`;
-                infobox.style.left = `${left}px`;
-            }
-        }
-
-        function hideInfobox() {
-            infobox.classList.remove('active');
-            currentRegionId = null; // Reset the currently selected region ID
-            // Listen for transition to end before setting display to none
-            infobox.addEventListener('transitionend', function handler() {
-                if (!infobox.classList.contains('active')) {
-                    infobox.style.display = 'none';
-                }
-                infobox.removeEventListener('transitionend', handler);
-            });
-        }
+            // Set dataset for identification
+            infoboxEl.dataset.regionId = region.id;
+        });
     }
 }

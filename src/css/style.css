@@ -566,6 +566,187 @@ body.home-page::before {
     width: 100%;
     height: auto;
 }
+
+/* --- Map Infobox --- */
+/* Utility class to disable transitions during JS calculations */
+.no-transition {
+    transition: none !important;
+}
+
+.map-infobox {
+    position: absolute;
+    min-width: 320px;
+    max-width: 90vw;
+    background-color: rgba(20, 20, 30, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    color: #f0f0f0;
+    font-family: 'Inter', sans-serif;
+    z-index: 1000;
+    overflow: hidden;
+
+    /* Animation Properties */
+    opacity: 0;
+    transform: scale(0.95);
+    transform-origin: top left;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    /* By default, infoboxes are not clickable until active */
+    pointer-events: none;
+}
+
+.map-infobox.active {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 0s; /* Explicitly reset delay for the active state */
+    pointer-events: auto; /* Make the active infobox clickable */
+}
+
+.map-infobox-header {
+    display: grid;
+    /* The grid-template-columns are now set dynamically via JS */
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #252525;
+    border-bottom: 1px solid #444;
+}
+
+.map-infobox-emblem {
+    width: 40px;
+    height: 40px;
+}
+
+.map-infobox-title-section h3 {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #e8eced;
+}
+
+.map-infobox-title-section p {
+    margin: 0;
+    font-size: 0.8em;
+    color: #a0a0a0;
+}
+
+.map-infobox-stats {
+    font-size: 0.8em;
+    text-align: right;
+    color: #b0b0b0;
+}
+
+.map-infobox-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.map-infobox-links a {
+    display: inline-block;
+    line-height: 0; /* Remove extra space below the image */
+}
+
+.map-infobox-links img {
+    height: 34px;
+    width: auto;
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.map-infobox-links img:hover {
+    opacity: 1;
+}
+
+.infobox-body {
+    position: relative;
+    transition: height 0.25s ease-in-out;
+}
+
+.infobox-games-view, .infobox-lore-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* Default State: Show Games View */
+.infobox-games-view {
+    opacity: 1;
+}
+.infobox-lore-view {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* State Modifier: Show Lore View */
+.map-infobox.show-lore-view .infobox-games-view {
+    opacity: 0;
+    visibility: hidden;
+}
+.map-infobox.show-lore-view .infobox-lore-view {
+    opacity: 1;
+    visibility: visible;
+}
+
+.map-infobox-games-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(80px, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.map-infobox-game-art {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #444;
+}
+
+.map-infobox-lore-section {
+    margin-bottom: 12px;
+}
+.map-infobox-lore-section h4 {
+    margin: 0 0 5px 0;
+    font-size: 0.9em;
+    /* color is now set dynamically via inline style */
+    border-bottom: 1px solid #444;
+    padding-bottom: 3px;
+}
+.map-infobox-lore-section p, .map-infobox-lore-section ul {
+    margin: 0;
+    font-size: 0.85em;
+    line-height: 1.5;
+    color: #ccc;
+}
+.map-infobox-lore-section ul {
+    padding-left: 20px;
+    list-style-type: square;
+}
+
+.map-infobox-footer {
+    padding: 8px 12px;
+    background-color: #252525;
+    border-top: 1px solid #444;
+    text-align: center;
+}
+
+.map-infobox-toggle-btn {
+    background: none;
+    border: none;
+    color: #8db5e5; /* A nice blue for links */
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+.map-infobox-toggle-btn:hover {
+    text-decoration: underline;
+}
 .game-entry-box {
     position: absolute;
     box-sizing: border-box;
@@ -646,6 +827,9 @@ body.home-page::before {
     box-shadow: 0 0 15px rgba(233, 213, 161, 0.3);
     box-sizing: border-box;
 }
+.map-container.is-loading {
+    cursor: wait;
+}
 .map-image {
     display: block;
     width: 100%;
@@ -657,7 +841,7 @@ body.home-page::before {
     pointer-events: none;
 }
 .map-container:hover .dimming-rect {
-    opacity: 1;
+    opacity: 0.6;
 }
 .map-overlay-svg {
     position: absolute;
@@ -671,124 +855,13 @@ body.home-page::before {
     fill: transparent;
     stroke: transparent;
     stroke-width: 3;
-    transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+    transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out, stroke-width 0.2s ease-in-out;
     cursor: pointer;
 }
 .region-path:hover {
     fill: var(--region-highlight-color);
     stroke: var(--accent-gold);
     stroke-width: 4;
-}
-#map-infobox {
-    position: fixed;
-    z-index: 2000;
-    background: rgba(20, 20, 30, 0.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--accent-gold);
-    border-radius: 8px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-    color: var(--text-primary);
-    padding: 0.75rem 1.5rem;
-    transform-origin: top left;
-    width: max-content;
-    max-width: 90vw;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-}
-#map-infobox.active {
-    opacity: 1;
-    pointer-events: auto;
-}
-#map-infobox .close-btn {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 1.75rem;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0.25rem 0.5rem;
-    transition: color 0.2s ease;
-}
-#map-infobox .close-btn:hover {
-    color: var(--text-primary);
-}
-.infobox-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(233, 213, 161, 0.2);
-}
-.infobox-emblem-img {
-    flex: 0 0 50px;
-    height: 50px;
-    width: 50px;
-    object-fit: contain;
-}
-.infobox-header h2 {
-    flex: 1 1 auto;
-    font-family: 'Playfair Display', serif;
-    color: var(--accent-gold);
-    margin: 0;
-    font-size: 4vw;
-    text-align: center;
-    line-height: var(--line-height-tight);
-}
-.infobox-stat-block {
-    flex: 0 1 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    text-align: right;
-    font-size: var(--font-size-sm);
-    white-space: nowrap;
-    margin-right: 24px;
-}
-.infobox-stat-block p {
-    margin: 0;
-    line-height: var(--line-height-normal);
-}
-.infobox-stat-block strong {
-    color: var(--accent-gold);
-    font-weight: 700;
-    display: block;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    opacity: 0.8;
-}
-.infobox-stat-block span {
-    font-size: var(--font-size-sm);
-    display: block;
-}
-.infobox-games {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-    align-items: flex-start; /* Better alignment for varying aspect ratios */
-    height: 28vh; /* Responsive height based on viewport */
-    min-height: 160px; /* Minimum height for smaller screens */
-    max-height: 220px; /* Maximum height to match original design on large screens */
-    margin: 0;
-}
-.infobox-games img {
-    height: 100%;
-    width: auto;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-}
-@media (min-width: 1200px) {
-    .infobox-header h2 {
-        font-size: 2.5rem;
-    }
 }
 
 /*

@@ -3,7 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lore Timeline - Zemurian Atlas</title>
+    <title>Trails/Kiseki Series Lore Timeline & Interactive Map - Zemurian Atlas</title>
+    <meta name="description" content="Explore the rich history and in-game chronology of the Trails (Kiseki) series. An interactive timeline and map of Zemuria, detailing the events of each game arc.">
+    <meta name="keywords" content="Trails series lore, Kiseki lore, timeline of Zemurian history, interactive map, Liberl, Crossbell, Erebonia, Calvard, in-game chronology">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jun-eau.github.io/zemurian-atlas/lore.html">
+    <meta property="og:title" content="Trails/Kiseki Series Lore Timeline & Interactive Map - Zemurian Atlas">
+    <meta property="og:description" content="Explore the rich history and in-game chronology of the Trails (Kiseki) series. An interactive timeline and map of Zemuria, detailing the events of each game arc.">
+    <meta property="og:image" content="https://jun-eau.github.io/zemurian-atlas/assets/social-preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://jun-eau.github.io/zemurian-atlas/lore.html">
+    <meta property="twitter:title" content="Trails/Kiseki Series Lore Timeline & Interactive Map - Zemurian Atlas">
+    <meta property="twitter:description" content="Explore the rich history and in-game chronology of the Trails (Kiseki) series. An interactive timeline and map of Zemuria, detailing the events of each game arc.">
+    <meta property="twitter:image" content="https://jun-eau.github.io/zemurian-atlas/assets/social-preview.jpg">
     <link rel="stylesheet" href="src/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,7 +92,7 @@
             <div class="full-width-section">
                 <h2>Interactive Map</h2>
                 <p style="font-size: 0.9em; font-style: italic; text-align: center; margin-bottom: 15px;">
-                    Map image sourced from the <a href="https://kiseki.fandom.com/wiki/Zemuria?file=Zemuria+%282023+ver%29.png" target="_blank" rel="noopener noreferrer">Kiseki Wiki</a>.<br>Hover over a region to highlight it; click to see games set in that region.<br>Best viewed on desktop; functionality on small screens is not guaranteed.
+                    Map image sourced from the <a href="https://kiseki.fandom.com/wiki/Zemuria?file=Zemuria+%282023+ver%29.png" target="_blank" rel="noopener noreferrer">Kiseki Wiki</a>.<br>Hover over a region to highlight it; click to see information about that region.<br>Best viewed on desktop; functionality on small screens is not guaranteed.
                 </p>
                 <div class="map-container">
                     <img src="assets/zemuria-map.webp" alt="Map of Zemuria" class="map-image">
@@ -99,6 +115,24 @@
                     </svg>
                 </div>
             </div>
+
+            <!-- Static Infobox Structure -->
+            <div id="map-infobox-1" class="map-infobox">
+                <div class="map-infobox-header"></div>
+                <div class="infobox-body">
+                    <div class="infobox-games-view"></div>
+                    <div class="infobox-lore-view"></div>
+                </div>
+                <div class="map-infobox-footer"></div>
+            </div>
+            <div id="map-infobox-2" class="map-infobox">
+                <div class="map-infobox-header"></div>
+                <div class="infobox-body">
+                    <div class="infobox-games-view"></div>
+                    <div class="infobox-lore-view"></div>
+                </div>
+                <div class="map-infobox-footer"></div>
+            </div>
         </div>
     </main>
 
@@ -107,17 +141,6 @@
             Unofficial fan project. All trademarks and copyrights are property of their respective owners. Inspired by <a href="https://trailsinthedatabase.com/">trailsinthedatabase.com</a>. <a href="https://github.com/jun-eau/zemurian-atlas">View source on GitHub</a>.
         </p>
     </footer>
-
-    <!-- Infobox for the interactive map -->
-    <div id="map-infobox" style="display: none;">
-        <button class="close-btn">&times;</button>
-        <div class="infobox-header">
-            <!-- This will be populated by JS -->
-        </div>
-        <div class="infobox-games">
-            <!-- Game art will be populated by JS -->
-        </div>
-    </div>
 
 </body>
 </html>
