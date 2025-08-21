@@ -186,7 +186,7 @@ main {
 =================================================================
 */
 body.home-page {
-    background-image: url('../../assets/zemuria-map.webp');
+    background-image: url('../../assets/home-bg.png');
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
