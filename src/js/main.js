@@ -6,7 +6,8 @@
 
 import { highlightActiveNav } from './lib/shared.js';
 import { initReleasesPage } from './releases.js';
-import { initLorePage } from './lore.js';
+import { initTimelinePage } from './timeline.js';
+import { initMapPage } from './map.js';
 
 /**
  * Determines the current page and runs the appropriate initialization functions.
@@ -21,8 +22,10 @@ function route() {
     // Route to page-specific logic
     if (currentPage === 'games.html') {
         initReleasesPage();
-    } else if (currentPage === 'lore.html') {
-        initLorePage();
+    } else if (currentPage === 'timeline.html') {
+        initTimelinePage();
+    } else if (currentPage === 'map.html') {
+        initMapPage();
     }
     // No specific JS needed for index.html other than the shared nav logic
 }

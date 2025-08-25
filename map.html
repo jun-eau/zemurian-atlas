@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Trails Series Map of Zemuria - Zemurian Atlas</title>
+    <meta name="description" content="Explore the continent of Zemuria with our interactive Trails series map. Discover the locations and key regions from the Trails (Kiseki) games, including Liberl, Crossbell, Erebonia, and Calvard.">
+    <meta name="keywords" content="trails series map, zemuria map, kiseki map, interactive map, trails map, Liberl, Crossbell, Erebonia, Calvard">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jun-eau.github.io/zemurian-atlas/map.html">
+    <meta property="og:title" content="Interactive Trails Series Map of Zemuria - Zemurian Atlas">
+    <meta property="og:description" content="Explore the continent of Zemuria with our interactive Trails series map. Discover the locations and key regions from the Trails (Kiseki) games.">
+    <meta property="og:image" content="https://jun-eau.github.io/zemurian-atlas/assets/social-preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://jun-eau.github.io/zemurian-atlas/map.html">
+    <meta property="twitter:title" content="Interactive Trails Series Map of Zemuria - Zemurian Atlas">
+    <meta property="twitter:description" content="Explore the continent of Zemuria with our interactive Trails series map. Discover the locations and key regions from the Trails (Kiseki) games.">
+    <meta property="twitter:image" content="https://jun-eau.github.io/zemurian-atlas/assets/social-preview.jpg">
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+    <script src="src/js/main.js" type="module" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Zemurian Atlas</h1>
+        <nav class="main-navigation">
+            <a href="index.html">Home</a>
+            <a href="games.html">Releases</a>
+            <a href="map.html" class="active">Map</a>
+            <a href="timeline.html">Timeline</a>
+        </nav>
+    </header>
+
+    <main class="main-lore">
+        <div id="map-view" class="tab-content active show">
+            <div class="full-width-section">
+                <h2>Interactive Map</h2>
+                <p style="font-size: 0.9em; font-style: italic; text-align: center; margin-bottom: 15px;">
+                    Map image sourced from the <a href="https://kiseki.fandom.com/wiki/Zemuria?file=Zemuria+%282023+ver%29.png" target="_blank" rel="noopener noreferrer">Kiseki Wiki</a>.<br>Hover over a region to highlight it; click to see information about that region.<br>Best viewed on desktop; functionality on small screens is not guaranteed.
+                </p>
+                <div class="map-container">
+                    <img src="assets/zemuria-map.webp" alt="Map of Zemuria" class="map-image">
+                    <svg id="map-overlay" class="map-overlay-svg" viewBox="0 0 2800 1744">
+                        <defs>
+                            <mask id="regions-mask" preserveAspectRatio="none">
+                                <rect x="0" y="0" width="2800" height="1744" fill="white"></rect>
+                                <g></g>
+                            </mask>
+                        </defs>
+                        <rect class="dimming-rect" x="0" y="0" width="2800" height="1744" fill="rgba(0, 0, 0, 0.6)" mask="url(#regions-mask)"></rect>
+                        <filter id="feather-effect" x="-50%" y="-50%" width="200%" height="200%">
+                            <feMorphology operator="dilate" radius="10" in="SourceAlpha" result="dilated"/>
+                            <feGaussianBlur in="dilated" stdDeviation="15" result="blurred"/>
+                            <feMerge>
+                                <feMergeNode in="blurred"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Static Infobox Structure -->
+            <div id="map-infobox-1" class="map-infobox">
+                <div class="map-infobox-header"></div>
+                <div class="infobox-body">
+                    <div class="infobox-games-view"></div>
+                    <div class="infobox-lore-view"></div>
+                </div>
+                <div class="map-infobox-footer"></div>
+            </div>
+            <div id="map-infobox-2" class="map-infobox">
+                <div class="map-infobox-header"></div>
+                <div class="infobox-body">
+                    <div class="infobox-games-view"></div>
+                    <div class="infobox-lore-view"></div>
+                </div>
+                <div class="map-infobox-footer"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>
+            Unofficial fan project. All trademarks and copyrights are property of their respective owners. Inspired by <a href="https://trailsinthedatabase.com/">trailsinthedatabase.com</a>. <a href="https://github.com/jun-eau/zemurian-atlas">View source on GitHub</a>.
+        </p>
+    </footer>
+
+</body>
+</html>
