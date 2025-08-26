@@ -195,7 +195,8 @@ body.home-page::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.9) 100%);
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
     z-index: -1;
 }
 .home-page footer {
