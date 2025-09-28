@@ -162,7 +162,7 @@ export function initMapPage() {
             </div>
             <div class="map-infobox-links">
                 <a href="${region.wikiLink}" target="_blank" rel="noopener noreferrer" title="View on Kiseki Wiki">
-                    <img src="assets/logo/fandom.webp" alt="Fandom Wiki">
+                    <img src="assets/logo/falcom-wiki.png" alt="Falcom Wiki">
                 </a>
             </div>
         `;

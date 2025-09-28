@@ -92,7 +92,7 @@ export function initReleasesPage() {
                     <img src="assets/logo/wikipedia.png" alt="Wikipedia Logo" title="">
                 </a>
                 <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
-                    <img src="assets/logo/fandom.webp" alt="Fandom Logo" title="">
+                    <img src="assets/logo/falcom-wiki.png" alt="Falcom Wiki Logo" title="">
                 </a>
             </div>`;
     }
@@ -217,7 +217,7 @@ export function initReleasesPage() {
                         <img src="assets/logo/wikipedia.png" alt="Wikipedia Logo">
                     </a>
                     <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
-                        <img src="assets/logo/fandom.webp" alt="Fandom Logo">
+                        <img src="assets/logo/falcom-wiki.png" alt="Falcom Wiki Logo">
                     </a>
                 </div>
 
