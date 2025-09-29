@@ -91,7 +91,7 @@ export function initReleasesPage() {
                 <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
                     <img src="assets/logo/wikipedia.png" alt="Wikipedia Logo" title="">
                 </a>
-                <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
+                <a href="${game.falcomWikiUrl}" target="_blank" rel="noopener noreferrer" title="Falcom Wiki">
                     <img src="assets/logo/falcom-wiki.png" alt="Falcom Wiki Logo" title="">
                 </a>
             </div>`;
@@ -216,7 +216,7 @@ export function initReleasesPage() {
                     <a href="${game.wikiUrl}" target="_blank" rel="noopener noreferrer" title="Wikipedia">
                         <img src="assets/logo/wikipedia.png" alt="Wikipedia Logo">
                     </a>
-                    <a href="${game.fandomUrl}" target="_blank" rel="noopener noreferrer" title="Kiseki Fandom Wiki">
+                    <a href="${game.falcomWikiUrl}" target="_blank" rel="noopener noreferrer" title="Falcom Wiki">
                         <img src="assets/logo/falcom-wiki.png" alt="Falcom Wiki Logo">
                     </a>
                 </div>

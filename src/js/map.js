@@ -161,7 +161,7 @@ export function initMapPage() {
                 <p>${region.government}</p>
             </div>
             <div class="map-infobox-links">
-                <a href="${region.wikiLink}" target="_blank" rel="noopener noreferrer" title="View on Kiseki Wiki">
+                <a href="${region.falcomWikiUrl}" target="_blank" rel="noopener noreferrer" title="View on Falcom Wiki">
                     <img src="assets/logo/falcom-wiki.png" alt="Falcom Wiki">
                 </a>
             </div>
