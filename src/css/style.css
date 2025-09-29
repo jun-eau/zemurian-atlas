@@ -856,12 +856,14 @@ body.home-page::before {
     stroke: transparent;
     stroke-width: 3;
     transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out, stroke-width 0.2s ease-in-out;
+    transition-delay: 0.25s;
     cursor: pointer;
 }
 .region-path:hover {
     fill: var(--region-highlight-color);
     stroke: var(--accent-gold);
     stroke-width: 5;
+    transition-delay: 0s;
 }
 
 /*
