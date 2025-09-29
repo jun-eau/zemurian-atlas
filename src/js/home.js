@@ -29,7 +29,6 @@ const backgroundImages = [
     'sky-remake.png',
     'sky-sc.png',
     'sky-sc3.png',
-    'sky.png',
     'sky2.png',
     'zero.webp',
 ];
