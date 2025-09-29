@@ -24,7 +24,6 @@ const backgroundImages = [
     'cold-steel6.png',
     'cold-steel7.jpg',
     'daybreak.webp',
-    'sky-3rd.png',
     'sky-remake.png',
     'sky-sc3.png',
     'sky2.png',
