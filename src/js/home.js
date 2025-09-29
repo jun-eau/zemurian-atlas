@@ -13,7 +13,6 @@ const backgroundImages = [
     'azure2.png',
     'azure3.png',
     'azure5.png',
-    'cold-steel-ii.webp',
     'cold-steel-ii2.jpg',
     'cold-steel-iii.png',
     'cold-steel-iv.png',
@@ -27,10 +26,8 @@ const backgroundImages = [
     'daybreak.webp',
     'sky-3rd.png',
     'sky-remake.png',
-    'sky-sc.png',
     'sky-sc3.png',
     'sky2.png',
-    'zero.webp',
 ];
 
 /**
