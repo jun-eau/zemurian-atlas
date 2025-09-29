@@ -26,7 +26,7 @@ This project is not affiliated with Nihon Falcom, NIS America, XSEED, or GungHo.
 *All visual assets are © Nihon Falcom Corporation / NIS America, Inc. / XSEED Games / Gungho Online Entertainment, Inc.*
 
 This project also contains links to various sources of information for each game.  
-*Steam, GOG, PlayStation, Nintendo Switch, Wikipedia, and Kiseki Wiki (Fandom) logos are trademarks of their respective owners.*
+*Steam, GOG, PlayStation, Nintendo Switch, Wikipedia, and Falcom Wiki logos are trademarks of their respective owners.*
 
 ## License
 
