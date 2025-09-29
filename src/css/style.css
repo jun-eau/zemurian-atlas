@@ -328,14 +328,14 @@ body.home-page::before {
     inset: 0;
     background-size: cover;
     background-position: center center;
-    filter: blur(4px) brightness(0.95);
+    filter: blur(3px) brightness(0.95);
     transform: scale(1.1);
     transition: transform 0.4s ease-out, filter 0.4s ease-out;
     z-index: 1;
 }
 .game-entry:hover .hero-background {
     transform: scale(1.05);
-    filter: blur(2px) brightness(1.1);
+    filter: blur(0px) brightness(1.1);
 }
 .info-content {
     position: relative;
