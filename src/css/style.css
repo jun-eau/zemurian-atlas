@@ -333,7 +333,7 @@ body.home-page::before {
     transition: transform 0.4s ease-out, filter 0.4s ease-out;
     z-index: 1;
 }
-.game-entry:hover .hero-background {
+.info-container:hover .hero-background {
     transform: scale(1.05);
     filter: blur(0px) brightness(1.0526);
 }
