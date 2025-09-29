@@ -217,7 +217,7 @@ export function initMapPage() {
             toggleButton.className = 'map-infobox-toggle-btn';
 
             const updateButtonText = () => {
-                toggleButton.textContent = infoboxEl.classList.contains('show-lore-view') ? 'Show Game Art' : 'View Lore Details';
+                toggleButton.textContent = infoboxEl.classList.contains('show-lore-view') ? 'Show Game Art' : 'Show More Details';
             };
             toggleButton.addEventListener('click', (event) => {
                 event.stopPropagation();
