@@ -77,48 +77,6 @@ export function initMapPage() {
                 handleMapClick(clickedRegionId, e.clientX, e.clientY, e.pageX, e.pageY);
             });
 
-            // --- Custom Hover Logic ---
-            let lastHoveredPath = null;
-            let hoverTimeout = null;
-            const FADE_IN_DURATION = 200; // Must match the CSS transition duration
-
-            mapOverlay.addEventListener('mouseover', (e) => {
-                const currentPath = e.target.closest('.region-path');
-                if (!currentPath) return;
-
-                // If we're hovering over the same path, do nothing.
-                if (currentPath === lastHoveredPath) return;
-
-                // Clear any pending fade-out from a previous quick mouse-out/mouse-in.
-                clearTimeout(hoverTimeout);
-
-                // If there was a previously hovered path, it's time to start its fade-out.
-                // The key is that we *don't* do this instantly.
-                const pathToRemove = lastHoveredPath;
-
-                // Immediately apply the hover effect to the new path.
-                currentPath.classList.add('is-hovered');
-                lastHoveredPath = currentPath;
-
-                // If there was a previous path, schedule its hover-effect removal.
-                // This makes the old one only start fading *after* the new one has faded in.
-                if (pathToRemove) {
-                    hoverTimeout = setTimeout(() => {
-                        pathToRemove.classList.remove('is-hovered');
-                    }, FADE_IN_DURATION);
-                }
-            });
-
-            mapOverlay.addEventListener('mouseleave', () => {
-                // When the mouse leaves the entire map area, clear any pending fades
-                // and immediately remove the hover effect from the last known region.
-                clearTimeout(hoverTimeout);
-                if (lastHoveredPath) {
-                    lastHoveredPath.classList.remove('is-hovered');
-                    lastHoveredPath = null;
-                }
-            });
-
             // Remove the loading state
             mapContainer.classList.remove('is-loading');
         })
