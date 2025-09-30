@@ -13,7 +13,6 @@ const backgroundImages = [
     'azure2.png',
     'azure3.png',
     'azure5.png',
-    'cold-steel-ii2.jpg',
     'cold-steel-iii.png',
     'cold-steel-iv.png',
     'cold-steel.jpg',
