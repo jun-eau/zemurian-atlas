@@ -21,7 +21,7 @@ function route() {
     const currentPage = window.location.pathname.split('/').pop();
 
     // Route to page-specific logic
-    if (currentPage === 'index.html' || currentPage === '') {
+    if (currentPage === '' || currentPage === 'index.html') {
         initHomePage();
     } else if (currentPage === 'games.html') {
         initReleasesPage();
