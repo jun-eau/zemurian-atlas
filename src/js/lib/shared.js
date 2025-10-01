@@ -15,7 +15,7 @@ export function highlightActiveNav() {
         // Clear any existing 'active' class
         link.classList.remove('active');
         // Add 'active' class if the link href matches the current page URL
-        if (linkUrl === currentPageUrl || (currentPageUrl === '' && linkUrl === 'index.html')) {
+        if (linkUrl === currentPageUrl || ((currentPageUrl === '' || currentPageUrl === 'index.html') && linkUrl === '.')) {
             link.classList.add('active');
         }
     });
