@@ -1321,3 +1321,10 @@ body.home-page::before {
 .mobile-only {
     display: none;
 }
+
+/* Hide the mobile banner on desktop screens */
+@media (min-width: 901px) {
+    #mobile-map-banner {
+        display: none;
+    }
+}
