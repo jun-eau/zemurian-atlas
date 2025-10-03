@@ -1128,7 +1128,6 @@ body.home-page::before {
         display: none;
     }
     #mobile-map-container {
-        display: block;
         /* Header is 114px high on mobile */
         height: calc(100vh - 114px);
         width: 100%;
@@ -1319,9 +1318,6 @@ body.home-page::before {
 
 /* --- Initial Hiding of Mobile/Desktop Specific Elements --- */
 /* This is out of the media query to ensure it's a base style. */
-#mobile-map-container {
-    display: none;
-}
 .mobile-only {
     display: none;
 }
