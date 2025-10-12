@@ -94,7 +94,7 @@
       {
         "start": "1202-12-01",
         "end": "1203-03-07",
-        "display": "December S.1202 – March 7, S.1203"
+        "display": "December S.1202 – March ~7, S.1203"
       }
     ],
     "releasesJP": [
@@ -141,13 +141,13 @@
         "start": "1203-10-27",
         "end": "1203-10-27",
         "label": "Prologue",
-        "display": "October 27, S.1203"
+        "display": "October ~27, S.1203"
       },
       {
         "start": "1203-11-29",
         "end": "1203-11-29",
         "label": "Phantasma",
-        "display": "November 29, S.1203",
+        "display": "November ~29, S.1203",
         "isMain": true
       }
     ],
