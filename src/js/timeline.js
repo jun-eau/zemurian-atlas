@@ -270,7 +270,7 @@ export function initTimelinePage() {
             });
 
             // Special handling for single-period "below" display games (e.g., CSIV)
-            if (game.timelineSettings?.displayMode === 'below' && game.timelinePeriodsParsed.length > 0) {
+            if (game.timelineSettings?.displayMode === 'below' && game.timelinePeriodsParsed.length === 1) {
                 const textContainer = createBelowText(game, game.timelinePeriodsParsed[0], lastPeriodBottom, 0, true);
                 targetColumn.appendChild(textContainer);
             }
