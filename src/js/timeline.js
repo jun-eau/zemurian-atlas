@@ -335,8 +335,8 @@ export function initTimelinePage() {
         detailEl.innerHTML = period.label ? `<strong>${period.label}:</strong> ${period.display}` : period.display;
         container.appendChild(detailEl);
 
-        const spacing = isGrouped ? 2 : (period.isMain ? 2 : 1);
-        container.style.top = `${topPosition + entryHeight + spacing + (isGrouped ? 0 : 3)}px`;
+        const spacing = period.isMain || isGrouped ? 2 : 1;
+        container.style.top = `${topPosition + entryHeight + spacing + 3}px`;
 
         return container;
     }
