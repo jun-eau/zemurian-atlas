@@ -90,11 +90,14 @@
     "playstationUrl": null,
     "nintendoUrl": null,
     "timelineColor": "#F2C663",
+    "timelineSettings": {
+      "textColor": "#000000"
+    },
     "timelinePeriods": [
       {
         "start": "1202-12-01",
         "end": "1203-03-07",
-        "display": "December S.1202 – March ~7, S.1203"
+        "display": "December S.1202 – Early March, S.1203"
       }
     ],
     "releasesJP": [
@@ -136,18 +139,21 @@
     "playstationUrl": null,
     "nintendoUrl": null,
     "timelineColor": "#7d50a1",
+    "timelineSettings": {
+      "displayMode": "below"
+    },
     "timelinePeriods": [
       {
         "start": "1203-10-27",
         "end": "1203-10-27",
         "label": "Prologue",
-        "display": "October ~27, S.1203"
+        "display": "Late October, S.1203"
       },
       {
         "start": "1203-11-29",
         "end": "1203-11-29",
         "label": "Phantasma",
-        "display": "November ~29, S.1203",
+        "display": "Late November, S.1203",
         "isMain": true
       }
     ],
@@ -340,6 +346,9 @@
     "playstationUrl": "https://store.playstation.com/en-us/product/UP1023-CUSA12566_00-EDSENNOKISEKI2ND",
     "nintendoUrl": null,
     "timelineColor": "#d61a28",
+    "timelineSettings": {
+      "displayMode": "below"
+    },
     "timelinePeriods": [
       {
         "start": "1204-11-29",
@@ -460,6 +469,9 @@
     "playstationUrl": "https://store.playstation.com/en-us/product/UP1063-CUSA19637_00-EDSENNOKISEKI4TH",
     "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-of-cold-steel-iv-switch/",
     "timelineColor": "#641207",
+    "timelineSettings": {
+      "displayMode": "below"
+    },
     "timelinePeriods": [
       {
         "start": "1206-08-01",
@@ -518,6 +530,10 @@
     "playstationUrl": "https://store.playstation.com/en-us/concept/10003228",
     "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-into-reverie-switch/",
     "timelineColor": "#DFF8FC",
+    "timelineSettings": {
+      "displayMode": "below",
+      "columnSpan": ["Crossbell Arc", "Erebonia Arc"]
+    },
     "timelinePeriods": [
       {
         "start": "1207-02-14",
@@ -568,6 +584,9 @@
     "playstationUrl": "https://store.playstation.com/en-us/concept/10001886",
     "nintendoUrl": "https://www.nintendo.com/us/store/products/the-legend-of-heroes-trails-through-daybreak-switch/",
     "timelineColor": "#e4d39b",
+    "timelineSettings": {
+      "textColor": "#000000"
+    },
     "timelinePeriods": [
       {
         "start": "1208-08-26",

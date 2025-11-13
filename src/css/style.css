@@ -764,6 +764,9 @@ body.home-page::before {
 .game-entry-box.special-info-below {
     overflow: visible;
 }
+.game-entry-box.spanning {
+    z-index: 5; /* Ensure it draws above column borders */
+}
 .game-info-below-text-container {
     position: absolute;
     left: 5%;
