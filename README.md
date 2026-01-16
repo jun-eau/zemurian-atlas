@@ -12,7 +12,7 @@ An unofficial fan-made visual guide to the Trails series of video games.
 
 ### **Newest Updates**
 
-*   **Mobile Map View:** The interactive map has been updated to work seamlessly on mobile, similar to other map software. Tap on a region to view information in a mobile-friendly manner!
+*   **Trails in the Sky 2nd Chapter:** Details and art for the recently-announced Trails in the Sky 2nd Chapter have been added to the [Releases page](https://jun-eau.github.io/zemurian-atlas/games.html)!
 *   **Falcom Wiki Integration:** All relevant links have been changed to point to the new, independent [**Falcom Wiki**](https://falcom.wiki)! This means no ads, faster loading, and an open experience.
 
 ## Acknowledgements
