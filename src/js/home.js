@@ -25,6 +25,7 @@ const backgroundImages = [
     'daybreak.webp',
     'sky-remake.png',
     'sky-sc3.png',
+    'sky-sc-remake.jpg',
     'sky2.png',
 ];
 
